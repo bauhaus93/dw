@@ -1,0 +1,50 @@
+cmake_minimum_required(VERSION 3.10)
+project(dwarfs CXX)
+
+macro(add_sources)
+	file (RELATIVE_PATH _relPath "${CMAKE_SOURCE_DIR}" "${CMAKE_CURRENT_SOURCE_DIR}")
+	foreach(_src ${ARGN})
+		if(_relPath)
+			file(TO_NATIVE_PATH "${_relPath}/${_src}" _nativePath)
+		else()
+			file(TO_NATIVE_PATH ${_src} _nativePath)
+		endif()
+		set_property(TARGET dwfs APPEND PROPERTY SRC_LIST ${_nativePath})
+	endforeach()
+endmacro()
+
+set(CMAKE_CXX_STANDARD 17)
+set(THREADS_PREFER_PTHREAD_FLAG ON)
+set(EXEC_NAME "dwarfs")
+set(LIB_NAME "dwfs")
+
+if(NOT CMAKE_BUILD_TYPE)
+  set(CMAKE_BUILD_TYPE Debug CACHE STRING "Choose build type" FORCE)
+endif()
+
+add_executable(${EXEC_NAME} "src/Main.cpp")
+add_library(${LIB_NAME} "")
+
+target_link_libraries(${EXEC_NAME} ${LIB_NAME})
+
+if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
+        target_compile_options(${LIB_NAME} PRIVATE -Wall -fmax-errors=1 -Werror)
+elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
+        target_compile_options(${LIB_NAME} PRIVATE -Wall -ferror-limit=1 -Werror)
+elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")
+        target_compile_options(${LIB_NAME} PRIVATE /W4 /MP)
+endif()
+
+add_subdirectory(src)
+
+get_property(SRCS TARGET ${LIB_NAME} PROPERTY SRC_LIST)
+target_sources(${LIB_NAME} PRIVATE ${SRCS})
+
+target_include_directories(${EXEC_NAME} PRIVATE src)
+target_include_directories(${LIB_NAME} PRIVATE src)
+
+target_link_libraries(${LIB_NAME} PRIVATE ${CMAKE_DL_LIBS})
+
+find_package(SDL2 REQUIRED)
+target_link_libraries(${LIB_NAME} PRIVATE SDL2::SDL2)
+target_include_directories(${LIB_NAME} SYSTEM PRIVATE ${SDL2_INCLUDE_DIR})
