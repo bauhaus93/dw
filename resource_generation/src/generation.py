@@ -65,7 +65,7 @@ def generate_blender_sprites(model_path, texture_paths, script_path, output_dir,
     for ct in texture_paths:
         name = os.path.basename(ct)
         directory = os.path.dirname(ct)
-        sprite_path = os.path.join(directory, "sprite_" + name)
+        sprite_path = os.path.join(directory, name)
         if not os.path.exists(sprite_path):
             print("Could not find ", "'" + os.path.basename(sprite_path) + "'", ", which should have been generated")
         else:

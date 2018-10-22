@@ -29,6 +29,13 @@ parser.add_argument(
     help = "Specify the directory, where all results should be put"
 )
 
+parser.add_argument(
+    "--suffix",
+    nargs = 1,
+    metavar = "SUFFIX",
+    help = "Specify suffix added to each sprite"
+)
+
 group = parser.add_mutually_exclusive_group(required = True)
 group.add_argument(
     "--image-directory",
@@ -55,8 +62,13 @@ if args.image_directory:
 else:
     image_paths = [os.path.abspath(img) for img in args.image_files]
 
+if args.suffix:
+    suffix = args.suffix[0]
+else:
+    suffix = ""
+
 model_path = os.path.abspath(args.model[0])
 script_path = os.path.abspath(args.script[0])
 result_dir = os.path.abspath(args.result[0])
 
-generate_sprites(image_paths,model_path, script_path, result_dir, sprite_suffix = "cube_")
+generate_sprites(image_paths,model_path, script_path, result_dir, sprite_suffix = suffix)

@@ -29,7 +29,7 @@ class BlenderObject:
     def render_with_all_textures(self, output_path):
         for tex in bpy.data.textures:
             self.set_material_texture(tex)
-            output_name = os.path.join(output_path, "sprite_" + tex.name)
+            output_name = os.path.join(output_path, tex.name)
             bpy.data.scenes['Scene'].render.filepath = output_name
             bpy.ops.render.render(write_still=True)
         self.set_material_texture(None)
