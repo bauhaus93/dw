@@ -43,7 +43,7 @@ def generate_blender_sprites(model_path, texture_paths, script_path, output_dir,
     print("+++ Generating sprites +++")
     print("Used model:\t\t", "'" + os.path.basename(model_path) + "'")
     print("Used script:\t\t", "'" + os.path.basename(script_path) + "'")
-    [print("Used textures:\t\t", "'" + os.path.basename(t) + "'") for t in texture_paths]
+    [print("Used texture:\t\t", "'" + os.path.basename(t) + "'") for t in texture_paths]
     cmd = [ "blender",
             model_path,
             "--background",

@@ -59,6 +59,4 @@ model_path = os.path.abspath(args.model[0])
 script_path = os.path.abspath(args.script[0])
 result_dir = os.path.abspath(args.result[0])
 
-print(image_paths)
-
 generate_sprites(image_paths,model_path, script_path, result_dir, sprite_suffix = "cube_")
