@@ -1,73 +1,91 @@
 import os
 import subprocess
+import tempfile
 
 from result_processing.process_image import process_image
+from texture_generation.cube_texture import create_cube_texture
 
-def generate_textures(image_names, src_path, output_path, create_texture_function, output_suffix):
+def generate_sprites(image_paths, model_path, script_path, result_dir, sprite_suffix, print_blender_output = False):
+    tmp_dir = tempfile.gettempdir()
+
+    texture_paths = generate_textures(
+        image_paths,
+        create_cube_texture,
+        tmp_dir,
+        sprite_suffix
+    )
+    sprite_paths = generate_blender_sprites(
+        model_path = model_path,
+        texture_paths = texture_paths,
+        script_path = script_path,
+        output_dir = tmp_dir,
+        print_blender_output = print_blender_output
+    )
+    processed_sprite_paths = process_sprites(
+        sprite_paths,
+        result_dir
+    )
+    return processed_sprite_paths
+
+def generate_textures(image_paths, create_texture_function, output_dir, output_suffix):
     print("+++ Generating textures +++")
-    texture_filepaths = []
-    for img_name in image_names:
-        src_filepath = os.path.join(src_path, img_name)
-        output_filepath = os.path.join(output_path, output_suffix + img_name)
-        create_texture_function(src_filepath, output_filepath)
-        texture_filepaths.append(output_filepath)
-
-        print("Created texture:\t", "'" + os.path.basename(output_filepath) + "'")
-    print("Created textures:\t", len(texture_filepaths))
+    texture_paths = []
+    for img_path in image_paths:
+        output_path = os.path.join(output_dir, output_suffix + os.path.basename(img_path))
+        create_texture_function(img_path, output_path)
+        texture_paths.append(output_path)
+        print("Created texture:\t", "'" + os.path.basename(output_path) + "'")
+    print("Created textures:\t", len(texture_paths))
     print("+++ Finished generating textures +++")
-    return texture_filepaths
+    return texture_paths
 
-def generate_sprites(model_filepath, texture_filepaths, script_dir, script_name, output_path):
+def generate_blender_sprites(model_path, texture_paths, script_path, output_dir, print_blender_output = False):
     print("+++ Generating sprites +++")
-    print("Used model:\t\t", "'" + os.path.basename(model_filepath) + "'")
-    print("Used script:\t\t", "'" + script_name + "'")
-    [print("Used textures:\t\t", "'" + os.path.basename(t) + "'") for t in texture_filepaths]
+    print("Used model:\t\t", "'" + os.path.basename(model_path) + "'")
+    print("Used script:\t\t", "'" + os.path.basename(script_path) + "'")
+    [print("Used textures:\t\t", "'" + os.path.basename(t) + "'") for t in texture_paths]
     cmd = [ "blender",
-            model_filepath,
+            model_path,
             "--background",
             "--python",
-            os.path.join(script_dir, "create_cube.py"),
+            script_path,
             "--",
-            script_dir,
-            output_path] + texture_filepaths
+            output_dir] + texture_paths
     try:
-        with open(os.devnull, "w") as f:
-            subprocess.check_call(cmd, stdout = f, stderr = f)
+        if print_blender_output:
+            subprocess.check_call(cmd)
+        else:
+            with open(os.devnull, "w") as f:
+                subprocess.check_call(cmd, stdout = f, stderr = f)
     except subprocess.CalledProcessError:
         print("Error occured on sprite generation")
         exit(1)
 
-    sprite_filepaths = []
-    for ct in texture_filepaths:
+    sprite_paths = []
+    for ct in texture_paths:
         name = os.path.basename(ct)
-        path = os.path.dirname(ct)
-        sprite_filepath = os.path.join(path, "sprite_" + name)
-        if not os.path.exists(sprite_filepath):
-            print("Could not find ", "'" + os.path.basename(sprite_filepath) + "'", ", which should have been generated")
+        directory = os.path.dirname(ct)
+        sprite_path = os.path.join(directory, "sprite_" + name)
+        if not os.path.exists(sprite_path):
+            print("Could not find ", "'" + os.path.basename(sprite_path) + "'", ", which should have been generated")
         else:
-            sprite_filepaths.append(sprite_filepath)
-    print("Generated sprites:\t", len(sprite_filepaths))
+            sprite_paths.append(sprite_path)
+    print("Generated sprites:\t", len(sprite_paths))
     print("+++ Finished generating sprites +++")
-    return sprite_filepaths
+    return sprite_paths
 
-def process_sprites(sprite_filepaths, output_path):
+def process_sprites(sprite_paths, output_dir):
     print("+++ Processing sprites +++")
-    processed_sprite_filepaths = []
-    for sprite_filepath in sprite_filepaths:
-        sprite_name = os.path.basename(sprite_filepath)
-        output_filepath = os.path.join(output_path, sprite_name)
-        process_image(sprite_filepath, output_filepath)
+    processed_sprite_paths = []
+    for sprite_path in sprite_paths:
+        sprite_name = os.path.basename(sprite_path)
+        output_path = os.path.join(output_dir, sprite_name)
+        process_image(sprite_path, output_path)
         print("Processed sprites:\t", "'" + sprite_name + "'")
-        processed_sprite_filepaths.append(output_filepath)
-    print("Processed sprites:\t", len(processed_sprite_filepaths))
+        processed_sprite_paths.append(output_path)
+    print("Processed sprites:\t", len(processed_sprite_paths))
     print("+++ Finished processing sprites +++")
-    return processed_sprite_filepaths
-
-def clean_directory(path):
-    for filename in os.listdir(path):
-        file_path = os.path.join(path, filename)
-        if os.path.isfile(file_path):
-            os.unlink(file_path)
+    return processed_sprite_paths
 
 def add_file_suffix(file_paths, suffix):
     for file_path in file_paths:

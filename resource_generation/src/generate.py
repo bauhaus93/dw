@@ -1,40 +1,64 @@
 import os
+import argparse
 
-from generation import generate_textures, generate_sprites, process_sprites, clean_directory, add_file_suffix
-from texture_generation.cube_generation import create_cube_texture
+from generation import generate_sprites
 
-resource_path = os.path.abspath("resources")
-source_path =   os.path.abspath("src")
+parser = argparse.ArgumentParser(description = "Generate sprites base on different textures and models")
 
-model_path =    os.path.join(resource_path, "models")
-image_path =    os.path.join(resource_path, "images")
-tmp_path =      os.path.join(resource_path, "tmp")
-result_path =   os.path.join(resource_path, "results")
+parser.add_argument(
+    "--script",
+    nargs = 1,
+    metavar = "FILE",
+    required = True,
+    help = "Specify the python script to invoke in blender during sprite generation"
+)
 
-image_names = ["grass.png"]
+parser.add_argument(
+    "--model",
+    nargs = 1,
+    metavar = "FILE",
+    required = True,
+    help = "Specify the .blend file, which should be used for sprite generation"
+)
 
-def generate_cube_sprites(image_names, model_path, image_path, tmp_path, result_path):
-    texture_filepaths = generate_textures(
-        image_names,
-        image_path,
-        tmp_path,
-        create_cube_texture,
-        "cube_"
-    )
-    sprite_filepaths = generate_sprites(
-        model_filepath = os.path.join(model_path, "block.blend"),
-        texture_filepaths = texture_filepaths,
-        script_dir = os.path.join(source_path, "rendering"),
-        script_name = "create_cube.py",
-        output_path = tmp_path
-    )
-    processed_sprite_filepaths = process_sprites(
-        sprite_filepaths,
-        result_path
-    )
-    clean_directory(tmp_path)
+parser.add_argument(
+    "--result",
+    nargs = 1,
+    metavar = "DIR",
+    required = True,
+    help = "Specify the directory, where all results should be put"
+)
 
-clean_directory(tmp_path)
-clean_directory(result_path)
+group = parser.add_mutually_exclusive_group(required = True)
+group.add_argument(
+    "--image-directory",
+    nargs = 1,
+    metavar = "DIR",
+    help = "Specify directory which should be scanned for images to use as textures"
+)
+group.add_argument(
+    "--image-files",
+    nargs = "+",
+    metavar = "FILE",
+    help = "Specify image files which should be used as textures"
+)
 
-generate_cube_sprites(image_names, model_path, image_path, tmp_path, result_path)
+args = parser.parse_args()
+
+image_paths = []
+if args.image_directory:
+    abs_dir = os.path.abspath(args.image_directory[0])
+    for filename in os.listdir(abs_dir):
+        full_name = os.path.join(abs_dir, filename)
+        if os.path.isfile(full_name):
+            image_paths.append(full_name)
+else:
+    image_paths = [os.path.abspath(img) for img in args.image_files]
+
+model_path = os.path.abspath(args.model[0])
+script_path = os.path.abspath(args.script[0])
+result_dir = os.path.abspath(args.result[0])
+
+print(image_paths)
+
+generate_sprites(image_paths,model_path, script_path, result_dir, sprite_suffix = "cube_")

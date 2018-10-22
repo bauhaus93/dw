@@ -3,17 +3,17 @@ import sys
 import sys
 import bpy
 
-script_args = sys.argv[sys.argv.index("--") + 1:]
-
-script_dir = script_args[0]
+script_dir = os.path.dirname(__file__)
 if not script_dir in sys.path:
     sys.path.append(script_dir)
 
 from utility import setup, add_texture
 from blender_object import BlenderObject
 
-output_path = script_args[1]
-textures = script_args[2:]
+script_args = sys.argv[sys.argv.index("--") + 1:]
+
+output_path = script_args[0]
+textures = script_args[1:]
 
 print(textures)
 
