@@ -5,12 +5,18 @@ import tempfile
 from result_processing.process_image import process_image
 from texture_generation.cube_texture import create_cube_texture
 
-def generate_sprites(image_paths, model_path, script_path, result_dir, sprite_suffix, print_blender_output = False):
+def generate_sprites(image_paths, model_path, script_path, texture_type, result_dir, sprite_suffix, print_blender_output = False):
     tmp_dir = tempfile.gettempdir()
+
+    if texture_type == "cube":
+        creation_function = create_cube_texture
+    else:
+        print("Generation of textures for type ", "'" + texture_type + "'", " is not possible!")
+        exit(1)
 
     texture_paths = generate_textures(
         image_paths,
-        create_cube_texture,
+        creation_function,
         tmp_dir,
         sprite_suffix
     )
