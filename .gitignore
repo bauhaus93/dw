@@ -1,2 +1,6 @@
 .vscode/
 debug/
+resources/
+__pycache__/
+env/
+*.log
