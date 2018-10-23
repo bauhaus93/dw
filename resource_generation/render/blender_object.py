@@ -4,7 +4,11 @@ import os
 class BlenderObject:
     
     def __init__(self, name):
-        self.obj = bpy.data.objects[name]
+        try:
+            self.obj = bpy.data.objects[name]
+        except KeyError:
+            print("Error: Could not find object", "'" + name + "' in blender file")
+            exit(1)
         self.create_material()
         
     def create_material(self):

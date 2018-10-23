@@ -15,10 +15,8 @@ script_args = sys.argv[sys.argv.index("--") + 1:]
 output_path = script_args[0]
 textures = script_args[1:]
 
-print(textures)
-
 setup()
 [add_texture(t) for t in textures]
     
-cube = BlenderObject("Cube")
-cube.render_with_all_textures(output_path)
+obj = BlenderObject("Object")
+obj.render_with_all_textures(output_path)
