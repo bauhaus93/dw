@@ -7,6 +7,7 @@ import numpy as np
 logger = logging.getLogger()
 
 def create_atlas(sprite_path_map, output_path):
+    logger.info("Creating sprite atlas")
     max_coord = (max(sprite_path_map, key = operator.itemgetter(0))[0],
                  max(sprite_path_map, key = operator.itemgetter(1))[1])
 

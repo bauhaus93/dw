@@ -5,6 +5,7 @@ import logging
 
 from result_processing.process_image import process_image
 from texture_generation.cube_texture import create_cube_texture
+from texture_generation.slope_texture import create_slope_texture
 
 logger = logging.getLogger()
 
@@ -13,6 +14,8 @@ def generate_sprites(image_paths, model_path, script_path, texture_type, result_
 
     if texture_type == "cube":
         creation_function = create_cube_texture
+    elif texture_type == "slope":
+        creation_function = create_slope_texture
     else:
         logger.error("Generation of textures for type '" + texture_type + "' is not possible!")
         exit(1)
@@ -43,14 +46,14 @@ def generate_textures(image_paths, create_texture_function, output_dir, output_s
         create_texture_function(img_path, output_path)
         texture_paths.append(output_path)
         logger.debug("Created sprite '" + output_path + "'")
-    logger.info("Created " + str(len(texture_paths)) + " textures")
+    logger.debug("Created " + str(len(texture_paths)) + " textures")
     return texture_paths
 
 def generate_blender_sprites(model_path, texture_paths, script_path, output_dir):
     logger.info("Creating sprites")
     logger.info("Used model: '" + model_path + "'")
     logger.info("Used script: '" + script_path + "'")
-    logger.info("Using " + str(len(texture_paths)) + " textures")
+    logger.debug("Using " + str(len(texture_paths)) + " textures")
     cmd = [ "blender",
             model_path,
             "--background",
@@ -93,7 +96,7 @@ def generate_blender_sprites(model_path, texture_paths, script_path, output_dir)
         else:
             sprite_paths.append(sprite_path)
             logger.debug("Created sprite '" + sprite_path + "'")
-    logger.info("Created " + str(len(sprite_paths)) + " sprites")
+    logger.debug("Created " + str(len(sprite_paths)) + " sprites")
     return sprite_paths
 
 def process_sprites(sprite_paths, output_dir):
@@ -105,5 +108,5 @@ def process_sprites(sprite_paths, output_dir):
         process_image(sprite_path, output_path)
         processed_sprite_paths.append(output_path)
         logger.debug("Processed sprite '" + sprite_name + "'")
-    logger.info("Processed " + str(len(processed_sprite_paths)) + " sprites")
+    logger.debug("Processed " + str(len(processed_sprite_paths)) + " sprites")
     return processed_sprite_paths

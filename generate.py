@@ -2,6 +2,7 @@
 import os
 import sys
 import logging
+import time
 
 def setup_logger():
     FORMAT = r"[%(asctime)-15s] %(levelname)s - %(message)s"
@@ -14,6 +15,8 @@ if not RESGEN_DIR in sys.path:
 
 from resource_generation.generation import generate_sprites
 from resource_generation.result_processing.atlas import create_atlas
+
+start_time = time.perf_counter()
 
 RESOURCE_DIR = os.path.abspath("resources/")
 IMAGE_DIR = os.path.join(RESOURCE_DIR, "images")
@@ -34,21 +37,31 @@ logger = logging.getLogger()
 logger.info("Resource dir: '" + RESOURCE_DIR + "'")
 logger.info("Result dir: '" + RESULT_DIR + "'")
 
+if not os.path.isfile(RENDER_SCRIPT_PATH):
+    logger.error("Could not find render script: '" + RENDER_SCRIPT_PATH + "'")
+    exit(1)
+
+block_types = ["cube", "slope"]
 sprite_map = {}
 
-#create cube sprites
-logger.info("Generating cube sprites")
-sprites = generate_sprites(
-    image_paths,
-    os.path.join(MODEL_DIR, "cube.blend"),
-    RENDER_SCRIPT_PATH,
-    "cube",
-    RESULT_DIR,
-    "sprite_cube_"
-)
-for i in range(2):
-    sprite_map[(0, i)] = sprites[i]
-logger.info("Generated cube sprites")
-
+for (type_index, block_type) in enumerate(block_types):
+    logger.info("Generating '" + block_type + "' sprites")
+    model_name = os.path.join(MODEL_DIR, block_type + ".blend")
+    if not os.path.isfile(model_name):
+        logger.error("Model not existing: '" + model_name + "'")
+        exit(1)
+    sprites = generate_sprites(
+        image_paths,
+        os.path.join(MODEL_DIR, block_type + ".blend"),
+        RENDER_SCRIPT_PATH,
+        block_type,
+        RESULT_DIR,
+        "sprite_" + block_type + "_"
+    )
+    for (mat_index, sprite) in enumerate(sprites):
+        sprite_map[(type_index, mat_index)] = sprite
+    logger.info("Generated '" + block_type + "' sprites")
 
 create_atlas(sprite_map, ATLAS_PATH)
+
+logger.info("Generation finished in " + "{:.2f}".format(time.perf_counter() - start_time) + "s")
