@@ -3,15 +3,16 @@ import os
 import cv2 as cv
 import numpy as np
 
+from texture_generation import common
+
 def create_cube_texture(src, dest):
     BLACK = (0, 0, 0, 0xFF)
-    LINE_WIDTH = 10
 
     img = cv.imread(src, cv.IMREAD_UNCHANGED)
     h, w, c = img.shape
     result = np.full((h * 4, w * 4, c), BLACK, np.uint8)
     
-    cv.rectangle(img, (0, 0), (w, h), BLACK, LINE_WIDTH)
+    cv.rectangle(img, (0, 0), (w, h), BLACK, common.LINE_WIDTH)
 
     offsets = [(0, 2 * h),
             (w, 2 * h),
