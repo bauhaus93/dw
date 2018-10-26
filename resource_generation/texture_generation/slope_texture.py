@@ -12,7 +12,7 @@ def create_slope_texture(src, dest):
 
     slope_len = round((2 * w**2)**0.5)
     size = max(h * 3, w * 2 + slope_len)
-    result = np.zeros((size, size, c), np.uint8)
+    result = np.full((size, size, c), BLACK, np.uint8)
     
     square_img = np.copy(img)
     cv.rectangle(square_img, (0, 0), (h, w), BLACK, 2 * LINE_WIDTH)
@@ -28,10 +28,8 @@ def create_slope_texture(src, dest):
     result[size - 2 * h:size - h, 0:w] = square_img
     result[size - 2 * h:size - h, w:w + w] = square_img
 
-    rot_mat = cv.getRotationMatrix2D((tria_img.shape[1] / 2, tria_img.shape[0] / 2), 90, 1)
-    tria_rot_img = cv.warpAffine(tria_img, rot_mat, (w, h))
     result[size - 3 * h: size - 2 * h, w:w + w] = tria_img
-    result[size - h:, w:w + w] = tria_rot_img
+    result[size - h:, w:w + w] = np.flip(tria_img, 1)
 
     result[size - 2 * h: size - h, 2 * w:] = slope_img
 
