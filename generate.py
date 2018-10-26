@@ -8,15 +8,16 @@ def setup_logger():
     DATE_FORMAT = r"%Y-%m-%d %H:%M:%S"
     logging.basicConfig(level = logging.INFO, format=FORMAT, datefmt = DATE_FORMAT)
 
-resgen_dir = os.path.join(os.path.dirname(__file__), "resource_generation")
-if not resgen_dir in sys.path:
-    sys.path.append(resgen_dir)
+RESGEN_DIR = os.path.join(os.path.dirname(__file__), "resource_generation")
+if not RESGEN_DIR in sys.path:
+    sys.path.append(RESGEN_DIR)
 
 from resource_generation.generation import generate_sprites
 
 RESOURCE_DIR = os.path.abspath("resources/")
 IMAGE_DIR = os.path.join(RESOURCE_DIR, "images")
 RESULT_DIR = os.path.join(RESOURCE_DIR, "results")
+MODEL_DIR = os.path.join(RESOURCE_DIR, "models")
 RENDER_SCRIPT_PATH = os.path.abspath("resource_generation/render/render_object.py")
 
 image_paths = []
@@ -34,7 +35,7 @@ logger.info("Result dir: '" + RESULT_DIR + "'")
 #create cube sprites
 logger.info("Generating cube sprites")
 generate_sprites(image_paths,
-                 os.path.join(RESOURCE_DIR, "models", "cube.blend"),
+                 os.path.join(MODEL_DIR, "cube.blend"),
                  RENDER_SCRIPT_PATH,
                  "cube",
                  RESULT_DIR,
