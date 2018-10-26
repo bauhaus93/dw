@@ -4,8 +4,6 @@ import cv2 as cv
 import numpy as np
 
 def create_cube_texture(src, dest):
-
-
     img = cv.imread(src, cv.IMREAD_UNCHANGED)
     h, w, c = img.shape
     result = np.zeros((h * 4, w * 4, c), np.uint8)

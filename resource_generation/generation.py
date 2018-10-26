@@ -31,7 +31,7 @@ def generate_sprites(image_paths, model_path, script_path, texture_type, result_
     )
     processed_sprite_paths = process_sprites(
         sprite_paths,
-        result_dir
+        result_dir,
     )
     return processed_sprite_paths
 

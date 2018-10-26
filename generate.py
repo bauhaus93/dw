@@ -13,12 +13,14 @@ if not RESGEN_DIR in sys.path:
     sys.path.append(RESGEN_DIR)
 
 from resource_generation.generation import generate_sprites
+from resource_generation.result_processing.atlas import create_atlas
 
 RESOURCE_DIR = os.path.abspath("resources/")
 IMAGE_DIR = os.path.join(RESOURCE_DIR, "images")
 RESULT_DIR = os.path.join(RESOURCE_DIR, "results")
 MODEL_DIR = os.path.join(RESOURCE_DIR, "models")
 RENDER_SCRIPT_PATH = os.path.abspath("resource_generation/render/render_object.py")
+ATLAS_PATH = os.path.join(RESULT_DIR, "atlas.png")
 
 image_paths = []
 for img_name in os.listdir(IMAGE_DIR):
@@ -32,12 +34,21 @@ logger = logging.getLogger()
 logger.info("Resource dir: '" + RESOURCE_DIR + "'")
 logger.info("Result dir: '" + RESULT_DIR + "'")
 
+sprite_map = {}
+
 #create cube sprites
 logger.info("Generating cube sprites")
-generate_sprites(image_paths,
-                 os.path.join(MODEL_DIR, "cube.blend"),
-                 RENDER_SCRIPT_PATH,
-                 "cube",
-                 RESULT_DIR,
-                 "sprite_cube_")
+sprites = generate_sprites(
+    image_paths,
+    os.path.join(MODEL_DIR, "cube.blend"),
+    RENDER_SCRIPT_PATH,
+    "cube",
+    RESULT_DIR,
+    "sprite_cube_"
+)
+for i in range(2):
+    sprite_map[(0, i)] = sprites[i]
 logger.info("Generated cube sprites")
+
+
+create_atlas(sprite_map, ATLAS_PATH)
