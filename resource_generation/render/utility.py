@@ -1,4 +1,6 @@
 import os
+import math
+
 import bpy
 
 def setup(force_clear = False):
@@ -18,10 +20,9 @@ def camera_setup():
         camera = bpy.data.objects['Camera']
         bpy.context.scene.camera = camera
         
-    camera.rotation_euler[0] = 0.955317
+    camera.rotation_euler[0] = math.atan(2**0.5)
     camera.rotation_euler[1] = 0
-    camera.rotation_euler[2] = 0.785398
-    camera.location[0] = 6.5
+    camera.rotation_euler[2] = math.radians(45)
     camera.location[0] = 6.5
     camera.location[1] = -6.5
     camera.location[2] = 6
@@ -44,7 +45,25 @@ def scene_setup():
     scene.world.light_settings.use_environment_light = True
     scene.world.light_settings.environment_energy = 1.0
 
+def set_camera_position(new_pos):
+    camera = bpy.data.objects['Camera']
+    camera.location = new_pos
 
+def set_camera_direction(new_dir):
+    camera = bpy.data.objects['Camera']
+    camera.rotation_euler = new_dir
+
+def iter_camera_views():
+    direction = (math.atan(2**0.5), 0, math.radians(45))
+    pos = (6.5, -6.5, 6)
+    pos_change = [(1, 1, 1),
+                  (1, -1, 1),
+                  (-1, -1, 1),
+                  (-1, 1, 1)]
+    for i in range(4):
+        curr_pos = tuple(l * r for l, r in zip(pos, pos_change[i]))
+        curr_dir = tuple(l + r for l, r in zip(direction, (0, 0, math.radians(90 * i))))
+        yield (curr_pos, curr_dir)
 
 def add_texture(image_path):
     img_name = os.path.basename(image_path).split(".")[0].lower()

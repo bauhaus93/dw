@@ -61,6 +61,7 @@ def generate_blender_sprites(model_path, texture_paths, script_path, output_dir)
             script_path,
             "--",
             output_dir] + texture_paths
+    logger.info("Starting Blender")
     logger.debug("Invoking command '" + " ".join(cmd) + "'")
     try:
         cmd_proc = subprocess.Popen(
@@ -79,7 +80,7 @@ def generate_blender_sprites(model_path, texture_paths, script_path, output_dir)
             if len(line) > 1:
                 logger.error("Blender stderr: " + line)
 
-        logger.debug("Command finished")
+        logger.info("Blender finished")
     except subprocess.CalledProcessError as ex:
         logger.error("CalledProcessError: " + str(ex))
         exit(1)
@@ -88,14 +89,15 @@ def generate_blender_sprites(model_path, texture_paths, script_path, output_dir)
 
     sprite_paths = []
     for ct in texture_paths:
-        name = os.path.basename(ct)
+        name, ext = os.path.basename(ct).split(".")
         directory = os.path.dirname(ct)
-        sprite_path = os.path.join(directory, name)
-        if not os.path.exists(sprite_path):
-            logger.warn("Could not find '" + os.path.basename(sprite_path) + "', which should have been generated")
-        else:
-            sprite_paths.append(sprite_path)
-            logger.debug("Created sprite '" + sprite_path + "'")
+        for i in range(4):
+            sprite_path = os.path.join(directory, name + str(i) + "." + ext)
+            if not os.path.exists(sprite_path):
+                logger.warn("Could not find '" + os.path.basename(sprite_path) + "', which should have been generated")
+            else:
+                sprite_paths.append(sprite_path)
+                logger.debug("Created sprite '" + sprite_path + "'")
     logger.debug("Created " + str(len(sprite_paths)) + " sprites")
     return sprite_paths
 

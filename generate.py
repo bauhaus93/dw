@@ -44,7 +44,7 @@ if not os.path.isfile(RENDER_SCRIPT_PATH):
 block_types = ["cube", "slope"]
 sprite_map = {}
 
-for (type_index, block_type) in enumerate(block_types):
+for block_type in block_types:
     logger.info("Generating '" + block_type + "' sprites")
     model_name = os.path.join(MODEL_DIR, block_type + ".blend")
     if not os.path.isfile(model_name):
@@ -58,10 +58,18 @@ for (type_index, block_type) in enumerate(block_types):
         RESULT_DIR,
         "sprite_" + block_type + "_"
     )
-    for (mat_index, sprite) in enumerate(sprites):
-        sprite_map[(type_index, mat_index)] = sprite
+    for i in range(0, len(sprites), 4):
+        mat_index = int(i / 4)
+        if block_type == "cube":
+            items = 1
+        else:
+            items = 4
+        if not mat_index in sprite_map:
+            sprite_map[mat_index] = sprites[i:i + items]
+        else:
+            sprite_map[mat_index] += sprites[i:i + items]
     logger.info("Generated '" + block_type + "' sprites")
 
 create_atlas(sprite_map, ATLAS_PATH)
 
-logger.info("Generation finished in " + "{:.2f}".format(time.perf_counter() - start_time) + "s")
+logger.info("Finished in " + "{:.2f}".format(time.perf_counter() - start_time) + "s")

@@ -30,10 +30,10 @@ class BlenderObject:
     def set_material_texture(self, texture):
         self.obj.active_material.texture_slots[0].texture = texture
         
-    def render_with_all_textures(self, output_path):
+    def render_with_all_textures(self, output_path, index):
         for tex in bpy.data.textures:
             self.set_material_texture(tex)
-            output_name = os.path.join(output_path, tex.name)
+            output_name = os.path.join(output_path, tex.name + str(index))
             bpy.data.scenes['Scene'].render.filepath = output_name
             bpy.ops.render.render(write_still=True)
         self.set_material_texture(None)
