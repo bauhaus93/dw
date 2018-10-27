@@ -48,3 +48,11 @@ target_link_libraries(${LIB_NAME} PRIVATE ${CMAKE_DL_LIBS})
 find_package(SDL2 REQUIRED)
 target_link_libraries(${LIB_NAME} PRIVATE SDL2::SDL2)
 target_include_directories(${LIB_NAME} SYSTEM PRIVATE ${SDL2_INCLUDE_DIR})
+
+add_custom_target(resources
+		  COMMAND source resource_generation/env/bin/activate &&
+			  resource_generation/generate.py
+			  	--resource-dir resources/
+			  	--result-dir ${CMAKE_CURRENT_BINARY_DIR}/
+		  WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/)
+

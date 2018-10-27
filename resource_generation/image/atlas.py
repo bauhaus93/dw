@@ -1,11 +1,46 @@
+import os
 import logging
 
 import cv2 as cv
 import numpy as np
 
+from utility import generate_sprites
+
 logger = logging.getLogger()
 
-def create_atlas(sprite_paths_map, output_path):
+def create_atlas(block_types, material_paths, model_dir, render_script_path, result_path):
+    if not os.path.isfile(render_script_path):
+        logger.error("Could not find render script: '" + render_script_path + "'")
+        return False
+    sprite_map = {}
+    for block_type in block_types:
+        logger.info("Generating '" + block_type + "' sprites")
+        model_path = os.path.join(model_dir, block_type + ".blend")
+        if not os.path.isfile(model_path):
+            logger.error("Model not existing: '" + model_path + "'")
+            return False
+        sprites = generate_sprites(
+            material_paths,
+            model_path,
+            render_script_path,
+            block_type,
+            "sprite_" + block_type + "_"
+        )
+        for i in range(0, len(sprites), 4):
+            mat_index = int(i / 4)
+            if block_type == "cube":
+                items = 1
+            else:
+                items = 4
+            if not mat_index in sprite_map:
+                sprite_map[mat_index] = sprites[i:i + items]
+            else:
+                sprite_map[mat_index] += sprites[i:i + items]
+        logger.info("Generated '" + block_type + "' sprites")
+    _create_atlas(sprite_map, result_path)
+    return True
+
+def _create_atlas(sprite_paths_map, output_path):
     logger.info("Creating sprite atlas")
     max_coord = (max(k for (k, v) in sprite_paths_map.items()),
                  max(len(v) for (k, v) in sprite_paths_map.items()))

@@ -20,12 +20,11 @@ def contrast_image(img, contrast, brightness = 0):
     return cv.addWeighted(img, 1. + contrast / 127., img, 0, brightness - contrast)
 
 def process_image(src, dest):
-    img = cv.imread(src, cv.IMREAD_UNCHANGED)
-
-    w, h, _ = img.shape
     SHIFT_FACTOR_X = 0.083984375
     SHIFT_FACTOR_Y = 0.01953125
 
+    img = cv.imread(src, cv.IMREAD_UNCHANGED)
+    w, h, _ = img.shape
     shift_x = round(-w * SHIFT_FACTOR_X)
     shift_y = round(-h * SHIFT_FACTOR_Y)
 
