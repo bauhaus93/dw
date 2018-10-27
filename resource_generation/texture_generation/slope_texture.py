@@ -16,10 +16,10 @@ def create_slope_texture(src, dest):
     result = np.full((size, size, c), BLACK, np.uint8)
     
     square_img = np.copy(img)
-    cv.rectangle(square_img, (0, 0), (h, w), BLACK, common.LINE_WIDTH)
+    cv.rectangle(square_img, (0, 0), (w, h), BLACK, common.LINE_WIDTH)
 
     tria_img = np.copy(square_img)
-    cv.line(tria_img, (0, 0), (h, w), (0, 0, 0, 0xFF), common.LINE_WIDTH)
+    cv.line(tria_img, (0, 0), (w, h), (0, 0, 0, 0xFF), common.LINE_WIDTH)
 
     slope_img = np.zeros((h, slope_len, c), np.uint8)
     slope_img[:h, :w] = img
