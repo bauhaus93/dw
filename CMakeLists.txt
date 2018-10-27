@@ -55,11 +55,11 @@ add_custom_target(python-env
 			  source ${PYTHON_ENV_DIR}/bin/activate &&
 			  pip install --upgrade pip &&
 			  pip install -r requirements.txt
-		  WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/resource_generation/)
+		  WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/src/resource_generation/)
 
 add_custom_target(resources
 		  COMMAND source ${PYTHON_ENV_DIR}/bin/activate &&
-			  resource_generation/generate.py
+			  src/resource_generation/generate.py
 			  	--resource-dir resources/
 			  	--result-dir ${CMAKE_CURRENT_BINARY_DIR}/
 		  WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/)
