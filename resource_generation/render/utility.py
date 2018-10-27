@@ -35,8 +35,8 @@ def scene_setup():
     scene = bpy.context.scene
 
     scene.render.engine = 'BLENDER_RENDER'
-    scene.render.resolution_x = 1024
-    scene.render.resolution_y = 1024
+    scene.render.resolution_x = 256
+    scene.render.resolution_y = 256
     scene.render.resolution_percentage = 100
     scene.render.use_antialiasing = False
     scene.render.alpha_mode = 'TRANSPARENT'

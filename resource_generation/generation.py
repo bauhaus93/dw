@@ -2,6 +2,7 @@ import os
 import subprocess
 import tempfile
 import logging
+import time
 
 from result_processing.process_image import process_image
 from texture_generation.cube_texture import create_cube_texture
@@ -63,7 +64,9 @@ def generate_blender_sprites(model_path, texture_paths, script_path, output_dir)
             output_dir] + texture_paths
     logger.info("Starting Blender")
     logger.debug("Invoking command '" + " ".join(cmd) + "'")
+    
     try:
+        start_time = time.perf_counter()
         cmd_proc = subprocess.Popen(
             cmd,
             stdout = subprocess.PIPE,
@@ -80,12 +83,15 @@ def generate_blender_sprites(model_path, texture_paths, script_path, output_dir)
             if len(line) > 1:
                 logger.error("Blender stderr: " + line)
 
-        logger.info("Blender finished")
+        logger.info("Blender finished in {:.2f}s".format(time.perf_counter() - start_time))
     except subprocess.CalledProcessError as ex:
         logger.error("CalledProcessError: " + str(ex))
         exit(1)
     except ex:
         logger.error("Unhandled error: " + str(ex))
+        exit(1)
+
+    
 
     sprite_paths = []
     for ct in texture_paths:
