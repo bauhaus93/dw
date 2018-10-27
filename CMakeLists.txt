@@ -49,8 +49,16 @@ find_package(SDL2 REQUIRED)
 target_link_libraries(${LIB_NAME} PRIVATE SDL2::SDL2)
 target_include_directories(${LIB_NAME} SYSTEM PRIVATE ${SDL2_INCLUDE_DIR})
 
+add_custom_target(python-env
+	   	  COMMAND python3 -m venv ${CMAKE_CURRENT_BINARY_DIR}/python_env &&
+			  source ${CMAKE_CURRENT_BINARY_DIR}/python_env/bin/activate &&
+			  pip install --upgrade pip &&
+			  pip install -r requirements.txt
+		  WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/resource_generation/)
+
+
 add_custom_target(resources
-		  COMMAND source resource_generation/env/bin/activate &&
+		  COMMAND source ${CMAKE_CURRENT_BINARY_DIR}/python_env/bin/activate &&
 			  resource_generation/generate.py
 			  	--resource-dir resources/
 			  	--result-dir ${CMAKE_CURRENT_BINARY_DIR}/
