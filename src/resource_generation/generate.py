@@ -15,7 +15,7 @@ parser.add_argument("--resource-dir",
                     required = True)
 parser.add_argument("--result-dir",
                     metavar = "DIRECTORY",
-                    help = "Specify the root dir of the resources",
+                    help = "Specify the root dir of the results",
                     required = True)
 args = parser.parse_args()
 
