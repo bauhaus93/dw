@@ -64,3 +64,4 @@ add_custom_target(resources
 			  	--result-dir ${CMAKE_CURRENT_BINARY_DIR}/
 		  WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/)
 
+add_dependencies(resources python-env)
