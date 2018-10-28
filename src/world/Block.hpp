@@ -14,22 +14,26 @@ namespace dwarfs {
 class Block {
 public:
 
-                    Block(MaterialType material_, BlockType kind_, Direction direction_);
+                    Block(MaterialType material_, BlockType type_, Direction direction_);
+
+    MaterialType    GetMaterial() const { return material; }
+    BlockType       GetType() const { return type; }
+    Direction       GetDirection() const { return direction; }
     friend bool     operator<(const Block& rhs, const Block& lhs);
 private:
     MaterialType    material;
-    BlockType       kind;
+    BlockType       type;
     Direction       direction;
 };
 
 
 inline bool operator<(const Block& lhs, const Block& rhs) {
-    if (lhs.kind < rhs.kind) {
+    if (lhs.material < rhs.material) {
         return true;
-    } else if(lhs.kind == rhs.kind) {
-        if (lhs.material < rhs.material)
+    } else if(lhs.material == rhs.material) {
+        if (lhs.type < rhs.type)
             return true;
-        else if (lhs.material == rhs.material) {
+        else if (lhs.type == rhs.type) {
             return lhs.direction < rhs.direction;
         }
     }

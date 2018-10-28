@@ -8,5 +8,5 @@ add_sources(
     BlockType.hpp
     MaterialType.hpp
     Direction.hpp
-    Size.hpp
+    AtlasFormat.hpp
 )

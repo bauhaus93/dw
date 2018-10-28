@@ -11,7 +11,7 @@
 #include "MaterialType.hpp"
 #include "BlockType.hpp"
 #include "Block.hpp"
-#include "Size.hpp"
+#include "AtlasFormat.hpp"
 #include "Direction.hpp"
 
 namespace dwarfs {
@@ -21,7 +21,8 @@ class World {
 public:
                     World(SDL_Renderer* renderer);
 
-    void            Draw(int origX, int orgiY, int sizeX, int sizeY);
+    void            Draw(int origX, int orgiY, int maxX, int maxY);
+    void            DrawLoadedSprites(int origX, int origY, int maxX, int maxY);
 
 private:
     SpriteAtlas             atlas;

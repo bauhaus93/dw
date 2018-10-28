@@ -4,9 +4,9 @@
 
 namespace dwarfs {
 
-Block::Block(MaterialType material_, BlockType kind_, Direction direction_):
+Block::Block(MaterialType material_, BlockType type_, Direction direction_):
     material { material_ },
-    kind { kind_ },
+    type { type_ },
     direction { direction_ } {
 
 }

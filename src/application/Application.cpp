@@ -63,6 +63,13 @@ Application::~Application() {
 }
 
 void Application::Run() {
+
+    INFO("Drawing loaded sprites");
+    SDL_RenderClear(renderer);
+    world->DrawLoadedSprites(0, 0, 0 + winX, 0 + winY);
+    SDL_RenderPresent(renderer);
+    SDL_Delay(2000);
+
     INFO("Starting main loop");
     while (!stop) {
         HandleEvents();
@@ -74,7 +81,7 @@ void Application::Run() {
 
 void Application::Draw() {
     SDL_RenderClear(renderer);
-    world->Draw(0, 0, winX, winY);
+    world->Draw(0, 0, 0 + winX, 0 + winY);
     SDL_RenderPresent(renderer);
 }
 
