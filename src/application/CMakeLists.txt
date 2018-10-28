@@ -3,6 +3,4 @@ add_sources(
   Application.cpp
   ApplicationError.hpp
   ApplicationError.cpp
-  SDLError.hpp
-  SDLError.cpp
 )

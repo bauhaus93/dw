@@ -8,7 +8,8 @@
 #include <SDL2/SDL.h>
 
 #include "logger/GlobalLogger.hpp"
-#include "SDLError.hpp"
+#include "graphics/SDLError.hpp"
+#include "world/World.hpp"
 
 namespace dwarfs {
 
@@ -21,8 +22,13 @@ class Application {
     void            Run();
 private:
 
-    bool                stop;
-    SDL_Window*         window;
+    bool                    stop;
+    SDL_Window*             window;
+    SDL_Renderer*           renderer;
+    std::unique_ptr<World>  world;
+
+
+    void            HandleEvents();
 };
 
 }   // namespace dwarfs

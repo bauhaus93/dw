@@ -2,9 +2,19 @@
 
 #pragma once
 
+#include "graphics/SpriteAtlas.hpp"
+
 namespace dwarfs {
 
 class World {
+public:
+                    World(SDL_Renderer* renderer);
+
+    void            Draw();
+
+private:
+    SpriteAtlas     atlas;
+    Sprite          test;
 
 
 };

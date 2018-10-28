@@ -4,7 +4,7 @@
 
 #include <SDL2/SDL.h>
 
-#include "ApplicationError.hpp"
+#include "application/ApplicationError.hpp"
 
 namespace dwarfs {
 

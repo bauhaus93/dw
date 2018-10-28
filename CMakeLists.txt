@@ -19,6 +19,8 @@ set(EXEC_NAME "dwarfs")
 set(LIB_NAME "dwfs")
 set(PYTHON_ENV_DIR ${CMAKE_BINARY_DIR}/python_env)
 
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/")
+
 if(NOT CMAKE_BUILD_TYPE)
   set(CMAKE_BUILD_TYPE Debug CACHE STRING "Choose build type" FORCE)
 endif()
@@ -49,6 +51,10 @@ target_link_libraries(${LIB_NAME} PRIVATE ${CMAKE_DL_LIBS})
 find_package(SDL2 REQUIRED)
 target_link_libraries(${LIB_NAME} PRIVATE SDL2::SDL2)
 target_include_directories(${LIB_NAME} SYSTEM PRIVATE ${SDL2_INCLUDE_DIR})
+
+find_package(SDL2_image REQUIRED)
+target_link_libraries(${LIB_NAME} PRIVATE ${SDL2_IMAGE_LIBRARIES})
+target_include_directories(${LIB_NAME} SYSTEM PRIVATE ${SDL2_IMAGE_INCLUDE_DIRS})
 
 add_custom_target(python-env
 	   	  COMMAND python3 -m venv ${PYTHON_ENV_DIR} &&

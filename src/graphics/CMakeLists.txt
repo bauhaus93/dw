@@ -1,0 +1,10 @@
+add_sources(
+    SpriteAtlas.hpp
+    SpriteAtlas.cpp
+    Sprite.hpp
+    Sprite.cpp
+    SDLError.hpp
+    SDLError.cpp
+    SDLImgError.hpp
+    SDLImgError.cpp
+)
