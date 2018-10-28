@@ -45,7 +45,7 @@ SpriteAtlas::SpriteAtlas(SDL_Renderer* renderer_, const std::string& file):
 
 SpriteAtlas::~SpriteAtlas() {
     if (texture != nullptr) {
-        INFO("Destroying sprite atlas");
+        INFO("Destroying sprite atlas texture");
         SDL_DestroyTexture(texture);
         texture = nullptr;
     }
@@ -65,10 +65,10 @@ SpriteAtlas& SpriteAtlas::operator=(SpriteAtlas&& other) {
     return *this;
 }
 
-Sprite SpriteAtlas::GetSprite(const SDL_Rect& rect) const {
-    assert(rect.x < w || rect.y < h);
-    assert(rect.x + rect.w < w && rect.y + rect.h < h);
-    return Sprite(id, rect);
+Sprite SpriteAtlas::GetSprite(int origX, int origY, int spriteW, int spriteH) const {
+    assert(origX < w || origY < h);
+    assert(origX + spriteW <= w && origY + spriteH <= h);
+    return Sprite(id, SDL_Rect { origX, origY, spriteW, spriteH });
 }
 
 void SpriteAtlas::DrawSprite(const Sprite& sprite, int32_t destX, int32_t destY) {

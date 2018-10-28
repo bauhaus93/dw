@@ -4,9 +4,11 @@
 
 namespace dwarfs {
 
-Application::Application(uint32_t winSizeX, uint32_t winSizeY):
+Application::Application(int winSizeX, int winSizeY):
     stop { false },
     window { nullptr },
+    winX { winSizeX },
+    winY { winSizeY },
     renderer { nullptr },
     world { nullptr } {
 
@@ -19,8 +21,8 @@ Application::Application(uint32_t winSizeX, uint32_t winSizeY):
         "Dwarfs",
         SDL_WINDOWPOS_UNDEFINED,
         SDL_WINDOWPOS_UNDEFINED,
-        winSizeX,
-        winSizeY,
+        winX,
+        winY,
         0
     );
     if (window == nullptr) {
@@ -72,7 +74,7 @@ void Application::Run() {
 
 void Application::Draw() {
     SDL_RenderClear(renderer);
-    world->Draw();
+    world->Draw(0, 0, winX, winY);
     SDL_RenderPresent(renderer);
 }
 

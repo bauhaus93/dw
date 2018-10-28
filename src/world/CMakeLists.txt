@@ -5,4 +5,8 @@ add_sources(
     Layer.cpp
     Block.hpp
     Block.cpp
+    BlockType.hpp
+    MaterialType.hpp
+    Direction.hpp
+    Size.hpp
 )

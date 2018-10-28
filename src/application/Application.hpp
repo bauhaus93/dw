@@ -16,7 +16,7 @@ namespace dwarfs {
 class Application {
   public:
 
-                    Application(uint32_t winSizeX, uint32_t winSizeY);
+                    Application(int winSizeX, int winSizeY);
                     ~Application();
 
     void            Run();
@@ -24,7 +24,10 @@ private:
 
     bool                    stop;
     SDL_Window*             window;
+    int                     winX;
+    int                     winY;
     SDL_Renderer*           renderer;
+
     std::unique_ptr<World>  world;
 
     void            Draw();

@@ -24,7 +24,7 @@ public:
     SpriteAtlas&    operator=(SpriteAtlas&& other);
 
     uint32_t        GetId() const { return id; }
-    Sprite          GetSprite(const SDL_Rect& rect) const;
+    Sprite          GetSprite(int origX, int origY, int spriteW, int SpriteH) const;
     void            DrawSprite(const Sprite& sprite, int32_t destX, int32_t destY);
 private:
     uint32_t        id;
