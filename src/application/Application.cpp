@@ -61,12 +61,19 @@ Application::~Application() {
 }
 
 void Application::Run() {
-
+    INFO("Starting main loop");
     while (!stop) {
         HandleEvents();
-        world->Draw();
+        Draw();
         SDL_Delay(100);
     }
+    INFO("Stopping main loop");
+}
+
+void Application::Draw() {
+    SDL_RenderClear(renderer);
+    world->Draw();
+    SDL_RenderPresent(renderer);
 }
 
 void Application::HandleEvents() {

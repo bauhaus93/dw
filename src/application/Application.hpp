@@ -27,7 +27,7 @@ private:
     SDL_Renderer*           renderer;
     std::unique_ptr<World>  world;
 
-
+    void            Draw();
     void            HandleEvents();
 };
 
