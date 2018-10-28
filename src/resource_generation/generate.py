@@ -5,10 +5,10 @@ import logging
 import time
 import argparse
 
-from image.atlas import create_atlas
+from atlas import create_atlas
 import utility
 
-parser = argparse.ArgumentParser()
+parser = argparse.ArgumentParser("Generates sprites, using different materials and models.")
 parser.add_argument("--resource-dir",
                     metavar = "DIRECTORY",
                     help = "Specify the root dir of the resources",

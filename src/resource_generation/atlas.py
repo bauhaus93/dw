@@ -19,23 +19,18 @@ def create_atlas(block_types, material_paths, model_dir, render_script_path, res
         if not os.path.isfile(model_path):
             logger.error("Model not existing: '" + model_path + "'")
             return False
-        sprites = generate_sprites(
+        sprites_list = generate_sprites(
             material_paths,
             model_path,
             render_script_path,
             block_type,
             "sprite_" + block_type + "_"
         )
-        for i in range(0, len(sprites), 4):
-            mat_index = int(i / 4)
-            if block_type == "cube":
-                items = 1
+        for (index, material_sprites) in enumerate(sprites_list):
+            if not index in sprite_map:
+                sprite_map[index] = material_sprites
             else:
-                items = 4
-            if not mat_index in sprite_map:
-                sprite_map[mat_index] = sprites[i:i + items]
-            else:
-                sprite_map[mat_index] += sprites[i:i + items]
+                sprite_map[index] += material_sprites
         logger.info("Generated '" + block_type + "' sprites")
     _create_atlas(sprite_map, result_path)
     return True

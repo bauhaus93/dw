@@ -17,7 +17,7 @@ set(CMAKE_CXX_STANDARD 17)
 set(THREADS_PREFER_PTHREAD_FLAG ON)
 set(EXEC_NAME "dwarfs")
 set(LIB_NAME "dwfs")
-set(PYTHON_ENV_DIR ${CMAKE_CURRENT_BINARY_DIR}/python_env)
+set(PYTHON_ENV_DIR ${CMAKE_BINARY_DIR}/python_env)
 
 if(NOT CMAKE_BUILD_TYPE)
   set(CMAKE_BUILD_TYPE Debug CACHE STRING "Choose build type" FORCE)
@@ -55,13 +55,13 @@ add_custom_target(python-env
 			  source ${PYTHON_ENV_DIR}/bin/activate &&
 			  pip install --upgrade pip &&
 			  pip install -r requirements.txt
-		  WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/src/resource_generation/)
+		  WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/src/resource_generation/)
 
 add_custom_target(resources
 		  COMMAND source ${PYTHON_ENV_DIR}/bin/activate &&
 			  src/resource_generation/generate.py
 			  	--resource-dir resources/
-			  	--result-dir ${CMAKE_CURRENT_BINARY_DIR}/
-		  WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/)
+			  	--result-dir ${CMAKE_BINARY_DIR}/
+		  WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/)
 
 add_dependencies(resources python-env)
