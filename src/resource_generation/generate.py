@@ -32,12 +32,14 @@ MODEL_DIR = os.path.join(RESOURCE_DIR, "models")
 ATLAS_PATH = os.path.join(RESULT_DIR, "atlas.png")
 RENDER_SCRIPT_PATH = os.path.abspath(os.path.join(os.path.dirname(sys.argv[0]), "render/render_object.py"))
 
+BLOCK_TYPES = ["cube", "slope"]
+MATERIAL_PATHS = utility.get_files_from_dir(MATERIAL_DIR, "png")
+
 logger.info("Resource dir: " + RESOURCE_DIR)
 logger.info("Result dir: " + RESULT_DIR)
+logger.info("Block types: " + str(len(BLOCK_TYPES)))
+logger.info("Materials: " + str(len(MATERIAL_PATHS)))
 
-block_types = ["cube", "slope"]
-material_paths = utility.get_files_from_dir(MATERIAL_DIR, "png")
-
-create_atlas(block_types, material_paths, MODEL_DIR, RENDER_SCRIPT_PATH, ATLAS_PATH)
+create_atlas(BLOCK_TYPES, MATERIAL_PATHS, MODEL_DIR, RENDER_SCRIPT_PATH, ATLAS_PATH)
 
 logger.info("Resource generation finished in " + "{:.2f}".format(time.perf_counter() - start_time) + "s")

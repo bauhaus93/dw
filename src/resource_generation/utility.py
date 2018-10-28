@@ -13,7 +13,7 @@ logger = logging.getLogger()
 def setup_logger():
     FORMAT = r"[%(asctime)-15s] %(levelname)s - %(message)s"
     DATE_FORMAT = r"%Y-%m-%d %H:%M:%S"
-    logging.basicConfig(level = logging.DEBUG, format = FORMAT, datefmt = DATE_FORMAT)
+    logging.basicConfig(level = logging.INFO, format = FORMAT, datefmt = DATE_FORMAT)
 
 def get_files_from_dir(directory, extension = None):
     paths = []
@@ -64,7 +64,6 @@ def generate_textures(image_paths, create_texture_function, output_dir, output_a
         create_texture_function(img_path, output_path)
         texture_paths.append(output_path)
         logger.debug("Created sprite '" + output_path + "'")
-    logger.debug("Created " + str(len(texture_paths)) + " textures")
     return texture_paths
 
 def generate_blender_sprites(model_path, texture_paths, camera_angles, script_path, output_dir):
