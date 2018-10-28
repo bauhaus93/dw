@@ -8,6 +8,7 @@
 #include <SDL2/SDL.h>
 
 #include "logger/GlobalLogger.hpp"
+#include "utility/Rect.hpp"
 #include "graphics/SDLError.hpp"
 #include "world/World.hpp"
 
@@ -24,8 +25,7 @@ private:
 
     bool                    stop;
     SDL_Window*             window;
-    int                     winX;
-    int                     winY;
+    RectI                   windowRect;
     SDL_Renderer*           renderer;
 
     std::unique_ptr<World>  world;

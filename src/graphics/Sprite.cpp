@@ -4,7 +4,7 @@
 
 namespace dwarfs {
 
-Sprite::Sprite(uint32_t atlasId_, const SDL_Rect& rect_):
+Sprite::Sprite(uint32_t atlasId_, const RectI& rect_):
     atlasId { atlasId_ },
     rect { rect_ } {
 }

@@ -6,6 +6,8 @@
 #include <array>
 #include <utility>
 
+#include "utility/Rect.hpp"
+#include "utility/Point2.hpp"
 #include "graphics/SpriteAtlas.hpp"
 #include "graphics/Sprite.hpp"
 #include "MaterialType.hpp"
@@ -21,8 +23,8 @@ class World {
 public:
                     World(SDL_Renderer* renderer);
 
-    void            Draw(int origX, int orgiY, int maxX, int maxY);
-    void            DrawLoadedSprites(int origX, int origY, int maxX, int maxY);
+    void            Draw(const RectI& rect);
+    void            DrawLoadedSprites(const RectI& rect);
 
 private:
     SpriteAtlas             atlas;

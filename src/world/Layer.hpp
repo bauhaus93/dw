@@ -5,6 +5,9 @@
 namespace dwarfs {
 
 class Layer {
+public:
+
+private:
 
 
 };

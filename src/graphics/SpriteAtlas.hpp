@@ -9,6 +9,8 @@
 #include <SDL2/SDL_image.h>
 
 #include "logger/GlobalLogger.hpp"
+#include "utility/Rect.hpp"
+#include "utility/Point2.hpp"
 #include "SDLError.hpp"
 #include "SDLImgError.hpp"
 #include "Sprite.hpp"
@@ -24,14 +26,13 @@ public:
     SpriteAtlas&    operator=(SpriteAtlas&& other);
 
     uint32_t        GetId() const { return id; }
-    Sprite          GetSprite(int origX, int origY, int spriteW, int SpriteH) const;
-    void            DrawSprite(const Sprite& sprite, int32_t destX, int32_t destY);
+    Sprite          GetSprite(const RectI& rect) const;
+    void            DrawSprite(const Sprite& sprite, const Point2i& dest);
 private:
     uint32_t        id;
     SDL_Renderer*   renderer;
     SDL_Texture*    texture;
-    int             w;
-    int             h;
+    RectI           size;
     uint32_t        format;
 
 

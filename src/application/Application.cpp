@@ -7,8 +7,7 @@ namespace dwarfs {
 Application::Application(int winSizeX, int winSizeY):
     stop { false },
     window { nullptr },
-    winX { winSizeX },
-    winY { winSizeY },
+    windowRect { 0, 0, winSizeX, winSizeY },
     renderer { nullptr },
     world { nullptr } {
 
@@ -21,8 +20,8 @@ Application::Application(int winSizeX, int winSizeY):
         "Dwarfs",
         SDL_WINDOWPOS_UNDEFINED,
         SDL_WINDOWPOS_UNDEFINED,
-        winX,
-        winY,
+        windowRect[2],
+        windowRect[3],
         0
     );
     if (window == nullptr) {
@@ -63,10 +62,9 @@ Application::~Application() {
 }
 
 void Application::Run() {
-
     INFO("Drawing loaded sprites");
     SDL_RenderClear(renderer);
-    world->DrawLoadedSprites(0, 0, 0 + winX, 0 + winY);
+    world->DrawLoadedSprites(windowRect);
     SDL_RenderPresent(renderer);
     SDL_Delay(2000);
 
@@ -81,7 +79,7 @@ void Application::Run() {
 
 void Application::Draw() {
     SDL_RenderClear(renderer);
-    world->Draw(0, 0, 0 + winX, 0 + winY);
+    world->Draw(windowRect);
     SDL_RenderPresent(renderer);
 }
 
