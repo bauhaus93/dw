@@ -26,7 +26,7 @@ void World::DrawLoadedSprites(const RectI& rect) {
                 }
             }
         }
-        currPos[0] = 0;
+        currPos[0] = rect[0];
         currPos[1] += atlas_format::SPRITE_HEIGHT;
     }
 }
@@ -34,23 +34,24 @@ void World::DrawLoadedSprites(const RectI& rect) {
 void World::LoadSprites() {
     INFO("Loading sprites");
     Point2i currPos(0);
+    const Point2i SPRITE_SIZE { atlas_format::SPRITE_WIDTH, atlas_format::SPRITE_HEIGHT };
     int c = 0;
     for (int i = 0; i < atlas_format::MATERIAL_COUNT; i++) {
         for (int j = 0; j < atlas_format::TYPE_COUNT; j++) {
             for (int k = 0; k < atlas_format::DIRECTION_COUNT; k++) {
-                RectI rect { currPos[0], currPos[1], atlas_format::SPRITE_WIDTH, atlas_format::SPRITE_HEIGHT };
+                RectI rect { currPos, SPRITE_SIZE };
                 Block block { atlas_format::MATERIALS[i], atlas_format::TYPES[j], atlas_format::DIRECTIONS[k] };
                 Sprite sprite = atlas.GetSprite(rect);
                 sprites.insert(std::make_pair<Block, Sprite>(std::move(block), std::move(sprite)));
                 c++;
-                currPos[0] += atlas_format::SPRITE_WIDTH;
+                currPos[0] += SPRITE_SIZE[0];
                 if (atlas_format::TYPES[j] == BlockType::CUBE) {
                     break;
                 }
             }
         }
         currPos[0] = 0;
-        currPos[1] += atlas_format::SPRITE_HEIGHT;
+        currPos[1] += SPRITE_SIZE[1];
     }
     INFO("Loaded ", c, " sprites");
 

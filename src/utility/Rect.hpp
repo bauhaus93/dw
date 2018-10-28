@@ -12,6 +12,7 @@ template<typename T>
 class Rect {
 public:
                             Rect(T originX, T originY, T sizeX, T sizeY);
+                            Rect(const Point2<T>& origin_, const Point2<T>& size_);
     const Point2<T>&        GetOrigin() const { return origin; }
     const Point2<T>&        GetSize() const { return size; }
     bool                    InBoundaryX(const Point2<T>& point) const;
@@ -37,7 +38,12 @@ template<typename T>
 Rect<T>::Rect(T originX, T originY, T sizeX, T sizeY):
     origin { Point2<T> { originX, originY } },
     size { Point2<T> { sizeX, sizeY } } {
+}
 
+template<typename T>
+Rect<T>::Rect(const Point2<T>& origin_, const Point2<T>& size_):
+    origin { origin_ },
+    size { size_ } {
 }
 
 template<typename T>
