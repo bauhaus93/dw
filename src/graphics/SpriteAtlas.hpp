@@ -4,6 +4,7 @@
 
 #include <string>
 #include <cassert>
+#include <map>
 
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
@@ -11,10 +12,9 @@
 #include "logger/GlobalLogger.hpp"
 #include "utility/Rect.hpp"
 #include "utility/Point2.hpp"
+#include "world/Block.hpp"
 #include "SDLError.hpp"
 #include "SDLImgError.hpp"
-#include "Sprite.hpp"
-
 
 namespace dwarfs {
 
@@ -25,15 +25,15 @@ public:
                     SpriteAtlas(SpriteAtlas&& other);
     SpriteAtlas&    operator=(SpriteAtlas&& other);
 
-    uint32_t        GetId() const { return id; }
-    Sprite          GetSprite(const RectI& rect) const;
-    void            DrawSprite(const Sprite& sprite, const Point2i& dest);
+    void            RegisterBlockSprite(const Block& blockPrototype, const RectI& spriteRect);
+    void            DrawSprite(const Block& block, const Point2i& dest);
+    void            DrawRegisteredSprites(const RectI& rect);
 private:
-    uint32_t        id;
-    SDL_Renderer*   renderer;
-    SDL_Texture*    texture;
-    RectI           size;
-    uint32_t        format;
+    SDL_Renderer*           renderer;
+    SDL_Texture*            texture;
+    RectI                   size;
+    uint32_t                format;
+    std::map<Block, RectI>  blocks;
 
 
 };

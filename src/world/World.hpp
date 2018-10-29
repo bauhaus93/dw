@@ -11,11 +11,10 @@
 #include "utility/Point2.hpp"
 #include "utility/Point3.hpp"
 #include "graphics/SpriteAtlas.hpp"
-#include "graphics/Sprite.hpp"
 #include "MaterialType.hpp"
 #include "BlockType.hpp"
 #include "Block.hpp"
-#include "AtlasFormat.hpp"
+#include "AtlasInit.hpp"
 #include "Direction.hpp"
 #include "Transformation.hpp"
 
@@ -30,12 +29,11 @@ public:
     void            SetCamera(const Point2i& newOrigin);
     void            SetCameraByScreenPos(const Point2i& screenPos);
     void            Draw(const RectI& rect);
-    void            DrawLoadedSprites(const RectI& rect);
+    void            DrawSpriteAtlas(const RectI& rect);
 
 private:
     Point2i                     cameraOrigin;
     SpriteAtlas                 atlas;
-    std::map<Block, Sprite>     sprites;
     std::map<Point3i, Block>    blocks;
 
     void            LoadSprites();

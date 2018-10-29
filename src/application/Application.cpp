@@ -66,7 +66,7 @@ void Application::Run() {
     INFO("Drawing loaded sprites");
     SDL_SetRenderDrawColor(renderer, 0x33, 0x33, 0x33, SDL_ALPHA_OPAQUE);
     SDL_RenderClear(renderer);
-    world->DrawLoadedSprites(windowRect);
+    world->DrawSpriteAtlas(windowRect);
     SDL_RenderPresent(renderer);
     SDL_Delay(1000);
 

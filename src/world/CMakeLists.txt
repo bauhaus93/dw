@@ -5,8 +5,10 @@ add_sources(
     Block.cpp
     Transformation.hpp
     Transformation.cpp
+    AtlasInit.hpp
+    AtlasInit.cpp
     BlockType.hpp
     MaterialType.hpp
     Direction.hpp
-    AtlasFormat.hpp
+    Size.hpp
 )

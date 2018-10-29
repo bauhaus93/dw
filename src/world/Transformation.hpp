@@ -5,7 +5,7 @@
 #include <cstdint>
 
 #include "utility/Point2.hpp"
-#include "AtlasFormat.hpp"
+#include "Size.hpp"
 
 namespace dwarfs {
 

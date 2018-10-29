@@ -4,7 +4,6 @@
 
 #include <cstdint>
 
-#include "graphics/Sprite.hpp"
 #include "BlockType.hpp"
 #include "MaterialType.hpp"
 #include "Direction.hpp"
