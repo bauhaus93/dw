@@ -11,6 +11,14 @@ Block::Block(MaterialType material_, BlockType type_, Direction direction_):
 
 }
 
+void Block::SetType(BlockType newType) {
+    type = newType;
+}
+
+void Block::SetDirection(Direction newDirection) {
+    direction = newDirection;
+}
+
 
 
 

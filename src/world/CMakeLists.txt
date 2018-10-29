@@ -1,10 +1,10 @@
 add_sources(
     World.hpp
     World.cpp
-    Layer.hpp
-    Layer.cpp
     Block.hpp
     Block.cpp
+    Transformation.hpp
+    Transformation.cpp
     BlockType.hpp
     MaterialType.hpp
     Direction.hpp

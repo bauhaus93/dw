@@ -17,20 +17,23 @@ constexpr int32_t   SPRITE_HEIGHT = 74;
 constexpr int MATERIAL_COUNT = 3;
 constexpr int TYPE_COUNT = 2;
 constexpr int DIRECTION_COUNT = 4;
+
 constexpr std::array<MaterialType, MATERIAL_COUNT> MATERIALS = {
     MaterialType::GRASS,
     MaterialType::MUD,
     MaterialType::ROCK
 };
+
 constexpr std::array<BlockType, TYPE_COUNT> TYPES = {
     BlockType::CUBE,
     BlockType::SLOPE
 };
-constexpr std::array<Direction, DIRECTION_COUNT> DIRECTIONS = { 
+
+constexpr std::array<Direction, DIRECTION_COUNT> DIRECTIONS = {
+    Direction::WEST,
     Direction::NORTH,
     Direction::EAST,
-    Direction::SOUTH,
-    Direction::WEST
+    Direction::SOUTH
 };
 
 }   // namespace dwarfs::atlas_format

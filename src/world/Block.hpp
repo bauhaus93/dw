@@ -19,6 +19,9 @@ public:
     MaterialType    GetMaterial() const { return material; }
     BlockType       GetType() const { return type; }
     Direction       GetDirection() const { return direction; }
+    void            SetType(BlockType newType);
+    void            SetDirection(Direction newDirection);
+    
     friend bool     operator<(const Block& rhs, const Block& lhs);
 private:
     MaterialType    material;

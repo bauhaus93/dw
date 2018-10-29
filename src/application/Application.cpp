@@ -66,7 +66,7 @@ void Application::Run() {
     SDL_RenderClear(renderer);
     world->DrawLoadedSprites(windowRect);
     SDL_RenderPresent(renderer);
-    SDL_Delay(2000);
+    SDL_Delay(1000);
 
     INFO("Starting main loop");
     while (!stop) {

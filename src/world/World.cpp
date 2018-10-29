@@ -5,12 +5,32 @@
 namespace dwarfs {
 
 World::World(SDL_Renderer* renderer):
+    viewCenter { 0, 0, 0 },
     atlas { renderer, "atlas.png" } {
     LoadSprites();
+
+    for (int y = -32; y < 32; y++) {
+        for (int x = -32; x < 32; x++) {
+            if (x == 0 && y == 0)
+                blocks.emplace(Point3i(x, y, 0), Block(MaterialType::MUD, BlockType::CUBE, Direction::NORTH));
+            else
+                blocks.emplace(Point3i(x, y, 0), Block(MaterialType::GRASS, BlockType::CUBE, Direction::NORTH));
+        }
+    }
+}
+
+void World::SetViewCenter(const Point3i& newCenter) {
+    viewCenter = newCenter;
 }
 
 void World::Draw(const RectI& rect) {
-    DrawLoadedSprites(rect);
+    Point2i center { viewCenter[0], viewCenter[1] };
+    for (auto iter = blocks.begin(); iter != blocks.end(); ++iter) {
+        Point2i screenPos = WorldToScreenPos(Point2i(iter->first[0], iter->first[1]), center);
+        if (rect.InBoundaries(screenPos)) {
+            atlas.DrawSprite(sprites.at(iter->second), screenPos);
+        }
+    }
 }
 
 void World::DrawLoadedSprites(const RectI& rect) {
@@ -41,6 +61,9 @@ void World::LoadSprites() {
             for (int k = 0; k < atlas_format::DIRECTION_COUNT; k++) {
                 RectI rect { currPos, SPRITE_SIZE };
                 Block block { atlas_format::MATERIALS[i], atlas_format::TYPES[j], atlas_format::DIRECTIONS[k] };
+                if (atlas_format::TYPES[j] == BlockType::CUBE) {
+                    block.SetDirection(Direction::NORTH);
+                }
                 Sprite sprite = atlas.GetSprite(rect);
                 sprites.insert(std::make_pair<Block, Sprite>(std::move(block), std::move(sprite)));
                 c++;
