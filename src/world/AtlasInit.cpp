@@ -10,8 +10,8 @@ constexpr int DIRECTION_COUNT = 4;
 
 constexpr std::array<MaterialType, MATERIAL_COUNT> MATERIALS = {
     MaterialType::GRASS,
-    MaterialType::MUD,
-    MaterialType::ROCK
+    MaterialType::ROCK,
+    MaterialType::MUD
 };
 
 constexpr std::array<BlockType, TYPE_COUNT> TYPES = {

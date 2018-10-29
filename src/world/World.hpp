@@ -6,6 +6,7 @@
 #include <array>
 #include <utility>
 #include <cmath>
+#include <random>
 
 #include "utility/Rect.hpp"
 #include "utility/Point2.hpp"
@@ -23,16 +24,17 @@ namespace dwarfs {
 
 class World {
 public:
-                    World(SDL_Renderer* renderer);
+                    World(uint32_t seed, SDL_Renderer* renderer);
 
     void            CenterCamera(const Point2i& worldPos, Point2i& windowCenter);
-    void            SetCamera(const Point2i& newOrigin);
+    void            SetCamera(const Point3i& newOrigin);
     void            SetCameraByScreenPos(const Point2i& screenPos);
     void            Draw(const RectI& rect);
     void            DrawSpriteAtlas(const RectI& rect);
 
 private:
-    Point2i                     cameraOrigin;
+    std::mt19937                rng;
+    Point3i                     cameraOrigin;
     SpriteAtlas                 atlas;
     std::map<Point3i, Block>    blocks;
 

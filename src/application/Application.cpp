@@ -40,7 +40,7 @@ Application::Application(int winSizeX, int winSizeY):
     }
     INFO("Created renderer");
 
-    world = std::make_unique<World>(renderer);
+    world = std::make_unique<World>(std::random_device {}(), renderer);
 }
 
 Application::~Application() {

@@ -4,7 +4,8 @@
 
 namespace dwarfs {
 
-World::World(SDL_Renderer* renderer):
+World::World(uint32_t seed, SDL_Renderer* renderer):
+    rng { seed },
     cameraOrigin(0.f),
     atlas { renderer, "atlas.png" } {
 
@@ -13,30 +14,32 @@ World::World(SDL_Renderer* renderer):
     constexpr int SIZE = 32;
     for (int y = -SIZE; y < SIZE; y++) {
         for (int x = -SIZE; x < SIZE; x++) {
-            if (x == 0 && y == 0)
-                blocks.emplace(Point3i(x, y, 0), Block(MaterialType::MUD, BlockType::CUBE, Direction::NORTH));
-            else
-                blocks.emplace(Point3i(x, y, 0), Block(MaterialType::GRASS, BlockType::CUBE, Direction::NORTH));
+            blocks.emplace(Point3i{ x, y, 0}, Block(MaterialType::GRASS, BlockType::CUBE, Direction::NORTH));
+            
+            if (rng() % 3 == 0) {
+                blocks.emplace(Point3i{ x, y, 1 }, Block(MaterialType::ROCK, BlockType::CUBE, Direction::NORTH));
+            }
         }
     }
 }
 
 void World::CenterCamera(const Point2i& worldPos, Point2i& windowCenter) {
-    SetCamera(ScreenToWorldPos(windowCenter * -1, worldPos));
+ //   SetCamera(ScreenToWorldPos(windowCenter * -1, worldPos));
 }
 
-void World::SetCamera(const Point2i& newOrigin) {
+void World::SetCamera(const Point3i& newOrigin) {
     cameraOrigin = newOrigin;
 }
 
 void World::SetCameraByScreenPos(const Point2i& centeredScreenPos) {
-    SetCamera(ScreenToWorldPos(centeredScreenPos, cameraOrigin));
+    Point2i p = ScreenToWorldPos(centeredScreenPos, Point2i { cameraOrigin[0], cameraOrigin[1] });
+    SetCamera(Point3i { p[0], p[1], cameraOrigin[2] });
 }
 
 void World::Draw(const RectI& rect) {
-    static const Point2i tolerance { TILE_WIDTH, TILE_HEIGHT };
+    static const Point2i tolerance { ATLAS_SPRITE_WIDTH, ATLAS_SPRITE_HEIGHT };
     for (auto iter = blocks.begin(); iter != blocks.end(); ++iter) {
-        Point2i screenPos = WorldToScreenPos(Point2i(iter->first[0], iter->first[1]), cameraOrigin);
+        Point2i screenPos = WorldToScreenPos(iter->first, cameraOrigin);
         if (rect.InBoundaries(screenPos, tolerance)) {
             atlas.DrawSprite(iter->second, screenPos);
         }
