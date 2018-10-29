@@ -26,12 +26,14 @@ class World {
 public:
                     World(SDL_Renderer* renderer);
 
-    void            SetViewCenter(const Point3i& newCenter);
+    void            CenterCamera(const Point2i& worldPos, Point2i& windowCenter);
+    void            SetCamera(const Point2i& newOrigin);
+    void            SetCameraByScreenPos(const Point2i& screenPos);
     void            Draw(const RectI& rect);
     void            DrawLoadedSprites(const RectI& rect);
 
 private:
-    Point3i                     viewCenter;
+    Point2i                     cameraOrigin;
     SpriteAtlas                 atlas;
     std::map<Block, Sprite>     sprites;
     std::map<Point3i, Block>    blocks;

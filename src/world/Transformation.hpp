@@ -9,8 +9,7 @@
 
 namespace dwarfs {
 
-Point2i WorldToScreenPos(const Point2i& worldPos, const Point2i& center);
-Point2i ScreenToWorldPos(const Point2i& screenPos, const Point2i& center);
-
+Point2i WorldToScreenPos(const Point2i& worldPos, const Point2i& origin);
+Point2i ScreenToWorldPos(const Point2i& screenPos, const Point2i& origin);
 
 }   // namespace dwarfs

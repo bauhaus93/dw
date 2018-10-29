@@ -26,12 +26,15 @@ private:
     bool                    stop;
     SDL_Window*             window;
     RectI                   windowRect;
+    Point2i                 windowCenter;
     SDL_Renderer*           renderer;
 
     std::unique_ptr<World>  world;
 
+    void            Update();
     void            Draw();
     void            HandleEvents();
+    void            HandleMouseButtonEvent(const SDL_MouseButtonEvent& event);
 };
 
 }   // namespace dwarfs

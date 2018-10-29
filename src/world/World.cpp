@@ -5,12 +5,13 @@
 namespace dwarfs {
 
 World::World(SDL_Renderer* renderer):
-    viewCenter { 0, 0, 0 },
+    cameraOrigin(0.f),
     atlas { renderer, "atlas.png" } {
     LoadSprites();
 
-    for (int y = -32; y < 32; y++) {
-        for (int x = -32; x < 32; x++) {
+    constexpr int SIZE = 32;
+    for (int y = -SIZE; y < SIZE; y++) {
+        for (int x = -SIZE; x < SIZE; x++) {
             if (x == 0 && y == 0)
                 blocks.emplace(Point3i(x, y, 0), Block(MaterialType::MUD, BlockType::CUBE, Direction::NORTH));
             else
@@ -19,15 +20,23 @@ World::World(SDL_Renderer* renderer):
     }
 }
 
-void World::SetViewCenter(const Point3i& newCenter) {
-    viewCenter = newCenter;
+void World::CenterCamera(const Point2i& worldPos, Point2i& windowCenter) {
+    SetCamera(ScreenToWorldPos(windowCenter * -1, worldPos));
+}
+
+void World::SetCamera(const Point2i& newOrigin) {
+    cameraOrigin = newOrigin;
+}
+
+void World::SetCameraByScreenPos(const Point2i& centeredScreenPos) {
+    SetCamera(ScreenToWorldPos(centeredScreenPos, cameraOrigin));
 }
 
 void World::Draw(const RectI& rect) {
-    Point2i center { viewCenter[0], viewCenter[1] };
+    static const Point2i tolerance { atlas_format::SPRITE_WIDTH, atlas_format::SPRITE_WIDTH / 2 };
     for (auto iter = blocks.begin(); iter != blocks.end(); ++iter) {
-        Point2i screenPos = WorldToScreenPos(Point2i(iter->first[0], iter->first[1]), center);
-        if (rect.InBoundaries(screenPos)) {
+        Point2i screenPos = WorldToScreenPos(Point2i(iter->first[0], iter->first[1]), cameraOrigin);
+        if (rect.InBoundaries(screenPos, tolerance)) {
             atlas.DrawSprite(sprites.at(iter->second), screenPos);
         }
     }
