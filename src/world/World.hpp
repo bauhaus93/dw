@@ -7,6 +7,7 @@
 #include <utility>
 #include <cmath>
 #include <random>
+#include <vector>
 
 #include "utility/Rect.hpp"
 #include "utility/Point2.hpp"
@@ -14,13 +15,14 @@
 #include "graphics/SpriteAtlas.hpp"
 #include "MaterialType.hpp"
 #include "BlockType.hpp"
+#include "Layer.hpp"
 #include "Block.hpp"
 #include "AtlasInit.hpp"
 #include "Direction.hpp"
 #include "Transformation.hpp"
+#include "SimplexNoise.hpp"
 
 namespace dwarfs {
-
 
 class World {
 public:
@@ -28,6 +30,8 @@ public:
 
     void            CenterCamera(const Point2i& worldPos, Point2i& windowCenter);
     void            SetCamera(const Point3i& newOrigin);
+    void            CameraUp();
+    void            CameraDown();
     void            SetCameraByScreenPos(const Point2i& screenPos);
     void            Draw(const RectI& rect);
     void            DrawSpriteAtlas(const RectI& rect);
@@ -35,8 +39,9 @@ public:
 private:
     std::mt19937                rng;
     Point3i                     cameraOrigin;
+    SimplexNoise                heightNoise;
     SpriteAtlas                 atlas;
-    std::map<Point3i, Block>    blocks;
+    std::map<int32_t, Layer>    layer;
 
     void            LoadSprites();
 

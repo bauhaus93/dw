@@ -118,6 +118,9 @@ void Application::HandleEvents() {
             case SDL_MOUSEBUTTONUP:
                             HandleMouseButtonEvent(event.button);
                             break;
+            case SDL_MOUSEWHEEL:
+                            HandleMouseWheelEvent(event.wheel);
+                            break;
 
             default:        break;
         }
@@ -132,6 +135,14 @@ void Application::HandleMouseButtonEvent(const SDL_MouseButtonEvent& event) {
             }
             break;
         default:    break;   
+    }
+}
+
+void Application::HandleMouseWheelEvent(const SDL_MouseWheelEvent& event) {
+    if (event.y > 0) {
+        world->CameraUp();
+    } else if (event.y < 0) {
+        world->CameraDown();
     }
 }
 

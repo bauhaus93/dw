@@ -35,6 +35,7 @@ private:
     void            Draw();
     void            HandleEvents();
     void            HandleMouseButtonEvent(const SDL_MouseButtonEvent& event);
+    void            HandleMouseWheelEvent(const SDL_MouseWheelEvent& event);
 };
 
 }   // namespace dwarfs
