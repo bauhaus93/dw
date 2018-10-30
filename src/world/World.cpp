@@ -17,8 +17,16 @@ World::World(uint32_t seed, SDL_Renderer* renderer):
 
     FillAtlas(atlas);
 
+    HeightMap hm = CreateHeightMap(heightNoise);
+
     for (int32_t level = 4; level > -10; level--) {
-        layer.emplace(level, Layer(level, heightNoise));
+        if (level >= 0){
+            layer.emplace(std::piecewise_construct,
+                          std::forward_as_tuple(level),
+                          std::forward_as_tuple(level, hm));
+        } else {
+            layer.emplace(level, level);
+        }
     }
 
 }
@@ -47,7 +55,7 @@ void World::CameraDown() {
 
 void World::Draw(const RectI& rect) {
     if (cameraOrigin[2] >= 0) {
-        for (int32_t h = cameraOrigin[2] - 2; h < cameraOrigin[2] + 2; h++) {
+        for (int32_t h = cameraOrigin[2] - 4; h < cameraOrigin[2] + 4; h++) {
             auto find = layer.find(h);
             if (find != layer.end()) {
                 find->second.Draw(atlas, cameraOrigin, rect);

@@ -21,6 +21,7 @@
 #include "Direction.hpp"
 #include "Transformation.hpp"
 #include "SimplexNoise.hpp"
+#include "HeightMap.hpp"
 
 namespace dwarfs {
 

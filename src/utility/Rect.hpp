@@ -15,11 +15,6 @@ public:
                             Rect(const Point2<T>& origin_, const Point2<T>& size_);
     const Point2<T>&        GetOrigin() const { return origin; }
     const Point2<T>&        GetSize() const { return size; }
-    bool                    InBoundaryX(const Point2<T>& point) const;
-    bool                    InBoundaryY(const Point2<T>& point) const;
-    bool                    InBoundaries(const Point2<T>& point) const;
-    bool                    InBoundaries(const Point2<T>& point, const Point2<T>& tolerance) const;
-    bool                    InBoundaries(const Rect<T>& other) const;
     T&                      operator[](uint8_t index);
     const T&                operator[](uint8_t index) const;
 
@@ -45,43 +40,6 @@ template<typename T>
 Rect<T>::Rect(const Point2<T>& origin_, const Point2<T>& size_):
     origin { origin_ },
     size { size_ } {
-}
-
-template<typename T>
-bool Rect<T>::InBoundaryX(const Point2<T>& point) const {
-    return point[0] >= origin[0] &&
-           point[0] <= origin[0] + size[0];
-}
-
-template<typename T>
-bool Rect<T>::InBoundaryY(const Point2<T>& point) const {
-    return point[1] >= origin[1] &&
-           point[1] <= origin[1] + size[1];
-}
-
-template<typename T>
-bool Rect<T>::InBoundaries(const Point2<T>& point) const {
-    return InBoundaryX(point) && InBoundaryY(point);
-}
-
-template<typename T>
-bool Rect<T>::InBoundaries(const Point2<T>& point, const Point2<T>& tolerance) const {
-    if (point[0] >= origin[0] &&
-        point[1] >= origin[1] &&
-        point[0] <= origin[0] + size[0] &&
-        point[1] <= origin[1] + size[1]) {
-        return true;
-    }
-    return point[0] + tolerance[0] >= origin[0] &&
-           point[1] + tolerance[1] >= origin[1] &&
-           point[0] - tolerance[0] <= origin[0] + size[0] &&
-           point[1] - tolerance[1] <= origin[1] + size[1];
-}
-
-template<typename T>
-bool Rect<T>::InBoundaries(const Rect<T>& other) const {
-    return InBoundaries(other.origin) &&
-           InBoundaries(other.origin + other.size);
 }
 
 template<typename T>

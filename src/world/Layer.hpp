@@ -16,7 +16,7 @@
 #include "MaterialType.hpp"
 #include "BlockType.hpp"
 #include "Direction.hpp"
-#include "SimplexNoise.hpp"
+#include "HeightMap.hpp"
 
 
 namespace dwarfs {
@@ -25,7 +25,8 @@ typedef std::array<std::array<std::unique_ptr<Block>, LAYER_SIZE_X>, LAYER_SIZE_
 
 class Layer {
 public:
-                Layer(int32_t level_, const SimplexNoise& heightNoise);
+    explicit    Layer(int32_t level_);
+                Layer(int32_t level_, const HeightMap& heightMap);
 
     void        Draw(SpriteAtlas& atlas, const Point3i& cameraOrigin, const RectI& rect);
 

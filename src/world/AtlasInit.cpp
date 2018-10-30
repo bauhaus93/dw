@@ -5,7 +5,7 @@
 namespace dwarfs {
 
 constexpr int MATERIAL_COUNT = 3;
-constexpr int TYPE_COUNT = 2;
+constexpr int TYPE_COUNT = 3;
 constexpr int DIRECTION_COUNT = 4;
 
 constexpr std::array<MaterialType, MATERIAL_COUNT> MATERIALS = {
@@ -16,6 +16,7 @@ constexpr std::array<MaterialType, MATERIAL_COUNT> MATERIALS = {
 
 constexpr std::array<BlockType, TYPE_COUNT> TYPES = {
     BlockType::CUBE,
+    BlockType::FLOOR,
     BlockType::SLOPE
 };
 
@@ -36,13 +37,15 @@ void FillAtlas(SpriteAtlas& atlas) {
             for (int k = 0; k < DIRECTION_COUNT; k++) {
                 RectI rect { currPos, SPRITE_SIZE };
                 Block block { MATERIALS[i], TYPES[j], DIRECTIONS[k] };
-                if (TYPES[j] == BlockType::CUBE) {
+                if (TYPES[j] == BlockType::CUBE ||
+                    TYPES[j] == BlockType::FLOOR) {
                     block.SetDirection(Direction::NORTH);
                 }
                 atlas.RegisterBlockSprite(block, rect);
                 c++;
                 currPos[0] += SPRITE_SIZE[0];
-                if (TYPES[j] == BlockType::CUBE) {
+                if (TYPES[j] == BlockType::CUBE ||
+                    TYPES[j] == BlockType::FLOOR) {
                     break;
                 }
             }

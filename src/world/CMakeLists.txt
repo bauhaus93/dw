@@ -5,6 +5,7 @@ add_sources(
     Transformation.hpp  Transformation.cpp
     AtlasInit.hpp       AtlasInit.cpp
     SimplexNoise.hpp    SimplexNoise.cpp
+    HeightMap.hpp       HeightMap.cpp
     BlockType.hpp
     MaterialType.hpp
     Direction.hpp
