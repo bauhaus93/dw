@@ -53,12 +53,6 @@ SpriteAtlas::~SpriteAtlas() {
     renderer = nullptr;
 }
 
-    uint32_t        id;
-    SDL_Renderer*   renderer;
-    SDL_Texture*    texture;
-    Point2i         size;
-    uint32_t        format;
-
 SpriteAtlas::SpriteAtlas(SpriteAtlas&& other):
     renderer { other.renderer },
     texture { other.texture },
