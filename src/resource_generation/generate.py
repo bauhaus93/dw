@@ -32,7 +32,7 @@ MODEL_DIR = os.path.join(RESOURCE_DIR, "models")
 ATLAS_PATH = os.path.join(RESULT_DIR, "atlas.png")
 RENDER_SCRIPT_PATH = os.path.abspath(os.path.join(os.path.dirname(sys.argv[0]), "render/render_object.py"))
 
-BLOCK_TYPES = ["cube", "slope"]
+BLOCK_TYPES = ["cube", "floor", "slope"]
 MATERIAL_PATHS = utility.get_files_from_dir(MATERIAL_DIR, "png")
 
 logger.info("Resource dir: " + RESOURCE_DIR)

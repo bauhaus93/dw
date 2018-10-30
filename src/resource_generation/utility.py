@@ -7,6 +7,7 @@ import time
 from process_image import process_image
 from texture_generation.cube_texture import create_cube_texture
 from texture_generation.slope_texture import create_slope_texture
+from texture_generation.floor_texture import create_floor_texture
 
 logger = logging.getLogger()
 
@@ -33,6 +34,9 @@ def generate_sprites(image_paths, model_path, script_path, texture_type, sprite_
         camera_angles = [0]
     elif texture_type == "slope":
         creation_function = create_slope_texture
+    elif texture_type == "floor":
+        creation_function = create_floor_texture
+        camera_angles = [0]
     else:
         logger.error("Generation of textures for type '" + texture_type + "' is not possible!")
         exit(1)

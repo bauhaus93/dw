@@ -16,8 +16,14 @@ def resize_to_width(img, target_width = 64):
     else:
         return cv.resize(img, (target_width, target_width))
 
-def contrast_image(img, contrast, brightness = 0):
-    return cv.addWeighted(img, 1. + contrast / 127., img, 0, brightness - contrast)
+def change_brightness(img, factor):
+    hsv = cv.cvtColor(img[:, :, :3], cv.COLOR_RGB2HSV)
+    h, s, v = cv.split(hsv.astype(np.float))
+    v = cv.multiply(v, factor)
+    hsv_merged = cv.merge((h, s, v))
+    rgb = cv.cvtColor(hsv_merged.astype(np.uint8), cv.COLOR_HSV2RGB)
+    r, g, b = cv.split(rgb)
+    return cv.merge((r, g, b, img[:, :, 3]))
 
 def process_image(src, dest):
     SHIFT_FACTOR_X = 0.083984375

@@ -4,6 +4,7 @@ import cv2 as cv
 import numpy as np
 
 from texture_generation import common
+from process_image import change_brightness
 
 def create_slope_texture(src, dest):
     BLACK = (0, 0, 0, 0xFF)
@@ -16,15 +17,16 @@ def create_slope_texture(src, dest):
     result = np.full((size, size, c), BLACK, np.uint8)
     
     square_img = np.copy(img)
-    cv.rectangle(square_img, (0, 0), (w, h), BLACK, common.LINE_WIDTH)
+    square_img = change_brightness(square_img, common.SIDE_BRIGHTNESS_FACTOR)
+    #cv.rectangle(square_img, (0, 0), (w, h), BLACK, common.LINE_WIDTH)
 
-    tria_img = np.copy(square_img)
-    cv.line(tria_img, (0, 0), (w, h), (0, 0, 0, 0xFF), common.LINE_WIDTH)
+    tria_img = np.copy(square_img)  #brightness already done
+    #cv.line(tria_img, (0, 0), (w, h), BLACK, common.LINE_WIDTH)
 
     slope_img = np.zeros((h, slope_len, c), np.uint8)
     slope_img[:h, :w] = img
     slope_img[:, w:] = img[:, :slope_img.shape[1] - w]
-    cv.rectangle(slope_img, (0, 0), (slope_img.shape[1], slope_img.shape[0]), BLACK, common.LINE_WIDTH)
+    #cv.rectangle(slope_img, (0, 0), (slope_img.shape[1], slope_img.shape[0]), BLACK, common.LINE_WIDTH)
 
     result[size - 2 * h:size - h, 0:w] = square_img
     result[size - 2 * h:size - h, w:w + w] = square_img
