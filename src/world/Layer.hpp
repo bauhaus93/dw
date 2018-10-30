@@ -28,7 +28,7 @@ public:
     explicit    Layer(int32_t level_);
                 Layer(int32_t level_, const HeightMap& heightMap);
 
-    void        Draw(SpriteAtlas& atlas, const Point3i& cameraOrigin, const RectI& rect);
+    void        Draw(SpriteAtlas<Block>& blockAtlas, const Point3i& cameraOrigin, const RectI& rect);
 
 private:
 

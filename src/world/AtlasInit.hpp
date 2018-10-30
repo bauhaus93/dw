@@ -12,10 +12,11 @@
 #include "BlockType.hpp"
 #include "Direction.hpp"
 #include "Size.hpp"
+#include "Block.hpp"
 
 namespace dwarfs {
 
-void FillAtlas(SpriteAtlas& atlas);
+void FillBlockAtlas(SpriteAtlas<Block>& atlas);
 
 
 }   // namespace dwarfs

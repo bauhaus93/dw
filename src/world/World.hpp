@@ -41,7 +41,7 @@ private:
     std::mt19937                rng;
     Point3i                     cameraOrigin;
     SimplexNoise                heightNoise;
-    SpriteAtlas                 atlas;
+    SpriteAtlas<Block>          blockAtlas;
     std::map<int32_t, Layer>    layer;
 
     void            LoadSprites();

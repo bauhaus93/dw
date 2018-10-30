@@ -35,16 +35,14 @@ Layer::Layer(int32_t level_, const HeightMap& heightMap):
     }
 }
 
-
-
-void Layer::Draw(SpriteAtlas& atlas, const Point3i& cameraOrigin, const RectI& rect) {
+void Layer::Draw(SpriteAtlas<Block>& blockAtlas, const Point3i& cameraOrigin, const RectI& rect) {
     RectI worldBoundaries { 0, 0, LAYER_SIZE_X, LAYER_SIZE_Y };
     for (int32_t y = 0; y < LAYER_SIZE_Y; y++) {
         for (int32_t x = 0; x < LAYER_SIZE_X; x++) {
             if (block[y][x] != nullptr) {
                 Point2i screenPos = WorldToScreenPos(Point3i { x, y, level }, cameraOrigin);
                 if (screenPos.InBoundaries(Point2i(-ATLAS_SPRITE_WIDTH, -ATLAS_SPRITE_HEIGHT), rect.GetSize())) {
-                    atlas.DrawSprite(*block[y][x], rect.GetOrigin() + screenPos);
+                    blockAtlas.DrawSprite(*block[y][x], rect.GetOrigin() + screenPos);
                 }
             }
         }

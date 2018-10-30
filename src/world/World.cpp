@@ -8,14 +8,14 @@ World::World(uint32_t seed, SDL_Renderer* renderer):
     rng { seed },
     cameraOrigin(0.f),
     heightNoise { static_cast<uint32_t>(rng()) },
-    atlas { renderer, "atlas.png" } {
+    blockAtlas { renderer, "atlas.png" } {
 
     heightNoise.SetMin(0);
     heightNoise.SetMax(4);
     heightNoise.SetRoughness(5.0);
     heightNoise.SetScale(0.001);
 
-    FillAtlas(atlas);
+    FillBlockAtlas(blockAtlas);
 
     HeightMap hm = CreateHeightMap(heightNoise);
 
@@ -28,7 +28,6 @@ World::World(uint32_t seed, SDL_Renderer* renderer):
             layer.emplace(level, level);
         }
     }
-
 }
 
 void World::CenterCamera(const Point2i& worldPos, Point2i& windowCenter) {
@@ -58,7 +57,7 @@ void World::Draw(const RectI& rect) {
         for (int32_t h = cameraOrigin[2] - 4; h < cameraOrigin[2] + 4; h++) {
             auto find = layer.find(h);
             if (find != layer.end()) {
-                find->second.Draw(atlas, cameraOrigin, rect);
+                find->second.Draw(blockAtlas, cameraOrigin, rect);
             } else {
                 break;
             }
@@ -66,13 +65,13 @@ void World::Draw(const RectI& rect) {
     } else {
         auto find = layer.find(cameraOrigin[2]);
         if (find != layer.end()) {
-            find->second.Draw(atlas, cameraOrigin, rect);
+            find->second.Draw(blockAtlas, cameraOrigin, rect);
         }
     }
 }
 
 void World::DrawSpriteAtlas(const RectI& rect) {
-    atlas.DrawRegisteredSprites(rect);
+    blockAtlas.DrawRegisteredSprites(rect);
 }
 
 }   // namespace dwarfs
