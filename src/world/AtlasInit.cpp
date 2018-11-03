@@ -27,11 +27,11 @@ constexpr std::array<Direction, DIRECTION_COUNT> DIRECTIONS = {
     Direction::SOUTH
 };
 
-void FillBlockAtlas(SpriteAtlas<Block>& atlas) {
+std::map<Block, uint32_t> FillBlockAtlas(SpriteAtlas& atlas) {
     INFO("Filling block sprite atlas");
+    std::map<Block, uint32_t> protoBlock;
     Point2i currPos(0);
     const Point2i SPRITE_SIZE { ATLAS_SPRITE_WIDTH, ATLAS_SPRITE_HEIGHT };
-    int c = 0;
     for (int i = 0; i < MATERIAL_COUNT; i++) {
         for (int j = 0; j < TYPE_COUNT; j++) {
             for (int k = 0; k < DIRECTION_COUNT; k++) {
@@ -41,8 +41,8 @@ void FillBlockAtlas(SpriteAtlas<Block>& atlas) {
                     TYPES[j] == BlockType::FLOOR) {
                     block.SetDirection(Direction::NORTH);
                 }
-                atlas.RegisterSprite(block, rect);
-                c++;
+                uint32_t id = atlas.RegisterSprite(rect);
+                protoBlock.emplace(block, id);
                 currPos[0] += SPRITE_SIZE[0];
                 if (TYPES[j] == BlockType::CUBE ||
                     TYPES[j] == BlockType::FLOOR) {
@@ -53,7 +53,8 @@ void FillBlockAtlas(SpriteAtlas<Block>& atlas) {
         currPos[0] = 0;
         currPos[1] += SPRITE_SIZE[1];
     }
-    INFO("Registered ", c, " blocks in atlas");
+    INFO("Registered ", protoBlock.size(), " blocks in atlas");
+    return protoBlock;
 }
 
 }   // namespace dwarfs

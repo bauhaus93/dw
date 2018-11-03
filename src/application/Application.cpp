@@ -83,7 +83,7 @@ void Application::Run() {
         ticks++;
         uint32_t diff = SDL_GetTicks() - lastPrint;
         if (diff >= 1000) {
-            DEBUG("Avg update time: ", updateTime / ticks, "ms");
+            INFO("Avg update time: ", updateTime / ticks, "ms");
             updateTime = 0;
             ticks = 0;
             lastPrint = SDL_GetTicks();

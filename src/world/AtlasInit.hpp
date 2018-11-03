@@ -16,7 +16,7 @@
 
 namespace dwarfs {
 
-void FillBlockAtlas(SpriteAtlas<Block>& atlas);
+std::map<Block, uint32_t> FillBlockAtlas(SpriteAtlas& atlas);
 
 
 }   // namespace dwarfs

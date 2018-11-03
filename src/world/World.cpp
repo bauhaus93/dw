@@ -8,7 +8,8 @@ World::World(uint32_t seed, SDL_Renderer* renderer):
     rng { seed },
     cameraOrigin(0.f),
     heightNoise { static_cast<uint32_t>(rng()) },
-    blockAtlas { renderer, "atlas.png" } {
+    blockAtlas { renderer, "atlas.png" },
+    protoBlock { FillBlockAtlas(blockAtlas) } {
 
     heightNoise.SetMin(0);
     heightNoise.SetMax(4);
@@ -23,9 +24,11 @@ World::World(uint32_t seed, SDL_Renderer* renderer):
         if (level >= 0){
             layer.emplace(std::piecewise_construct,
                           std::forward_as_tuple(level),
-                          std::forward_as_tuple(level, hm));
+                          std::forward_as_tuple(level, blockAtlas, protoBlock, hm));
         } else {
-            layer.emplace(level, level);
+            layer.emplace(std::piecewise_construct,
+                          std::forward_as_tuple(level),
+                          std::forward_as_tuple(level, blockAtlas, protoBlock));
         }
     }
 }
@@ -57,7 +60,7 @@ void World::Draw(const RectI& rect) {
         for (int32_t h = cameraOrigin[2] - 4; h < cameraOrigin[2] + 4; h++) {
             auto find = layer.find(h);
             if (find != layer.end()) {
-                find->second.Draw(blockAtlas, cameraOrigin, rect);
+                find->second.Draw(cameraOrigin, rect);
             } else {
                 break;
             }
@@ -65,7 +68,7 @@ void World::Draw(const RectI& rect) {
     } else {
         auto find = layer.find(cameraOrigin[2]);
         if (find != layer.end()) {
-            find->second.Draw(blockAtlas, cameraOrigin, rect);
+            find->second.Draw(cameraOrigin, rect);
         }
     }
 }

@@ -25,15 +25,17 @@ typedef std::array<std::array<std::unique_ptr<Block>, LAYER_SIZE_X>, LAYER_SIZE_
 
 class Layer {
 public:
-    explicit    Layer(int32_t level_);
-                Layer(int32_t level_, const HeightMap& heightMap);
+                Layer(int32_t level_, const SpriteAtlas& blockAtlas, const std::map<Block, uint32_t>& protoBlock);
+                Layer(int32_t level_, const SpriteAtlas& blockAtlas_, const std::map<Block, uint32_t>& protoBlock_, const HeightMap& heightMap);
 
-    void        Draw(SpriteAtlas<Block>& blockAtlas, const Point3i& cameraOrigin, const RectI& rect);
+    void        Draw(const Point3i& cameraOrigin, const RectI& rect);
 
 private:
 
-    int32_t     level;
-    BlockGrid   block;
+    int32_t                             level;
+    const SpriteAtlas&                  blockAtlas;
+    const std::map<Block, uint32_t>&    protoBlock;
+    BlockGrid                           block;
 
 };
 
