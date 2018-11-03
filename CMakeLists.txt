@@ -56,6 +56,10 @@ find_package(SDL2_image REQUIRED)
 target_link_libraries(${LIB_NAME} PRIVATE ${SDL2_IMAGE_LIBRARIES})
 target_include_directories(${LIB_NAME} SYSTEM PRIVATE ${SDL2_IMAGE_INCLUDE_DIRS})
 
+find_package(PugiXML REQUIRED)
+target_link_libraries(${LIB_NAME} PRIVATE ${PUGIXML_LIBRARIES})
+target_include_directories(${LIB_NAME} SYSTEM PRIVATE ${PUGIXML_INCLUDE_DIRS})
+
 add_custom_target(python-env
 	   	  COMMAND python3 -m venv ${PYTHON_ENV_DIR} &&
 			  source ${PYTHON_ENV_DIR}/bin/activate &&
@@ -66,8 +70,9 @@ add_custom_target(python-env
 add_custom_target(resources
 		  COMMAND source ${PYTHON_ENV_DIR}/bin/activate &&
 			  src/resource_generation/generate.py
-			  	--resource-dir resources/
-			  	--result-dir ${CMAKE_BINARY_DIR}/
+			  	--xml-file resources/atlas.xml
+				--result-dir ${CMAKE_BINARY_DIR}/
+				--render-script src/resource_generation/render/render_object.py
 		  WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/)
 
 add_dependencies(resources python-env)

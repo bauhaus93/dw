@@ -33,7 +33,10 @@ class BlenderObject:
     def render_with_all_textures(self, output_path, index):
         for tex in bpy.data.textures:
             self.set_material_texture(tex)
-            output_name = os.path.join(output_path, tex.name + str(index))
+            name = tex.name
+            if name.endswith("_texture"):
+                name = name[:-8]
+            output_name = os.path.join(output_path, name + str(index))
             bpy.data.scenes['Scene'].render.filepath = output_name
             bpy.ops.render.render(write_still=True)
         self.set_material_texture(None)
