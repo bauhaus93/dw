@@ -4,7 +4,7 @@ import cv2 as cv
 import numpy as np
 
 from texture_generation import common
-from process_image import change_brightness
+from image import change_brightness
 
 def create_floor_texture(src, dest):
     BLACK = (0, 0, 0, 0xFF)
@@ -14,9 +14,6 @@ def create_floor_texture(src, dest):
     result = np.full((h * 4, w * 4, c), BLACK, np.uint8)
 
     img_dark = change_brightness(img, common.SIDE_BRIGHTNESS_FACTOR)
-
-    #imgBordered = np.copy(img)
-    #cv.rectangle(imgBordered, (0, 0), (w, h), BLACK, common.LINE_WIDTH)
 
     offsets = [(0, 2 * h),
             (w, 2 * h),

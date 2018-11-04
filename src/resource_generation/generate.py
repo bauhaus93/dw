@@ -6,8 +6,8 @@ import time
 import argparse
 import xml.etree.ElementTree as et
 
-
 from atlas import create_atlas
+from build_error import BuildError
 import utility
 
 start_time = time.perf_counter()
@@ -36,15 +36,20 @@ logger.info("Started resource generation")
 XML_PATH = os.path.abspath(args.xml_file)
 RESOURCE_DIR = os.path.dirname(XML_PATH)
 RENDER_SCRIPT_PATH = os.path.abspath(args.render_script)
+RESULT_DIR = os.path.abspath(args.result_dir)
 
 logger.info("Resource dir: " + RESOURCE_DIR + "'")
+logger.info("Result dir: '" + RESULT_DIR + "'")
 logger.info("Render script: '" + RENDER_SCRIPT_PATH + "'")
 
-
-logger.info("Parsing from file '" + XML_PATH + "'")
+logger.info("XML file: '" + XML_PATH + "'")
 tree = et.parse(XML_PATH)
 root = tree.getroot()
 for child in root:
-    create_atlas(child, RESOURCE_DIR, RENDER_SCRIPT_PATH)
+    try:
+        create_atlas(child, RESOURCE_DIR, RESULT_DIR, RENDER_SCRIPT_PATH)
+    except Exception as ex:
+        logger.error(ex.__class__.__name__ + ": " + str(ex))
+        exit(1)
 
 logger.info("Resource generation finished in " + "{:.2f}".format(time.perf_counter() - start_time) + "s")

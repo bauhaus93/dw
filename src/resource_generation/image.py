@@ -25,7 +25,8 @@ def change_brightness(img, factor):
     r, g, b = cv.split(rgb)
     return cv.merge((r, g, b, img[:, :, 3]))
 
-def process_image(src, dest):
+def process_image(src, target_width, dest):
+    #shift factor only changes, if we change the blender camera/object distance/angle
     SHIFT_FACTOR_X = 0.083984375
     SHIFT_FACTOR_Y = 0.01953125
 
@@ -35,6 +36,6 @@ def process_image(src, dest):
     shift_y = round(-h * SHIFT_FACTOR_Y)
 
     img = translate_image(img, shift_x, shift_y)
-    img = resize_to_width(img, 64)
+    img = resize_to_width(img, target_width)
 
     cv.imwrite(dest, img)
