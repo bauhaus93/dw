@@ -2,6 +2,9 @@
 
 #pragma once
 
+#include <cassert>
+#include <string>
+
 namespace dwarfs {
 
 enum class BlockType {
@@ -9,5 +12,8 @@ enum class BlockType {
     SLOPE,
     FLOOR
 };
+
+const char* GetString(BlockType bt);
+BlockType GetBlockType(const std::string& str);
 
 }   // namespace dwarfs

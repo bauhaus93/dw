@@ -38,6 +38,8 @@ elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")
         target_compile_options(${LIB_NAME} PRIVATE /W4 /MP)
 endif()
 
+
+
 add_subdirectory(src)
 
 get_property(SRCS TARGET ${LIB_NAME} PROPERTY SRC_LIST)
@@ -76,3 +78,5 @@ add_custom_target(resources
 		  WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/)
 
 add_dependencies(resources python-env)
+
+configure_file(resources/atlas.xml ${CMAKE_BINARY_DIR}/atlas.xml COPYONLY)

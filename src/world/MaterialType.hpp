@@ -3,6 +3,7 @@
 #pragma once
 
 #include <cassert>
+#include <string>
 
 namespace dwarfs {
 
@@ -11,5 +12,8 @@ enum class MaterialType {
     ROCK,
     MUD
 };
+
+const char* GetString(MaterialType mt);
+MaterialType GetMaterial(const std::string& str);
 
 }   // namespace dwarfs

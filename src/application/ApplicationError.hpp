@@ -12,8 +12,10 @@ class ApplicationError: public std::runtime_error {
  public:
 
     ApplicationError(const std::string& name,
-                        const std::string& where,
-                        const std::string& description);
+                     const std::string& where,
+                     const std::string& description);
+    ApplicationError(const std::string& where,
+                     const std::string& description);
 
 
 

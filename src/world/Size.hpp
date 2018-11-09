@@ -4,8 +4,6 @@
 
 #include <cstdint>
 
-#include "AtlasInit.hpp"
-
 namespace dwarfs {
 
 constexpr int32_t ATLAS_SPRITE_WIDTH = 64;

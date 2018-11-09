@@ -13,11 +13,11 @@
 #include "utility/Point2.hpp"
 #include "utility/Point3.hpp"
 #include "graphics/SpriteAtlas.hpp"
+#include "atlas_init/BlockAtlas.hpp"
 #include "MaterialType.hpp"
 #include "BlockType.hpp"
 #include "Layer.hpp"
 #include "Block.hpp"
-#include "AtlasInit.hpp"
 #include "Direction.hpp"
 #include "Transformation.hpp"
 #include "SimplexNoise.hpp"
@@ -42,7 +42,7 @@ private:
     Point3i                     cameraOrigin;
     SimplexNoise                heightNoise;
     SpriteAtlas                 blockAtlas;
-    std::map<Block, uint32_t>   protoBlock;
+    std::map<Block, uint32_t>   blockSpriteIds;
     std::map<int32_t, Layer>    layer;
 
     void            LoadSprites();

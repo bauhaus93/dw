@@ -19,11 +19,14 @@ namespace dwarfs {
 
 class SpriteAtlas {
 public:
-                    SpriteAtlas(SDL_Renderer* renderer_, const std::string& file);
+                    SpriteAtlas(SDL_Renderer* renderer_);
+                    SpriteAtlas(SDL_Renderer* renderer_, const std::string& imgPath);
+
                     ~SpriteAtlas();
                     SpriteAtlas(SpriteAtlas&& other);
     SpriteAtlas&    operator=(SpriteAtlas&& other);
 
+    void            LoadImage(const std::string& imgPath);
     uint32_t        RegisterSprite(const RectI& spriteRect);
     void            DrawSprite(uint32_t id, const Point2i& dest) const;
     void            DrawRegisteredSprites(const RectI& rect) const;

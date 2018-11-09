@@ -16,9 +16,9 @@ int main(int argc, char** argv) {
         app.Run();
     } catch (const dwarfs::ApplicationError& e) {
         ERROR(e.what());
-    } catch (const std::exception& e) {
+    }/* catch (const std::exception& e) {
         ERROR("Unhandled exception: ", e.what());
-    }
+    }*/
 
     dwarfs::DestroyGlobalLogger();
 

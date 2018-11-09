@@ -3,11 +3,10 @@ add_sources(
     Layer.hpp           Layer.cpp
     Block.hpp           Block.cpp
     Transformation.hpp  Transformation.cpp
-    AtlasInit.hpp       AtlasInit.cpp
     SimplexNoise.hpp    SimplexNoise.cpp
     HeightMap.hpp       HeightMap.cpp
-    BlockType.hpp
-    MaterialType.hpp
-    Direction.hpp
+    BlockType.hpp       BlockType.cpp
+    MaterialType.hpp    MaterialType.cpp
+    Direction.hpp       Direction.cpp
     Size.hpp
 )

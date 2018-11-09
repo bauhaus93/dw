@@ -6,38 +6,42 @@ namespace dwarfs {
 
 const Point2i DRAW_TOLERANCE { ATLAS_SPRITE_WIDTH, ATLAS_SPRITE_HEIGHT };
 
-Layer::Layer(int32_t level_, const SpriteAtlas& blockAtlas_, const std::map<Block, uint32_t>& protoBlock_):
+Layer::Layer(int32_t level_, const SpriteAtlas& blockAtlas_, const std::map<Block, uint32_t>& blockSprites_):
     level { level_ },
     blockAtlas { blockAtlas_ },
-    protoBlock { protoBlock_ } {
+    blockSprites { blockSprites_ } {
 
     for (int32_t y = 0; y < LAYER_SIZE_Y; y++) {
         for (int32_t x = 0; x < LAYER_SIZE_X; x++) {
             if (level < -5) {
                 block[y][x] = std::make_unique<Block>(MaterialType::ROCK, BlockType::CUBE, Direction::NORTH);
-                block[y][x]->SetSpriteId(protoBlock.at(*block[y][x]));
+                assert(blockSprites.find(*block[y][x]) != blockSprites.end());
+                block[y][x]->SetSpriteId(blockSprites.at(*block[y][x]));
             } else {
                 block[y][x] = std::make_unique<Block>(MaterialType::MUD, BlockType::CUBE, Direction::NORTH);
-                block[y][x]->SetSpriteId(protoBlock.at(*block[y][x]));
+                assert(blockSprites.find(*block[y][x]) != blockSprites.end());
+                block[y][x]->SetSpriteId(blockSprites.at(*block[y][x]));
             }
         }
     }
+
 }
 
-Layer::Layer(int32_t level_, const SpriteAtlas& blockAtlas_, const std::map<Block, uint32_t>& protoBlock_, const HeightMap& heightMap):
+Layer::Layer(int32_t level_, const SpriteAtlas& blockAtlas_, const std::map<Block, uint32_t>& blockSprites_, const HeightMap& heightMap):
     level { level_ },
     blockAtlas { blockAtlas_ },
-    protoBlock { protoBlock_ } {
-
+    blockSprites { blockSprites_ } {
     for (int32_t y = 0; y < LAYER_SIZE_Y; y++) {
         for (int32_t x = 0; x < LAYER_SIZE_X; x++) {
             int32_t height = heightMap[y][x];
             if (level == height) {
-                block[y][x] = std::make_unique<Block>(MaterialType::GRASS, BlockType::CUBE, Direction::NORTH);
-                block[y][x]->SetSpriteId(protoBlock.at(*block[y][x]));
+                block[y][x] = std::make_unique<Block>(MaterialType::GRASS, BlockType::FLOOR, Direction::NORTH);
+                assert(blockSprites.find(*block[y][x]) != blockSprites.end());
+                block[y][x]->SetSpriteId(blockSprites.at(*block[y][x]));
             } else if (level < height) {
                 block[y][x] = std::make_unique<Block>(MaterialType::MUD, BlockType::CUBE, Direction::NORTH);
-                block[y][x]->SetSpriteId(protoBlock.at(*block[y][x]));
+                assert(blockSprites.find(*block[y][x]) != blockSprites.end());
+                block[y][x]->SetSpriteId(blockSprites.at(*block[y][x]));
             }
         }
     }
@@ -56,6 +60,5 @@ void Layer::Draw(const Point3i& cameraOrigin, const RectI& rect) {
         }
     }
 }
-
 
 }   // namespace dwarfs

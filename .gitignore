@@ -4,5 +4,6 @@ release/
 resources/
 __pycache__/
 env/
+mul.py
 *.log
 *.gch

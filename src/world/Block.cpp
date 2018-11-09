@@ -28,7 +28,4 @@ void Block::SetSpriteId(uint32_t newId) {
     spriteId = newId;
 }
 
-
-
-
 }   // namespace dwarfs

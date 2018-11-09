@@ -8,15 +8,13 @@ World::World(uint32_t seed, SDL_Renderer* renderer):
     rng { seed },
     cameraOrigin(0.f),
     heightNoise { static_cast<uint32_t>(rng()) },
-    blockAtlas { renderer, "atlas.png" },
-    protoBlock { FillBlockAtlas(blockAtlas) } {
+    blockAtlas { renderer },
+    blockSpriteIds { FillBlockAtlas("atlas.xml", blockAtlas) } {
 
     heightNoise.SetMin(0);
     heightNoise.SetMax(4);
     heightNoise.SetRoughness(5.0);
     heightNoise.SetScale(0.001);
-
-    FillBlockAtlas(blockAtlas);
 
     HeightMap hm = CreateHeightMap(heightNoise);
 
@@ -24,13 +22,14 @@ World::World(uint32_t seed, SDL_Renderer* renderer):
         if (level >= 0){
             layer.emplace(std::piecewise_construct,
                           std::forward_as_tuple(level),
-                          std::forward_as_tuple(level, blockAtlas, protoBlock, hm));
+                          std::forward_as_tuple(level, blockAtlas, blockSpriteIds, hm));
         } else {
             layer.emplace(std::piecewise_construct,
                           std::forward_as_tuple(level),
-                          std::forward_as_tuple(level, blockAtlas, protoBlock));
+                          std::forward_as_tuple(level, blockAtlas, blockSpriteIds));
         }
     }
+
 }
 
 void World::CenterCamera(const Point2i& worldPos, Point2i& windowCenter) {

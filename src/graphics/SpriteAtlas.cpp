@@ -4,45 +4,23 @@
 
 namespace dwarfs {
 
-SpriteAtlas::SpriteAtlas(SDL_Renderer* renderer_, const std::string& file):
+SpriteAtlas::SpriteAtlas(SDL_Renderer* renderer_):
     renderer { renderer_ },
     texture { nullptr },
     size { 0, 0, 0, 0 },
     format { 0 },
     nextId { 0 } {
-    INFO("Creating sprite atlas: '", file, "'");
     assert(renderer != nullptr);
+}
 
-    SDL_Surface* surf = IMG_Load(file.c_str());
-    if (surf == nullptr) {
-        throw SDLImgError("IMG_Load");
-    }
-
-    texture = SDL_CreateTextureFromSurface(renderer, surf);
-    if (texture == nullptr) {
-        SDL_FreeSurface(surf);
-        throw SDLError("SDL_CreateTextureFromSurface");
-    }
-    SDL_FreeSurface(surf);
-
-    int w = 0, h = 0;
-    if (SDL_QueryTexture(texture, &format, nullptr, &w, &h) < 0) {
-        throw SDLError("SDL_QueryTexture");
-    }
-    size[2] = w;
-    size[3] = h;
-
-    INFO("Size: ", size);
-
-    switch(format) {
-        case SDL_PIXELFORMAT_RGBA8888:  INFO("Format: RGBA8888");  break;
-        case SDL_PIXELFORMAT_ARGB8888:  INFO("Format: ARGB8888");  break;
-        case SDL_PIXELFORMAT_RGB888:    INFO("Format: RGB888");    break;
-        case SDL_PIXELFORMAT_BGR888:    INFO("Format: GBR888");    break;
-        case SDL_PIXELFORMAT_RGBA32:    INFO("Format: RGBA32");    break;
-        case SDL_PIXELFORMAT_ARGB32:    INFO("Format: ARGB32");    break;
-        default:                        INFO("Format: Unhandled"); break;
-    }
+SpriteAtlas::SpriteAtlas(SDL_Renderer* renderer_, const std::string& imgPath):
+    renderer { renderer_ },
+    texture { nullptr },
+    size { 0, 0, 0, 0 },
+    format { 0 },
+    nextId { 0 } {
+    assert(renderer != nullptr);
+    LoadImage(imgPath);
 }
 
 SpriteAtlas::~SpriteAtlas() {
@@ -78,12 +56,49 @@ SpriteAtlas& SpriteAtlas::operator=(SpriteAtlas&& other) {
     return *this;
 }
 
+void SpriteAtlas::LoadImage(const std::string& imgPath) {
+    assert(renderer != nullptr);
+    INFO("Loading sprite atlas img: '", imgPath, "'");
+
+    SDL_Surface* surf = IMG_Load(imgPath.c_str());
+    if (surf == nullptr) {
+        throw SDLImgError("IMG_Load");
+    }
+
+    texture = SDL_CreateTextureFromSurface(renderer, surf);
+    if (texture == nullptr) {
+        SDL_FreeSurface(surf);
+        throw SDLError("SDL_CreateTextureFromSurface");
+    }
+    SDL_FreeSurface(surf);
+
+    int w = 0, h = 0;
+    if (SDL_QueryTexture(texture, &format, nullptr, &w, &h) < 0) {
+        throw SDLError("SDL_QueryTexture");
+    }
+    size[2] = w;
+    size[3] = h;
+
+    INFO("Size: ", size);
+
+    switch(format) {
+        case SDL_PIXELFORMAT_RGBA8888:  INFO("Format: RGBA8888");  break;
+        case SDL_PIXELFORMAT_ARGB8888:  INFO("Format: ARGB8888");  break;
+        case SDL_PIXELFORMAT_RGB888:    INFO("Format: RGB888");    break;
+        case SDL_PIXELFORMAT_BGR888:    INFO("Format: GBR888");    break;
+        case SDL_PIXELFORMAT_RGBA32:    INFO("Format: RGBA32");    break;
+        case SDL_PIXELFORMAT_ARGB32:    INFO("Format: ARGB32");    break;
+        default:                        INFO("Format: Unhandled"); break;
+    }
+}
+
 uint32_t SpriteAtlas::RegisterSprite(const RectI& spriteRect) {
     sprites.emplace(nextId, spriteRect);
     return nextId++;
 }
 
 void SpriteAtlas::DrawSprite(uint32_t id, const Point2i& dest) const {
+    assert(texture != nullptr);
     assert(sprites.find(id) != sprites.end());
     const RectI& srcRect = sprites.at(id);
     SDL_Rect src { srcRect[0], srcRect[1], srcRect[2], srcRect[3] };

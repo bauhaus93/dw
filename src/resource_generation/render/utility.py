@@ -20,16 +20,16 @@ def camera_setup():
         camera = bpy.data.objects['Camera']
         bpy.context.scene.camera = camera
         
-    camera.rotation_euler[0] = math.atan(2**0.5)
+    camera.rotation_euler[0] = 0#   set later in iter_camera_views, was math.atan(2**0.5)
     camera.rotation_euler[1] = 0
     camera.rotation_euler[2] = math.radians(45)
-    camera.location[0] = 6.5
-    camera.location[1] = -6.5
-    camera.location[2] = 6
+    camera.location[0] = 5
+    camera.location[1] = -5
+    camera.location[2] = 4
     
-    camera.data.ortho_scale = 3.4
+    camera.data.ortho_scale = 3.5
     camera.data.type = 'ORTHO'
-    camera.data.shift_y = 0.12
+    camera.data.shift_y = 0
 
 def scene_setup():
     scene = bpy.context.scene
@@ -54,8 +54,8 @@ def set_camera_direction(new_dir):
     camera.rotation_euler = new_dir
 
 def iter_camera_views():
-    direction = (math.atan(2**0.5), 0, math.radians(45))
-    pos = (6.5, -6.5, 6)
+    direction = (math.radians(60), 0, math.radians(45))
+    pos = (5, -5, 4)
     pos_change = [(1, 1, 1),
                   (1, -1, 1),
                   (-1, -1, 1),

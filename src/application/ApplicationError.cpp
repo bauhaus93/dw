@@ -11,6 +11,11 @@ ApplicationError::ApplicationError(const std::string& name,
 
 }
 
+ApplicationError::ApplicationError(const std::string& where,
+                                   const std::string& description):
+    ApplicationError("ApplicationError", where, description) {
+}
+
 
 
 }   // namespace dwarfs

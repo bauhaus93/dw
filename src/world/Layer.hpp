@@ -25,8 +25,8 @@ typedef std::array<std::array<std::unique_ptr<Block>, LAYER_SIZE_X>, LAYER_SIZE_
 
 class Layer {
 public:
-                Layer(int32_t level_, const SpriteAtlas& blockAtlas, const std::map<Block, uint32_t>& protoBlock);
-                Layer(int32_t level_, const SpriteAtlas& blockAtlas_, const std::map<Block, uint32_t>& protoBlock_, const HeightMap& heightMap);
+                Layer(int32_t level_, const SpriteAtlas& blockAtlas, const std::map<Block, uint32_t>& blockSprites);
+                Layer(int32_t level_, const SpriteAtlas& blockAtlas_, const std::map<Block, uint32_t>& blockSprites_, const HeightMap& heightMap);
 
     void        Draw(const Point3i& cameraOrigin, const RectI& rect);
 
@@ -34,7 +34,7 @@ private:
 
     int32_t                             level;
     const SpriteAtlas&                  blockAtlas;
-    const std::map<Block, uint32_t>&    protoBlock;
+    const std::map<Block, uint32_t>&    blockSprites;
     BlockGrid                           block;
 
 };

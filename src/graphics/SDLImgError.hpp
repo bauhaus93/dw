@@ -2,6 +2,8 @@
 
 #pragma once
 
+#include <string>
+
 #include <SDL2/SDL_image.h>
 
 #include "application/ApplicationError.hpp"
