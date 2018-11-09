@@ -4,8 +4,6 @@
 
 namespace dwarfs {
 
-const Point2i DRAW_TOLERANCE { ATLAS_SPRITE_WIDTH, ATLAS_SPRITE_HEIGHT };
-
 Layer::Layer(int32_t level_, const SpriteAtlas& blockAtlas_, const std::map<Block, uint32_t>& blockSprites_):
     level { level_ },
     blockAtlas { blockAtlas_ },
@@ -53,7 +51,7 @@ void Layer::Draw(const Point3i& cameraOrigin, const RectI& rect) {
         for (int32_t x = 0; x < LAYER_SIZE_X; x++) {
             if (block[y][x] != nullptr) {
                 Point2i screenPos = WorldToScreenPos(Point3i { x, y, level }, cameraOrigin);
-                if (screenPos.InBoundaries(Point2i(-ATLAS_SPRITE_WIDTH, -ATLAS_SPRITE_HEIGHT), rect.GetSize())) {
+                if (screenPos.InBoundaries(Point2i(-TILE_WIDTH, -ATLAS_SPRITE_HEIGHT), rect.GetSize())) {
                     blockAtlas.DrawSprite(block[y][x]->GetSpriteId(), rect.GetOrigin() + screenPos);
                 }
             }

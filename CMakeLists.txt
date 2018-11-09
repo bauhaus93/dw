@@ -82,7 +82,12 @@ add_custom_target(archivate-resources
 			WORKING_DIRECTORY ${PROJECT_SOURCE_DIR})
 
 add_custom_target(extract-resources
-			COMMAND tar xvzf resources.tar.gz
+			COMMAND tar -xvzf resources.tar.gz
 			WORKING_DIRECTORY ${PROJECT_SOURCE_DIR})
+
+add_custom_target(setup
+			COMMAND "")
+add_dependencies(setup extract-resources)
+add_dependencies(setup atlas)
 
 configure_file(resources/atlas.xml ${CMAKE_BINARY_DIR}/atlas.xml COPYONLY)

@@ -40,8 +40,14 @@ std::map<Block, uint32_t> FillBlockAtlas(const std::string& xmlFile, SpriteAtlas
     int elementWidth = atlasNode.attribute("element_width").as_int();
 
     atlas.LoadImage(atlasPath);
-    Point2i spriteSize { elementWidth, static_cast<int>(static_cast<float>(elementWidth) * 1.15625) };
+    Point2i spriteSize { elementWidth, static_cast<int>(static_cast<float>(elementWidth) * SPRITE_RATIO) };
     INFO("Sprite sizes of atlas: ", spriteSize);
+    if (spriteSize[0] != ATLAS_SPRITE_WIDTH) {
+        WARN("Width of block sprites not equal to assumed ATLAS_SPRITE_WIDTH, Expected: ", ATLAS_SPRITE_WIDTH, ", Found: ", spriteSize[0]);
+    }
+    if (spriteSize[1] != ATLAS_SPRITE_HEIGHT) {
+        WARN("Height of block sprites not equal to assumed ATLAS_SPRITE_HEIGHT, Expected: ", ATLAS_SPRITE_HEIGHT, ", Found: ", spriteSize[1]);
+    }
 
     std::map<Block, uint32_t> spriteIds = LoadSpriteIds(atlas, atlasNode, spriteSize);
 
