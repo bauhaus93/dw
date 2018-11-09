@@ -38,8 +38,6 @@ elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")
         target_compile_options(${LIB_NAME} PRIVATE /W4 /MP)
 endif()
 
-
-
 add_subdirectory(src)
 
 get_property(SRCS TARGET ${LIB_NAME} PROPERTY SRC_LIST)
@@ -69,7 +67,7 @@ add_custom_target(python-env
 			  pip install -r requirements.txt
 		  WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/src/resource_generation/)
 
-add_custom_target(resources
+add_custom_target(atlas
 		  COMMAND source ${PYTHON_ENV_DIR}/bin/activate &&
 			  src/resource_generation/generate.py
 			  	--xml-file resources/atlas.xml
@@ -77,6 +75,14 @@ add_custom_target(resources
 				--render-script src/resource_generation/render/render_object.py
 		  WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/)
 
-add_dependencies(resources python-env)
+add_dependencies(atlas python-env)
+
+add_custom_target(archivate-resources
+			COMMAND tar -zcvf resources.tar.gz --exclude='*.blend1' resources/
+			WORKING_DIRECTORY ${PROJECT_SOURCE_DIR})
+
+add_custom_target(extract-resources
+			COMMAND tar xvzf resources.tar.gz
+			WORKING_DIRECTORY ${PROJECT_SOURCE_DIR})
 
 configure_file(resources/atlas.xml ${CMAKE_BINARY_DIR}/atlas.xml COPYONLY)
