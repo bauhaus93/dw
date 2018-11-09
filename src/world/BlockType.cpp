@@ -22,6 +22,7 @@ BlockType GetBlockType(const std::string& str) {
         return BlockType::FLOOR;
     }
     assert(0);
+    throw;
 }
 
 }   // namespace dwarfs

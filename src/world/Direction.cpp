@@ -25,6 +25,7 @@ Direction GetDirection(const std::string& str) {
         return Direction::WEST;
     }
     assert(0);
+    throw;
 }
 
 Direction GetDirectionByAngleId(int angleId) {
@@ -35,6 +36,7 @@ Direction GetDirectionByAngleId(int angleId) {
         case 3: return Direction::WEST;
         default:    assert(0);
     }
+    throw;
 }
 
 }   // namespace dwarfs

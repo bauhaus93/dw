@@ -22,6 +22,7 @@ MaterialType GetMaterial(const std::string& str) {
         return MaterialType::MUD;
     }
     assert(0);
+    throw;
 }
 
 
