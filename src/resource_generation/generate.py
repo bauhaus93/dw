@@ -4,6 +4,7 @@ import sys
 import logging
 import time
 import argparse
+import shutil
 import xml.etree.ElementTree as et
 
 from atlas import create_atlas
@@ -37,6 +38,7 @@ XML_PATH = os.path.abspath(args.xml_file)
 RESOURCE_DIR = os.path.dirname(XML_PATH)
 RENDER_SCRIPT_PATH = os.path.abspath(args.render_script)
 RESULT_DIR = os.path.abspath(args.result_dir)
+XML_COPY_PATH = os.path.join(RESULT_DIR, os.path.basename(XML_PATH))
 
 logger.info("Resource dir: " + RESOURCE_DIR + "'")
 logger.info("Result dir: '" + RESULT_DIR + "'")
@@ -51,5 +53,8 @@ for child in root:
     except Exception as ex:
         logger.error(ex.__class__.__name__ + ": " + str(ex))
         exit(1)
+
+shutil.copyfile(XML_PATH, XML_COPY_PATH)
+logger.info("Copied xml file to '" + XML_COPY_PATH + "'")
 
 logger.info("Resource generation finished in " + "{:.2f}".format(time.perf_counter() - start_time) + "s")
