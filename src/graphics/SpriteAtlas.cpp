@@ -113,7 +113,7 @@ void SpriteAtlas::DrawRegisteredSprites(const RectI& rect) const {
         currPos[0] += iter->second[2];
         if (currPos[0] >= rect[2]) {
             currPos[0] = rect[0];
-            currPos[1] += iter->second[3];
+            currPos[1] += iter->second[3];     
         }
     }
 }

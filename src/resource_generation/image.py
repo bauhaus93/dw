@@ -10,7 +10,7 @@ def translate_image(img, offX, offY):
 def resize_to_width(img, target_width):
     height, width = img.shape[:2]
     if height != width:
-        target_height = round(target_width * height / width)
+        target_height = round((target_width * height) / width)
         return cv.resize(img, (target_width, target_height))
     else:
         return cv.resize(img, (target_width, target_width))
@@ -36,5 +36,7 @@ def process_image(src, target_width, dest):
 
     img = translate_image(img, shift_x, shift_y)
     img = resize_to_width(img, target_width)
+
+    img = img[:-3, :]
 
     cv.imwrite(dest, img)

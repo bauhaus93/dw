@@ -6,7 +6,7 @@
 
 namespace dwarfs {
 
-constexpr float SPRITE_RATIO = 1.171875;
+constexpr float SPRITE_RATIO = 1.125;//1.171875;
 
 constexpr int32_t ATLAS_SPRITE_WIDTH = 64;
 constexpr int32_t ATLAS_SPRITE_HEIGHT = static_cast<int>(static_cast<float>(ATLAS_SPRITE_WIDTH) * SPRITE_RATIO);
