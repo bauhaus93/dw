@@ -55,7 +55,7 @@ target_link_libraries(${LIB_NAME} PRIVATE SDL2::SDL2)
 #target_link_libraries(${LIB_NAME} PRIVATE ${SDL2_LIBRARIES})
 target_include_directories(${LIB_NAME} SYSTEM PRIVATE ${SDL2_INCLUDE_DIRS})
 
-find_package(SDL2_image REQUIRED /usr/lib /usr/local/lib)
+find_package(SDL2_image REQUIRED)
 target_link_libraries(${LIB_NAME} PRIVATE ${SDL2_IMAGE_LIBRARIES})
 target_include_directories(${LIB_NAME} SYSTEM PRIVATE ${SDL2_IMAGE_INCLUDE_DIRS})
 
