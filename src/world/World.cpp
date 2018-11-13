@@ -6,7 +6,7 @@ namespace dwarfs {
 
 World::World(uint32_t seed, SDL_Renderer* renderer):
     rng { seed },
-    cameraOrigin(0.f),
+    cameraOrigin(0),
     heightNoise { static_cast<uint32_t>(rng()) },
     blockAtlas { renderer },
     blockSpriteIds { FillBlockAtlas("atlas.xml", blockAtlas) } {
