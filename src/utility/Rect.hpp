@@ -63,7 +63,7 @@ const T& Rect<T>::operator[](uint8_t index) const {
 template<typename T>
 std::ostream& operator<<(std::ostream& os, const Rect<T>& rect) {
     os.operator<<(rect[0]);
-    for (int i = 1; i < 4; i++) {
+    for (uint8_t i = 1; i < 4; i++) {
         os << "/";
         os.operator<<(rect[i]);
     }

@@ -32,4 +32,16 @@ Logger::Logger(std::ostream& out_, LogLevel logLevel_) :
     mutex { } {
 }
 
+void Logger::WriteMessagePrefix(LogLevel msgLevel) {
+  std::time_t t = std::time(nullptr);
+  std::tm tm;
+  if (localtime_s(&tm, &t) == 0) {
+    out << std::put_time(&tm, "[%T] ");
+  }
+  else {
+	out << "[NO_TIME] ";
+  }
+  out << GetLogLevelString(msgLevel) << " - ";
+}
+
 }   // namespace dwarfs

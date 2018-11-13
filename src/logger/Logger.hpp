@@ -2,6 +2,7 @@
 
 #pragma once
 
+#define __STDC_WANT_LIB_EXT1__ 1
 #include <iostream>
 #include <mutex>
 #include <iomanip>
@@ -40,6 +41,8 @@ class Logger {
         void            WriteAppend(const T& value, const Args&... args);
         template<typename T>
         void            WriteAppend(const T& value);
+
+        void            WriteMessagePrefix(LogLevel msgLevel);
 };
 
 const char* GetLogLevelString(LogLevel logLevel);
@@ -92,21 +95,15 @@ void Logger::Error(const Args&... args) {
 
 template<typename T, typename... Args>
 void Logger::Write(LogLevel msgLevel, const T& value, const Args&... args) {
-    std::time_t t = std::time(nullptr);
-    std::tm tm = *std::localtime(&t);
-
-    out << std::put_time(&tm, "[%T] ")
-        << GetLogLevelString(msgLevel) << " - " << value;
-    WriteAppend(args...);
+  WriteMessagePrefix(msgLevel);
+  out << value;
+  WriteAppend(args...);
 }
 
 template<typename T>
 void Logger::Write(LogLevel msgLevel, const T& value) {
-    std::time_t t = std::time(nullptr);
-    std::tm tm = *std::localtime(&t);
-
-    out << std::put_time(&tm, "[%T] ")
-        << GetLogLevelString(msgLevel) << " - " << value << "\n";
+  WriteMessagePrefix(msgLevel);
+  out << value << std::endl;
 }
 
 template<typename T, typename... Args>
@@ -117,9 +114,7 @@ void Logger::WriteAppend(const T& value, const Args&... args) {
 
 template<typename T>
 void Logger::WriteAppend(const T& value) {
-    out << value << "\n";
-
+    out << value << std::endl;
 }
-
 
 }   // namespace dwarfs

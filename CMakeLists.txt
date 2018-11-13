@@ -45,14 +45,11 @@ target_sources(${LIB_NAME} PRIVATE ${SRCS})
 
 target_include_directories(${EXEC_NAME} PRIVATE src)
 target_include_directories(${LIB_NAME} PRIVATE src)
-#target_include_directories(${EXEC_NAME} PRIVATE /usr/local/include)
-#target_include_directories(${LIB_NAME} PRIVATE /usr/local/include)
 
 target_link_libraries(${LIB_NAME} PRIVATE ${CMAKE_DL_LIBS})
 
-find_package(SDL2 REQUIRED PATHS /usr/lib /usr/local/lib)
-target_link_libraries(${LIB_NAME} PRIVATE SDL2::SDL2)
-#target_link_libraries(${LIB_NAME} PRIVATE ${SDL2_LIBRARIES})
+find_package(SDL2 REQUIRED)
+target_link_libraries(${LIB_NAME} PRIVATE ${SDL2_LIBRARIES})
 target_include_directories(${LIB_NAME} SYSTEM PRIVATE ${SDL2_INCLUDE_DIRS})
 
 find_package(SDL2_image REQUIRED)

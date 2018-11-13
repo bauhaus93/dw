@@ -44,9 +44,6 @@ private:
     SpriteAtlas                 blockAtlas;
     std::map<Block, uint32_t>   blockSpriteIds;
     std::map<int32_t, Layer>    layer;
-
-    void            LoadSprites();
-
 };
 
 
