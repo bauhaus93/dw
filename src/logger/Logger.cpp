@@ -49,7 +49,7 @@ void Logger::WriteMessagePrefix(LogLevel msgLevel) {
   switch(msgLevel) {
       case LogLevel::TRACE:
       case LogLevel::DEBUG:
-      case LogLevel::INFO:  out << "\033[1m";      break;
+      case LogLevel::INFO:  out << "\033[1;32m";    break;
       case LogLevel::WARN:  out << "\033[1;93m";    break;
       case LogLevel::ERROR: out << "\033[1;31m";    break;
       default:  break;
