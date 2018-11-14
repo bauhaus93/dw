@@ -4,8 +4,8 @@
 
 namespace dwarfs {
 
-const char* GetString(Material mt) {
-    switch (mt) {
+const char* GetString(Material mat) {
+    switch (mat) {
         case Material::GRASS:   return "GRASS";
         case Material::ROCK:    return "ROCK";    
         case Material::MUD:     return "MUD";
@@ -23,6 +23,11 @@ Material GetMaterial(const std::string& str) {
     }
     assert(0);
     throw;
+}
+
+std::ostream& operator<<(std::ostream& os, const Material& mat) {
+    os << GetString(mat);
+    return os;
 }
 
 

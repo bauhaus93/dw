@@ -100,15 +100,15 @@ ProtoBlockSet LoadPrototypes(SpriteAtlas& atlas, const pugi::xml_node& atlasNode
                 uint32_t col = iter.second;
                 RectI spriteRect { spriteSize[0] * static_cast<int>(col), spriteSize[1] * static_cast<int>(row), spriteSize[0], spriteSize[1] };
                 Sprite sprite { spriteRect, atlas };
-                std::unique_ptr<Block> block = nullptr;
+                std::shared_ptr<Block> block = nullptr;
                 switch(blockType) {
-                    case BlockType::CUBE:   block = std::make_unique<Cube>(sprite, mat);                break;
-                    case BlockType::SLOPE:  block = std::make_unique<Slope>(sprite, mat, iter.first);   break;
-                    case BlockType::FLOOR:  block = std::make_unique<Floor>(sprite, mat);               break;
+                    case BlockType::CUBE:   block = std::make_shared<Cube>(sprite, mat);                break;
+                    case BlockType::SLOPE:  block = std::make_shared<Slope>(sprite, mat, iter.first);   break;
+                    case BlockType::FLOOR:  block = std::make_shared<Floor>(sprite, mat);               break;
                     default:    assert(0);  break;
                 }
                 if (block != nullptr) {
-                    prototypes.AddBlock(*block);
+                    prototypes.AddBlock(block);
                 }
              }
         }

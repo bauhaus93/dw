@@ -25,4 +25,10 @@ BlockType GetBlockType(const std::string& str) {
     throw;
 }
 
+std::ostream& operator<<(std::ostream& os, const BlockType& type) {
+    os << GetString(type);
+    return os;
+}
+
+
 }   // namespace dwarfs

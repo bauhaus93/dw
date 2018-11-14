@@ -17,5 +17,17 @@ void Block::Draw(const Point2i dest, SDL_Renderer* renderer) const {
 int Block::CalculateId() const {
     return ToUnderlying(GetMaterial()) + MATERIAL_COUNT * ToUnderlying(GetType());
 }
+std::string Block::GetString() const {
+    std::stringstream ss;
+    ss << "Id = " << CalculateId()
+    << ", Material = " << GetMaterial()
+    << ", Type = " << GetType();
+    return ss.str();
+}
+
+std::ostream& operator<<(std::ostream& os, const Block& block) {
+    os << block.GetString();
+    return os;
+}
 
 }   // namespace dwarfs

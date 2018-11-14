@@ -39,4 +39,9 @@ Direction GetDirectionByAngleId(int angleId) {
     throw;
 }
 
+std::ostream& operator<<(std::ostream& os, const Direction& dir) {
+    os << GetString(dir);
+    return os;
+}
+
 }   // namespace dwarfs

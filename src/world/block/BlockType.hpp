@@ -2,6 +2,7 @@
 
 #pragma once
 
+#include <iostream>
 #include <cassert>
 #include <string>
 
@@ -17,5 +18,7 @@ enum class BlockType {
 
 const char* GetString(BlockType bt);
 BlockType GetBlockType(const std::string& str);
+
+std::ostream& operator<<(std::ostream& os, const BlockType& type);
 
 }   // namespace dwarfs

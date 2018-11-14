@@ -2,6 +2,7 @@
 
 #pragma once
 
+#include <iostream>
 #include <cassert>
 #include <string>
 
@@ -15,7 +16,9 @@ enum class Material {
     MUD
 };
 
-const char* GetString(Material mt);
+const char* GetString(Material mat);
 Material GetMaterial(const std::string& str);
+
+std::ostream& operator<<(std::ostream& os, const Material& mat);
 
 }   // namespace dwarfs

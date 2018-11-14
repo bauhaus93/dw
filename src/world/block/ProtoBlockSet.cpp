@@ -4,9 +4,11 @@
 
 namespace dwarfs {
 
-void ProtoBlockSet::AddBlock(const Block& prototype) {
-    if (prototypes.insert(std::make_shared<Block>(prototype)).second == false) {
-        WARN("Tried to insert duplicate block prototype");
+void ProtoBlockSet::AddBlock(std::shared_ptr<Block> prototype) {
+    auto result = prototypes.insert(prototype);
+    if (result.second == false) {
+        const auto& existing = result.first;
+        WARN("Tried to insert duplicate block prototype: Added block: ", *prototype, ", existing block: ", *existing);
     }
 }
 

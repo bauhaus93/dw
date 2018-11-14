@@ -2,6 +2,10 @@
 
 #pragma once
 
+#include <iostream>
+#include <sstream>
+#include <string>
+
 #include "graphics/Sprite.hpp"
 #include "world/Direction.hpp"
 #include "Block.hpp"
@@ -15,9 +19,12 @@ public:
     virtual            ~DirectionalBlock() = default;
     Direction           GetDirection() const { return direction; }
     int                 CalculateId() const;
+    std::string         GetString() const override;
+
 private:
     Direction           direction;
 
 };
+
 
 }   // namespace dwarfs

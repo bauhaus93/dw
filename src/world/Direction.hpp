@@ -4,6 +4,7 @@
 
 #include <cassert>
 #include <string>
+#include <iostream>
 
 namespace dwarfs {
 
@@ -19,5 +20,7 @@ enum class Direction {
 const char* GetString(Direction dir);
 Direction GetDirection(const std::string& str);
 Direction GetDirectionByAngleId(int angleId);
+
+std::ostream& operator<<(std::ostream& os, const Direction& dir);
 
 }   // namespace dwarfs

@@ -19,7 +19,7 @@ namespace dwarfs {
 
 struct SharedBlockCmp {
     bool operator() (const std::shared_ptr<Block>& lhs, const std::shared_ptr<Block>& rhs) const {
-        return *lhs < *rhs;
+        return lhs->CalculateId() < rhs->CalculateId();
     }
 };
 
@@ -30,7 +30,7 @@ public:
                                     ProtoBlockSet() = default;
                                     ProtoBlockSet(ProtoBlockSet&& other) = default;
     ProtoBlockSet&                  operator=(ProtoBlockSet&& rhs) = default;
-    void                            AddBlock(const Block& prototype);
+    void                            AddBlock(std::shared_ptr<Block> prototype);
     std::shared_ptr<const Block>    GetPrototype(Material material, BlockType type) const;
     std::shared_ptr<const DirectionalBlock> GetPrototype(Material material, BlockType type, Direction dir) const;
     std::size_t                     GetCount() const { return prototypes.size(); }
