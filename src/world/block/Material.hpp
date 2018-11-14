@@ -7,13 +7,15 @@
 
 namespace dwarfs {
 
-enum class MaterialType {
+constexpr int MATERIAL_COUNT = 3;
+
+enum class Material {
     GRASS,
     ROCK,
     MUD
 };
 
-const char* GetString(MaterialType mt);
-MaterialType GetMaterial(const std::string& str);
+const char* GetString(Material mt);
+Material GetMaterial(const std::string& str);
 
 }   // namespace dwarfs

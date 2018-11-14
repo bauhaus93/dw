@@ -7,6 +7,8 @@
 
 namespace dwarfs {
 
+constexpr int BLOCKTYPE_COUNT = 3;
+
 enum class BlockType {
     CUBE,
     SLOPE,

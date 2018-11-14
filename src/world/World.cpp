@@ -8,8 +8,8 @@ World::World(uint32_t seed, SDL_Renderer* renderer):
     rng { seed },
     cameraOrigin(0),
     heightNoise { static_cast<uint32_t>(rng()) },
-    blockAtlas { renderer },
-    blockSpriteIds { FillBlockAtlas("atlas.xml", blockAtlas) } {
+    blockAtlas { },
+    blockPrototypes { CreateBlockPrototypes("atlas.xml", blockAtlas, renderer) } {
 
     heightNoise.SetMin(0);
     heightNoise.SetMax(4);
@@ -22,11 +22,11 @@ World::World(uint32_t seed, SDL_Renderer* renderer):
         if (level >= 0){
             layer.emplace(std::piecewise_construct,
                           std::forward_as_tuple(level),
-                          std::forward_as_tuple(level, blockAtlas, blockSpriteIds, hm));
+                          std::forward_as_tuple(level, blockPrototypes, hm));
         } else {
             layer.emplace(std::piecewise_construct,
                           std::forward_as_tuple(level),
-                          std::forward_as_tuple(level, blockAtlas, blockSpriteIds));
+                          std::forward_as_tuple(level, blockPrototypes));
         }
     }
 
@@ -54,12 +54,12 @@ void World::CameraDown() {
     INFO("Curr layer: ", cameraOrigin[2]);
 }
 
-void World::Draw(const RectI& rect) {
+void World::Draw(const RectI& rect, SDL_Renderer* renderer) {
     if (cameraOrigin[2] >= 0) {
         for (int32_t h = cameraOrigin[2] - 4; h < cameraOrigin[2] + 4; h++) {
             auto find = layer.find(h);
             if (find != layer.end()) {
-                find->second.Draw(cameraOrigin, rect);
+                find->second.Draw(cameraOrigin, rect, renderer);
             } else {
                 break;
             }
@@ -67,13 +67,13 @@ void World::Draw(const RectI& rect) {
     } else {
         auto find = layer.find(cameraOrigin[2]);
         if (find != layer.end()) {
-            find->second.Draw(cameraOrigin, rect);
+            find->second.Draw(cameraOrigin, rect, renderer);
         }
     }
 }
 
 void World::DrawSpriteAtlas(const RectI& rect) {
-    blockAtlas.DrawRegisteredSprites(rect);
+
 }
 
 }   // namespace dwarfs

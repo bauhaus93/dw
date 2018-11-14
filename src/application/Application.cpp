@@ -101,7 +101,7 @@ void Application::Update() {
 void Application::Draw() {
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, SDL_ALPHA_OPAQUE);
     SDL_RenderClear(renderer);
-    world->Draw(windowRect);
+    world->Draw(windowRect, renderer);
     /*SDL_SetRenderDrawColor(renderer, 0xFF, 0, 0, SDL_ALPHA_OPAQUE);
     SDL_RenderDrawLine(renderer, 0, 0, windowRect[2], windowRect[3]);
     SDL_RenderDrawLine(renderer, windowRect[2], 0, 0, windowRect[3]);*/

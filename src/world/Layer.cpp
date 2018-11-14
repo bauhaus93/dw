@@ -4,59 +4,66 @@
 
 namespace dwarfs {
 
-Layer::Layer(int32_t level_, const SpriteAtlas& blockAtlas_, const std::map<Block, uint32_t>& blockSprites_):
+Layer::Layer(int32_t level_, const ProtoBlockSet& protoblocks_):
     level { level_ },
-    blockAtlas { blockAtlas_ },
-    blockSprites { blockSprites_ } {
+    protoblocks { protoblocks_ } {
 
     for (int32_t y = 0; y < LAYER_SIZE_Y; y++) {
         for (int32_t x = 0; x < LAYER_SIZE_X; x++) {
+            Point2i pos(x, y);
             if (level < -5) {
-                block[y][x] = std::make_unique<Block>(MaterialType::ROCK, BlockType::CUBE, Direction::NORTH);
-                assert(blockSprites.find(*block[y][x]) != blockSprites.end());
-                block[y][x]->SetSpriteId(blockSprites.at(*block[y][x]));
+                CreateVolume(pos, Material::ROCK, BlockType::CUBE, Material::ROCK);   
             } else {
-                block[y][x] = std::make_unique<Block>(MaterialType::MUD, BlockType::CUBE, Direction::NORTH);
-                assert(blockSprites.find(*block[y][x]) != blockSprites.end());
-                block[y][x]->SetSpriteId(blockSprites.at(*block[y][x]));
+                CreateVolume(pos, Material::MUD, BlockType::CUBE, Material::MUD);
             }
         }
     }
-
 }
 
-Layer::Layer(int32_t level_, const SpriteAtlas& blockAtlas_, const std::map<Block, uint32_t>& blockSprites_, const HeightMap& heightMap):
+Layer::Layer(int32_t level_, const ProtoBlockSet& protoblocks_, const HeightMap& heightMap):
     level { level_ },
-    blockAtlas { blockAtlas_ },
-    blockSprites { blockSprites_ } {
+    protoblocks { protoblocks_ } {
+
     for (int32_t y = 0; y < LAYER_SIZE_Y; y++) {
         for (int32_t x = 0; x < LAYER_SIZE_X; x++) {
             int32_t height = heightMap[y][x];
+            Point2i pos(x, y);
             if (level == height) {
-                block[y][x] = std::make_unique<Block>(MaterialType::GRASS, BlockType::FLOOR, Direction::NORTH);
-                assert(blockSprites.find(*block[y][x]) != blockSprites.end());
-                block[y][x]->SetSpriteId(blockSprites.at(*block[y][x]));
-            } else if (level < height) {
-                block[y][x] = std::make_unique<Block>(MaterialType::MUD, BlockType::CUBE, Direction::NORTH);
-                assert(blockSprites.find(*block[y][x]) != blockSprites.end());
-                block[y][x]->SetSpriteId(blockSprites.at(*block[y][x]));
+                CreateVolumeFloorOnly(pos, Material::GRASS);
+              } else if (level < height) {
+                CreateVolume(pos, Material::MUD, BlockType::CUBE, Material::MUD);
             }
         }
     }
 }
 
-void Layer::Draw(const Point3i& cameraOrigin, const RectI& rect) {
+
+void Layer::CreateVolumeFloorOnly(Point2i pos, Material floorMaterial) {
+    auto floor = protoblocks.GetPrototype(floorMaterial, BlockType::FLOOR);
+    volume[pos[1]][pos[0]] = std::make_unique<Volume>(std::static_pointer_cast<const Floor>(floor));
+}
+
+void Layer::CreateVolume(Point2i pos,
+                         Material blockMaterial, BlockType blockType, 
+                         Material floorMaterial) {
+    auto block = protoblocks.GetPrototype(blockMaterial, blockType);
+    auto floor = protoblocks.GetPrototype(floorMaterial, BlockType::FLOOR);
+    volume[pos[1]][pos[0]] = std::make_unique<Volume>(block, std::static_pointer_cast<const Floor>(floor));
+}
+
+void Layer::Draw(const Point3i& cameraOrigin, const RectI& rect, SDL_Renderer* renderer) {
     RectI worldBoundaries { 0, 0, LAYER_SIZE_X, LAYER_SIZE_Y };
     for (int32_t y = 0; y < LAYER_SIZE_Y; y++) {
         for (int32_t x = 0; x < LAYER_SIZE_X; x++) {
-            if (block[y][x] != nullptr) {
+            if (volume[y][x] != nullptr) {
                 Point2i screenPos = WorldToScreenPos(Point3i { x, y, level }, cameraOrigin);
                 if (screenPos.InBoundaries(Point2i(-TILE_WIDTH, -ATLAS_SPRITE_HEIGHT), rect.GetSize())) {
-                    blockAtlas.DrawSprite(block[y][x]->GetSpriteId(), rect.GetOrigin() + screenPos);
+                    volume[y][x]->Draw(screenPos, renderer);
                 }
             }
         }
     }
 }
+
 
 }   // namespace dwarfs

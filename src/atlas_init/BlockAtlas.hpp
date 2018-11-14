@@ -9,22 +9,28 @@
 #include <cstdint>
 
 #include <pugixml.hpp>
+#include <SDL.h>
 
 #include "application/ApplicationError.hpp"
 #include "logger/GlobalLogger.hpp"
 #include "utility/Point2.hpp"
+#include "utility/Defs.hpp"
 #include "graphics/SpriteAtlas.hpp"
-#include "world/MaterialType.hpp"
-#include "world/BlockType.hpp"
+#include "world/block/Material.hpp"
+#include "world/block/BlockType.hpp"
 #include "world/Direction.hpp"
 #include "world/Size.hpp"
-#include "world/Block.hpp"
+#include "world/block/Block.hpp"
+#include "world/block/Cube.hpp"
+#include "world/block/Slope.hpp"
+#include "world/block/Floor.hpp"
+#include "world/block/ProtoBlockSet.hpp"
 #include "XMLAttributeError.hpp"
 #include "XMLChildError.hpp"
 
 namespace dwarfs {
 
-std::map<Block, uint32_t> FillBlockAtlas(const std::string& xmlFile, SpriteAtlas& atlas);
+ProtoBlockSet CreateBlockPrototypes(const std::string& xmlFile, SpriteAtlas& atlas, SDL_Renderer* renderer);
 
 
 }   // namespace dwarfs

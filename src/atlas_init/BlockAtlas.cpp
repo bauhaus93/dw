@@ -4,13 +4,13 @@
 
 namespace dwarfs {
 
-static std::map<MaterialType, uint32_t> LoadMaterialRows(const pugi::xml_node& atlasNode);
-static std::map<Block, uint32_t> LoadSpriteIds(SpriteAtlas& atlas, const pugi::xml_node& atlasNode, Point2i spriteSize);
-static std::vector<MaterialType> LoadBlockMaterials(pugi::xml_node& blockNode);
+static std::map<Material, uint32_t> LoadMaterialRows(const pugi::xml_node& atlasNode);
+static ProtoBlockSet LoadPrototypes(SpriteAtlas& atlas, const pugi::xml_node& atlasNode, Point2i spriteSize);
+static std::vector<Material> LoadBlockMaterials(pugi::xml_node& blockNode);
 static std::map<Direction, uint32_t> LoadBlockCameraDirections(pugi::xml_node& blockNode);
 
-std::map<Block, uint32_t> FillBlockAtlas(const std::string& xmlFile, SpriteAtlas& atlas) {
-    INFO("Filling block sprite atlas");
+ProtoBlockSet CreateBlockPrototypes(const std::string& xmlFile, SpriteAtlas& atlas, SDL_Renderer* renderer) {
+    INFO("Creating block prototypes");
     pugi::xml_document doc;
 
     auto result = doc.load_file(xmlFile.c_str());
@@ -22,24 +22,24 @@ std::map<Block, uint32_t> FillBlockAtlas(const std::string& xmlFile, SpriteAtlas
     if (!atlasListNode) {
         pugi::xml_node dummyRoot;
         dummyRoot.set_name("root_dummy");
-        throw XMLChildError("FillBlockAtlas", dummyRoot, "atlas_list");
+        throw XMLChildError("CreateBlockPrototypes", dummyRoot, "atlas_list");
     }
 
     pugi::xml_node atlasNode = atlasListNode.find_child_by_attribute("atlas", "name", "block-atlas");
     if (!atlasNode) {
-        throw XMLChildError("FillBlockAtlas", atlasListNode, "atlas", "name", "block-atlas");
+        throw XMLChildError("CreateBlockPrototypes", atlasListNode, "atlas", "name", "block-atlas");
     }
 
     if (!atlasNode.attribute("output_name")) {
-        throw XMLAttributeError("FillBlockAtlas", atlasNode, "output_name");
+        throw XMLAttributeError("CreateBlockPrototypes", atlasNode, "output_name");
     }
     if (!atlasNode.attribute("element_width")) {
-        throw XMLAttributeError("FillBlockAtlas", atlasNode, "element_width");
+        throw XMLAttributeError("CreateBlockPrototypes", atlasNode, "element_width");
     }
     std::string atlasPath = atlasNode.attribute("output_name").value();
     int elementWidth = atlasNode.attribute("element_width").as_int();
 
-    atlas.LoadImage(atlasPath);
+    atlas.LoadImage(atlasPath, renderer);
     Point2i spriteSize { elementWidth, static_cast<int>(static_cast<float>(elementWidth) * SPRITE_RATIO) };
     INFO("Sprite sizes of atlas: ", spriteSize);
     if (spriteSize[0] != ATLAS_SPRITE_WIDTH) {
@@ -49,14 +49,14 @@ std::map<Block, uint32_t> FillBlockAtlas(const std::string& xmlFile, SpriteAtlas
         WARN("Height of block sprites not equal to assumed ATLAS_SPRITE_HEIGHT, Expected: ", ATLAS_SPRITE_HEIGHT, ", Found: ", spriteSize[1]);
     }
 
-    std::map<Block, uint32_t> spriteIds = LoadSpriteIds(atlas, atlasNode, spriteSize);
+    ProtoBlockSet prototypes = LoadPrototypes(atlas, atlasNode, spriteSize);
 
-    INFO("Registered ", spriteIds.size(), " blocks in atlas");
-    return spriteIds;
+    INFO("Created ", prototypes.GetCount(), " block prototypes");
+    return prototypes;
 }
 
-std::map<MaterialType, uint32_t> LoadMaterialRows(const pugi::xml_node& atlasNode) {
-    std::map<MaterialType, uint32_t> materialRow;
+std::map<Material, uint32_t> LoadMaterialRows(const pugi::xml_node& atlasNode) {
+    std::map<Material, uint32_t> materialRow;
 
     for (pugi::xml_node matProtNode = atlasNode.child("material_prototype");
          matProtNode;
@@ -71,45 +71,53 @@ std::map<MaterialType, uint32_t> LoadMaterialRows(const pugi::xml_node& atlasNod
 
         std::string typeStr = matProtNode.attribute("type").value();
         uint32_t row = static_cast<uint32_t>(matProtNode.attribute("row").as_int());
-        MaterialType type = GetMaterial(typeStr);
+        Material type = GetMaterial(typeStr);
         materialRow.emplace(type, row);
     }
     return materialRow;
 }
 
-std::map<Block, uint32_t> LoadSpriteIds(SpriteAtlas& atlas, const pugi::xml_node& atlasNode, Point2i spriteSize) {
-    std::map<Block, uint32_t> spriteIds;
-    std::map<MaterialType, uint32_t> materialRow = LoadMaterialRows(atlasNode);
+ProtoBlockSet LoadPrototypes(SpriteAtlas& atlas, const pugi::xml_node& atlasNode, Point2i spriteSize) {
+    ProtoBlockSet prototypes;
+    std::map<Material, uint32_t> materialRow = LoadMaterialRows(atlasNode);
 
     for (pugi::xml_node blockNode = atlasNode.child("block");
          blockNode;
          blockNode = blockNode.next_sibling("block")) {
 
         if (!blockNode.attribute("type")) {
-            throw XMLAttributeError("LoadSpriteIds", blockNode, "type");
+            throw XMLAttributeError("LoadPrototypes", blockNode, "type");
         }
         std::string btStr = blockNode.attribute("type").value();
         BlockType blockType = GetBlockType(btStr);
 
-        std::vector<MaterialType> blockMats = LoadBlockMaterials(blockNode);
+        std::vector<Material> blockMats = LoadBlockMaterials(blockNode);
         std::map<Direction, uint32_t> camColumn = LoadBlockCameraDirections(blockNode);
 
-        for (MaterialType mat: blockMats) {
+        for (Material mat: blockMats) {
             uint32_t row = materialRow.at(mat);
             for (const auto& iter: camColumn) {
-                Block protoBlock { mat, blockType, iter.first };
                 uint32_t col = iter.second;
                 RectI spriteRect { spriteSize[0] * static_cast<int>(col), spriteSize[1] * static_cast<int>(row), spriteSize[0], spriteSize[1] };
-                uint32_t spriteId = atlas.RegisterSprite(spriteRect);
-                spriteIds.emplace(protoBlock, spriteId);
-            }
+                Sprite sprite { spriteRect, atlas };
+                std::unique_ptr<Block> block = nullptr;
+                switch(blockType) {
+                    case BlockType::CUBE:   block = std::make_unique<Cube>(sprite, mat);                break;
+                    case BlockType::SLOPE:  block = std::make_unique<Slope>(sprite, mat, iter.first);   break;
+                    case BlockType::FLOOR:  block = std::make_unique<Floor>(sprite, mat);               break;
+                    default:    assert(0);  break;
+                }
+                if (block != nullptr) {
+                    prototypes.AddBlock(*block);
+                }
+             }
         }
     }
-    return spriteIds;
+    return prototypes;
 }
 
-std::vector<MaterialType> LoadBlockMaterials(pugi::xml_node& blockNode) {
-    std::vector<MaterialType> matTypes;
+std::vector<Material> LoadBlockMaterials(pugi::xml_node& blockNode) {
+    std::vector<Material> matTypes;
     for (pugi::xml_node matNode = blockNode.child("material");
             matNode;
             matNode = matNode.next_sibling("material")) {

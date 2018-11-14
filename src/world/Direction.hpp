@@ -7,6 +7,8 @@
 
 namespace dwarfs {
 
+constexpr int DIRECTION_COUNT = 4;
+
 enum class Direction {
     NORTH,
     EAST,

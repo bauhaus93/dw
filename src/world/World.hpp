@@ -14,10 +14,10 @@
 #include "utility/Point3.hpp"
 #include "graphics/SpriteAtlas.hpp"
 #include "atlas_init/BlockAtlas.hpp"
-#include "MaterialType.hpp"
-#include "BlockType.hpp"
+#include "block/Material.hpp"
+#include "block/BlockType.hpp"
+#include "block/Block.hpp"
 #include "Layer.hpp"
-#include "Block.hpp"
 #include "Direction.hpp"
 #include "Transformation.hpp"
 #include "SimplexNoise.hpp"
@@ -34,7 +34,7 @@ public:
     void            CameraUp();
     void            CameraDown();
     void            SetCameraByScreenPos(const Point2i& screenPos);
-    void            Draw(const RectI& rect);
+    void            Draw(const RectI& rect, SDL_Renderer* renderer);
     void            DrawSpriteAtlas(const RectI& rect);
 
 private:
@@ -42,7 +42,7 @@ private:
     Point3i                     cameraOrigin;
     SimplexNoise                heightNoise;
     SpriteAtlas                 blockAtlas;
-    std::map<Block, uint32_t>   blockSpriteIds;
+    ProtoBlockSet               blockPrototypes;
     std::map<int32_t, Layer>    layer;
 };
 

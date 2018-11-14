@@ -4,23 +4,18 @@
 
 namespace dwarfs {
 
-SpriteAtlas::SpriteAtlas(SDL_Renderer* renderer_):
-    renderer { renderer_ },
+SpriteAtlas::SpriteAtlas():
     texture { nullptr },
     size { 0, 0, 0, 0 },
-    format { 0 },
-    nextId { 0 } {
-    assert(renderer != nullptr);
+    format { 0 } {
 }
 
-SpriteAtlas::SpriteAtlas(SDL_Renderer* renderer_, const std::string& imgPath):
-    renderer { renderer_ },
+SpriteAtlas::SpriteAtlas(const std::string& imgPath, SDL_Renderer* renderer):
     texture { nullptr },
     size { 0, 0, 0, 0 },
-    format { 0 },
-    nextId { 0 } {
+    format { 0 } {
     assert(renderer != nullptr);
-    LoadImage(imgPath);
+    LoadImage(imgPath, renderer);
 }
 
 SpriteAtlas::~SpriteAtlas() {
@@ -29,34 +24,27 @@ SpriteAtlas::~SpriteAtlas() {
         SDL_DestroyTexture(texture);
         texture = nullptr;
     }
-    renderer = nullptr;
 }
 
 SpriteAtlas::SpriteAtlas(SpriteAtlas&& other):
-    renderer { other.renderer },
     texture { other.texture },
     size { other.size },
-    format { other.format },
-    nextId { other.nextId },
-    sprites { std::move(other.sprites) } {
+    format { other.format } {
     other.texture = nullptr;
 }
 
 SpriteAtlas& SpriteAtlas::operator=(SpriteAtlas&& other) {
     if (this != &other ) {
         assert(texture == nullptr);
-        renderer = other.renderer;
         texture = other.texture;
         size = other.size;
         format = other.format;
-        nextId = other.nextId;
-        sprites = std::move(other.sprites);
         other.texture = nullptr;
     }
     return *this;
 }
 
-void SpriteAtlas::LoadImage(const std::string& imgPath) {
+void SpriteAtlas::LoadImage(const std::string& imgPath, SDL_Renderer* renderer) {
     assert(renderer != nullptr);
     INFO("Loading sprite atlas img: '", imgPath, "'");
 
@@ -92,31 +80,14 @@ void SpriteAtlas::LoadImage(const std::string& imgPath) {
     }
 }
 
-uint32_t SpriteAtlas::RegisterSprite(const RectI& spriteRect) {
-    sprites.emplace(nextId, spriteRect);
-    return nextId++;
-}
-
-void SpriteAtlas::DrawSprite(uint32_t id, const Point2i& dest) const {
+void SpriteAtlas::DrawRect(const RectI& srcRect, const Point2i& dest, SDL_Renderer* renderer) const {
     assert(texture != nullptr);
-    assert(sprites.find(id) != sprites.end());
-    const RectI& srcRect = sprites.at(id);
+    assert(renderer != nullptr);
     SDL_Rect src { srcRect[0], srcRect[1], srcRect[2], srcRect[3] };
     SDL_Rect target { dest[0], dest[1], srcRect[2], srcRect[3] };
     SDL_RenderCopy(renderer, texture, &src, &target);
 }
 
-void SpriteAtlas::DrawRegisteredSprites(const RectI& rect) const {
-    Point2i currPos = rect.GetOrigin();
-    for (auto iter = sprites.begin(); iter != sprites.end(); ++iter) {
-        DrawSprite(iter->first, currPos);
-        currPos[0] += iter->second[2];
-        if (currPos[0] >= rect[2]) {
-            currPos[0] = rect[0];
-            currPos[1] += iter->second[3];     
-        }
-    }
-}
 
 
 }   // namespace dwarfs
