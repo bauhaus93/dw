@@ -19,23 +19,28 @@ set(EXEC_NAME "dwarfs")
 set(LIB_NAME "dwfs")
 set(PYTHON_ENV_DIR ${CMAKE_BINARY_DIR}/python_env)
 
+set(SDL2_INSTALL_DIR "D:/Libraries/SDL2" CACHE STRING "Choose SDL2 installation path"  FORCE)
+set(SDL2_IMAGE_INSTALL_DIR "D:/Libraries/SDL2_image" CACHE STRING "Choose SDL2_image installation path" FORCE)
+set(PUGIXML_INSTALL_DIR "D:/Libraries/pugixml" CACHE STRING "Choose pugixml installation path" FORCE)
+
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/")
+set(CMAKE_PREFIX_PATH / /usr /usr/local)
 
 if(NOT CMAKE_BUILD_TYPE)
-  set(CMAKE_BUILD_TYPE Debug CACHE STRING "Choose build type" FORCE)
+  set(CMAKE_BUILD_TYPE "Debug" CACHE STRING "Choose build type" FORCE)
 endif()
 
 add_executable(${EXEC_NAME} "src/Main.cpp")
 add_library(${LIB_NAME} "")
-
 target_link_libraries(${EXEC_NAME} ${LIB_NAME})
 
-if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
-        target_compile_options(${LIB_NAME} PRIVATE -Wall -fmax-errors=1 -Werror)
+#message(STATUS CMAKE_CXX_COMPILER_ID)
+if (CMAKE_COMPILER_IS_GNUCXX)
+    target_compile_options(${LIB_NAME} PRIVATE -Wall -fmax-errors=1 -Werror)
 elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
-        target_compile_options(${LIB_NAME} PRIVATE -Wall -ferror-limit=1 -Werror)
-elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")
-        target_compile_options(${LIB_NAME} PRIVATE /W4 /MP)
+    target_compile_options(${LIB_NAME} PRIVATE -Wall -ferror-limit=1 -Werror)
+elseif (MSVC)
+    target_compile_options(${LIB_NAME} PRIVATE /W4 /MP)
 endif()
 
 add_subdirectory(src)
@@ -51,14 +56,17 @@ target_link_libraries(${LIB_NAME} PRIVATE ${CMAKE_DL_LIBS})
 find_package(SDL2 REQUIRED)
 target_link_libraries(${LIB_NAME} PRIVATE ${SDL2_LIBRARIES})
 target_include_directories(${LIB_NAME} SYSTEM PRIVATE ${SDL2_INCLUDE_DIRS})
+target_include_directories(${EXEC_NAME} SYSTEM PRIVATE ${SDL2_INCLUDE_DIRS})
 
 find_package(SDL2_image REQUIRED)
 target_link_libraries(${LIB_NAME} PRIVATE ${SDL2_IMAGE_LIBRARIES})
 target_include_directories(${LIB_NAME} SYSTEM PRIVATE ${SDL2_IMAGE_INCLUDE_DIRS})
+target_include_directories(${EXEC_NAME} SYSTEM PRIVATE ${SDL2_IMAGE_INCLUDE_DIRS})
 
 find_package(PugiXML REQUIRED)
 target_link_libraries(${LIB_NAME} PRIVATE ${PUGIXML_LIBRARIES})
 target_include_directories(${LIB_NAME} SYSTEM PRIVATE ${PUGIXML_INCLUDE_DIRS})
+target_include_directories(${EXEC_NAME} SYSTEM PRIVATE ${PUGIXML_INCLUDE_DIRS})
 
 add_custom_target(python-env
 	   	  COMMAND python3 -m venv ${PYTHON_ENV_DIR} &&

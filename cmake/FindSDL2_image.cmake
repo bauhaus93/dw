@@ -2,15 +2,16 @@
 
 find_library(
   SDL2_IMAGE_LIBRARIES
-  NAMES sdl2_image
-  PATHS /lib /usr/lib /usr/local/lib D:/Libraries/SDL2_image/lib
+  NAMES sdl2_image SDL2_image
+  PATHS ${SDL2_IMAGE_INSTALL_DIR}
   PATH_SUFFIXES x64 x86
 )
 
 find_path(
   SDL2_IMAGE_INCLUDE_DIRS
   NAMES SDL_image.h
-  PATHS /include /usr/include /usr/local/include D:/Libraries/SDL2_image/include
+  PATHS ${SDL2_IMAGE_INSTALL_DIR}
+  PATH_SUFFIXES SDL2 sdl2
 )
 
 include(FindPackageHandleStandardArgs)

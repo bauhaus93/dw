@@ -34,12 +34,17 @@ Logger::Logger(std::ostream& out_, LogLevel logLevel_) :
 
 void Logger::WriteMessagePrefix(LogLevel msgLevel) {
   std::time_t t = std::time(nullptr);
+  #ifdef _MSC_VER
   std::tm tm;
   if (localtime_s(&tm, &t) == 0) {
-    out << std::put_time(&tm, "[%T] ");
+  #else
+  std::tm* tm = localtime(&t);
+  if (tm != nullptr) {
+  #endif
+      out << std::put_time(tm, "[%T] ");
   }
   else {
-	out << "[NO_TIME] ";
+    out << "[NO_TIME] ";
   }
   out << GetLogLevelString(msgLevel) << " - ";
 }

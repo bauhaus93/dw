@@ -2,7 +2,10 @@
 
 #pragma once
 
+#ifdef _MSC_VER
 #define __STDC_WANT_LIB_EXT1__ 1
+#endif
+
 #include <iostream>
 #include <mutex>
 #include <iomanip>
