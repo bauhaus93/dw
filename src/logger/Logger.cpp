@@ -46,7 +46,15 @@ void Logger::WriteMessagePrefix(LogLevel msgLevel) {
   else {
     out << "[NO_TIME] ";
   }
-  out << GetLogLevelString(msgLevel) << " - ";
+  switch(msgLevel) {
+      case LogLevel::TRACE:
+      case LogLevel::DEBUG:
+      case LogLevel::INFO:  out << "\033[1m";      break;
+      case LogLevel::WARN:  out << "\033[1;93m";    break;
+      case LogLevel::ERROR: out << "\033[1;31m";    break;
+      default:  break;
+  }
+  out << GetLogLevelString(msgLevel) << "\033[0m - ";
 }
 
 }   // namespace dwarfs
