@@ -69,11 +69,7 @@ target_include_directories(${LIB_NAME} SYSTEM PRIVATE ${PUGIXML_INCLUDE_DIRS})
 target_include_directories(${EXEC_NAME} SYSTEM PRIVATE ${PUGIXML_INCLUDE_DIRS})
 
 add_custom_target(python-env
-	   	  COMMAND python3 -m venv ${PYTHON_ENV_DIR} &&
-			  source ${PYTHON_ENV_DIR}/bin/activate &&
-			  pip install --upgrade pip &&
-			  pip install -r requirements.txt
-		  WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/src/resource_generation/)
+                  ${CMAKE_SOURCE_DIR}/make_python_env.sh ${PYTHON_ENV_DIR} ${CMAKE_SOURCE_DIR}/src/resource_generation/requirements.txt)
 
 add_custom_target(atlas
 		  COMMAND source ${PYTHON_ENV_DIR}/bin/activate &&

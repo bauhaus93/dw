@@ -18,7 +18,7 @@ public:
                         DirectionalBlock(Sprite sprite_, Material material_, BlockType type_, Direction dir_);
     virtual            ~DirectionalBlock() = default;
     Direction           GetDirection() const { return direction; }
-    int                 CalculateId() const;
+    int                 CalculateId() const override;
     static int          CalculateId(Material mat, BlockType type, Direction dir);
     std::string         GetString() const override;
 
