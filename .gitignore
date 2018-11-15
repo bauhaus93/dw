@@ -7,3 +7,5 @@ env/
 mul.py
 *.log
 *.gch
+*.swp
+*.*~

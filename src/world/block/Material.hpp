@@ -13,7 +13,8 @@ constexpr int MATERIAL_COUNT = 3;
 enum class Material {
     GRASS,
     ROCK,
-    MUD
+    MUD,
+    WHITE
 };
 
 const char* GetString(Material mat);

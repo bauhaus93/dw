@@ -9,7 +9,8 @@ World::World(uint32_t seed, SDL_Renderer* renderer):
     cameraOrigin(0),
     heightNoise { static_cast<uint32_t>(rng()) },
     blockAtlas { },
-    blockPrototypes { CreateBlockPrototypes("atlas.xml", blockAtlas, renderer) } {
+    blockPrototypes { CreateBlockPrototypes("atlas.xml", blockAtlas, renderer) },
+    selectionBlock { blockPrototypes.GetPrototype(Material::WHITE, BlockType::SELECTION) } {
 
     heightNoise.SetMin(0);
     heightNoise.SetMax(4);
@@ -70,6 +71,9 @@ void World::Draw(const RectI& rect, SDL_Renderer* renderer) {
             find->second.Draw(cameraOrigin, rect, renderer);
         }
     }
+    auto pos = WorldToScreenPos(cameraOrigin + Point3i(0, 0, 0), cameraOrigin);
+    pos[1] -=ATLAS_SPRITE_HEIGHT / 3;
+    selectionBlock->Draw(pos, renderer);
 }
 
 void World::DrawSpriteAtlas(const RectI& rect) {

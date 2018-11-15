@@ -9,7 +9,8 @@ const char* GetString(Material mat) {
         case Material::GRASS:   return "GRASS";
         case Material::ROCK:    return "ROCK";    
         case Material::MUD:     return "MUD";
-        default:                    return "UNKNOWN";
+        case Material::WHITE:   return "WHITE";
+        default:                return "UNKNOWN";
     }
 }
 
@@ -20,6 +21,8 @@ Material GetMaterial(const std::string& str) {
         return Material::ROCK;
     } else if (str == "MUD") {
         return Material::MUD;
+    } else if (str == "WHITE") {
+        return Material::WHITE;
     }
     assert(0);
     throw;

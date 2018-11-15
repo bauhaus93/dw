@@ -20,6 +20,8 @@ BlockType GetBlockType(const std::string& str) {
         return BlockType::SLOPE;
     } else if (str == "FLOOR") {
         return BlockType::FLOOR;
+    } else if (str == "SELECTION") {
+        return BlockType::SELECTION;
     }
     assert(0);
     throw;

@@ -13,7 +13,8 @@ constexpr int BLOCKTYPE_COUNT = 3;
 enum class BlockType {
     CUBE,
     SLOPE,
-    FLOOR
+    FLOOR,
+    SELECTION
 };
 
 const char* GetString(BlockType bt);

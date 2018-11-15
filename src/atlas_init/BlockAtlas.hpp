@@ -24,6 +24,7 @@
 #include "world/block/Cube.hpp"
 #include "world/block/Slope.hpp"
 #include "world/block/Floor.hpp"
+#include "world/block/Selection.hpp"
 #include "world/block/ProtoBlockSet.hpp"
 #include "XMLAttributeError.hpp"
 #include "XMLChildError.hpp"

@@ -2,6 +2,7 @@ import os
 import logging
 import collections
 import tempfile
+import shutil
 
 import cv2 as cv
 import numpy as np
@@ -135,7 +136,10 @@ def collect_block_info(block_node, resource_dir, material_prototypes):
     texture_gen_function_name = block_node.attrib["texture_gen_function"]
     logger.debug("Texture gen function: '" + texture_gen_function_name + "'")
     try:
-        texture_gen_function = getattr(texture_generation, texture_gen_function_name)
+        if texture_gen_function_name == "NONE":
+            texture_gen_function = lambda src, dest: shutil.copyfile(src, dest)
+        else:
+            texture_gen_function = getattr(texture_generation, texture_gen_function_name)
     except AttributeError:
         raise BuildError("Texture generation function not found '" + texture_gen_function_name + "'. It must be exported in __init__ of texture_generation.")
     model_path = os.path.join(resource_dir, block_node.attrib["model_path"])

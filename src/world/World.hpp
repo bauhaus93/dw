@@ -8,6 +8,7 @@
 #include <cmath>
 #include <random>
 #include <vector>
+#include <memory>
 
 #include "utility/Rect.hpp"
 #include "utility/Point2.hpp"
@@ -38,12 +39,13 @@ public:
     void            DrawSpriteAtlas(const RectI& rect);
 
 private:
-    std::mt19937                rng;
-    Point3i                     cameraOrigin;
-    SimplexNoise                heightNoise;
-    SpriteAtlas                 blockAtlas;
-    ProtoBlockSet               blockPrototypes;
-    std::map<int32_t, Layer>    layer;
+    std::mt19937                    rng;
+    Point3i                         cameraOrigin;
+    SimplexNoise                    heightNoise;
+    SpriteAtlas                     blockAtlas;
+    ProtoBlockSet                   blockPrototypes;
+    std::shared_ptr<const Block>    selectionBlock;
+    std::map<int32_t, Layer>        layer;
 };
 
 

@@ -102,9 +102,10 @@ ProtoBlockSet LoadPrototypes(SpriteAtlas& atlas, const pugi::xml_node& atlasNode
                 Sprite sprite { spriteRect, atlas };
                 std::shared_ptr<Block> block = nullptr;
                 switch(blockType) {
-                    case BlockType::CUBE:   block = std::make_shared<Cube>(sprite, mat);                break;
-                    case BlockType::SLOPE:  block = std::make_shared<Slope>(sprite, mat, iter.first);   break;
-                    case BlockType::FLOOR:  block = std::make_shared<Floor>(sprite, mat);               break;
+                    case BlockType::CUBE:       block = std::make_shared<Cube>(sprite, mat);                break;
+                    case BlockType::SLOPE:      block = std::make_shared<Slope>(sprite, mat, iter.first);   break;
+                    case BlockType::FLOOR:      block = std::make_shared<Floor>(sprite, mat);               break;
+                    case BlockType::SELECTION:  block = std::make_shared<Selection>(sprite, mat);           break;
                     default:    assert(0);  break;
                 }
                 if (block != nullptr) {
