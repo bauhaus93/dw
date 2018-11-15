@@ -10,7 +10,10 @@ World::World(uint32_t seed, SDL_Renderer* renderer):
     heightNoise { static_cast<uint32_t>(rng()) },
     blockAtlas { renderer },
     blockPrototypes { CreateBlockPrototypes("atlas.xml", blockAtlas) },
-    selectionBlock { blockPrototypes.GetPrototype(Material::WHITE, BlockType::FLOOR) } {
+    selection { nullptr } {
+
+    const RectI& rect = blockPrototypes.GetPrototype(Material::MUD, BlockType::FLOOR)->GetSprite().GetRect();
+    selection = std::make_unique<Texture>(blockAtlas.CreateSubTextureBlendWhite(rect));
 
     heightNoise.SetMin(0);
     heightNoise.SetMax(4);
@@ -71,8 +74,10 @@ void World::Draw(const RectI& rect) {
             find->second.Draw(cameraOrigin, rect);
         }
     }
-    auto pos = WorldToScreenPos(cameraOrigin, cameraOrigin);
-    selectionBlock->Draw(pos);
+    //auto pos = WorldToScreenPos(cameraOrigin, cameraOrigin);
+    uint32_t t = SDL_GetTicks() / 200;
+    selection->SetColorMod(t % 255, (55 * t) % 255, (87 * t) % 0xFF);
+    selection->Draw(Point2i(100, 100));
 }
 
 void World::DrawSpriteAtlas(const RectI& rect) {

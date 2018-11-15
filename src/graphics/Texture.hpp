@@ -19,8 +19,9 @@ namespace dwarfs {
 
 class Texture {
 public:
-                    Texture(SDL_Renderer* renderer_);
                     Texture(SDL_Renderer* renderer_, const std::string& imgPath);
+                    Texture(SDL_Renderer* renderer_);
+                    Texture(SDL_Renderer* renderer_, SDL_Texture* texture_, const Point2i& size_, uint32_t format_);
 
                     ~Texture();
                     Texture(Texture&& other);
@@ -29,12 +30,17 @@ public:
     Texture&        operator=(const Texture& other) = delete;
 
     void            LoadImage(const std::string& imgPath);
+    Texture         CreateSubTexture(const RectI& rect) const;
+    Texture         CreateSubTextureBlendWhite(const RectI& rect) const;
+    void            SetColorMod(uint8_t r, uint8_t g, uint8_t b) const;
+    void            ClearColorMod() const;
     void            DrawRect(const RectI& src, const Point2i& dest) const;
     void            Draw(const Point2i& dest) const;
 private:
+    Texture         RenderSubTexture(const RectI& rect) const;
     SDL_Renderer*               renderer;
     SDL_Texture*                texture;
-    RectI                       size;
+    Point2i                     size;
     uint32_t                    format;
 };
 

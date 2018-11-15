@@ -13,6 +13,7 @@ public:
                     Sprite(const Sprite& other) = default;
     Sprite&         operator=(const Sprite& rhs) = default;
 
+    const RectI&    GetRect() const { return rect; }
     void            Draw(const Point2i& dest) const;
 private:
     const Texture&          texture;

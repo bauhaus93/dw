@@ -22,6 +22,7 @@ public:
     void                Draw(const Point2i dest) const;
     Material            GetMaterial() const { return material; }
     BlockType           GetType() const { return type; }
+    const Sprite&       GetSprite() const { return sprite; }
     virtual int         CalculateId() const;
     static int          CalculateId(Material mat, BlockType type);
     virtual std::string GetString() const;

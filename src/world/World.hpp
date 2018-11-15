@@ -44,7 +44,7 @@ private:
     SimplexNoise                    heightNoise;
     Texture                         blockAtlas;
     ProtoBlockSet                   blockPrototypes;
-    std::shared_ptr<const Block>    selectionBlock;
+    std::unique_ptr<Texture>        selection;
     std::map<int32_t, Layer>        layer;
 };
 

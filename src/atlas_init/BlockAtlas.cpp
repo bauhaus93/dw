@@ -99,7 +99,7 @@ ProtoBlockSet LoadPrototypes(Texture& atlas, const pugi::xml_node& atlasNode, Po
             for (const auto& iter: camColumn) {
                 uint32_t col = iter.second;
                 RectI spriteRect { spriteSize[0] * static_cast<int>(col), spriteSize[1] * static_cast<int>(row), spriteSize[0], spriteSize[1] };
-                Sprite sprite { atlas, spriteRect};
+                Sprite sprite { atlas, spriteRect };
                 std::shared_ptr<Block> block = nullptr;
                 switch(blockType) {
                     case BlockType::CUBE:       block = std::make_shared<Cube>(sprite, mat);                break;
