@@ -72,12 +72,7 @@ add_custom_target(python-env
                   ${CMAKE_SOURCE_DIR}/make_python_env.sh ${PYTHON_ENV_DIR} ${CMAKE_SOURCE_DIR}/src/resource_generation/requirements.txt)
 
 add_custom_target(atlas
-		  COMMAND source ${PYTHON_ENV_DIR}/bin/activate &&
-			  src/resource_generation/generate.py
-			  	--xml-file resources/atlas.xml
-				--result-dir ${CMAKE_BINARY_DIR}/
-				--render-script src/resource_generation/render/render_object.py
-		  WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/)
+		  COMMAND ${CMAKE_SOURCE_DIR}/make_atlas.sh ${PYTHON_ENV_DIR} ${CMAKE_SOURCE_DIR}/src/resource_generation/generate.py ${PROJECT_DIR}/resources/atlas.xml ${CMAKE_BINARY_DIR} ${CMAKE_SOURCE_DIR}/src/resource_generation/render/render_object.py)
 
 add_dependencies(atlas python-env)
 
