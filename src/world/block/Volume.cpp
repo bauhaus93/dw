@@ -15,12 +15,11 @@ Volume::Volume(std::shared_ptr<const Floor> floor_):
 }
 
 void Volume::Draw(const Point2i& dest, SDL_Renderer* renderer) {
-    //TODO: handle floor/block offsets for dest
     if (floor != nullptr) {
         floor->Draw(dest, renderer);
     }
     if (block != nullptr) {
-         block->Draw(dest, renderer);
+        block->Draw(dest + Point2i(0, -5), renderer);
     }   
 }
 

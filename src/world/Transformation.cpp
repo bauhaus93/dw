@@ -13,7 +13,7 @@ Point2i WorldToScreenPos(const Point2i& worldPos, const Point2i& origin) {
 Point2i WorldToScreenPos(const Point3i& worldPos, const Point3i& origin) {
     Point3i pos = worldPos - origin;
     return Point2i { (pos[0] - pos[1]) * TILE_WIDTH / 2,
-                     (pos[0] + pos[1] - 2 * pos[2]) * TILE_HEIGHT / 2 };
+                     (pos[0] + pos[1] - 3 * pos[2]) * TILE_HEIGHT / 2 + 3 * pos[2] };
 }
 
 Point2i ScreenToWorldPos(const Point2i& screenPos, const Point2i& origin) {
