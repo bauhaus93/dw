@@ -9,8 +9,6 @@
 #include <SDL.h>
 
 #include "logger/GlobalLogger.hpp"
-#include "graphics/SpriteAtlas.hpp"
-#include "graphics/Sprite.hpp"
 #include "Block.hpp"
 #include "DirectionalBlock.hpp"
 #include "Material.hpp"
