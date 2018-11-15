@@ -5,13 +5,13 @@
 namespace dwarfs {
 
 
-Sprite::Sprite(const RectI& rect_, const SpriteAtlas& atlas_):
-    rect { rect_ },
-    atlas { atlas_ } {
+Sprite::Sprite(const Texture& texture_, const RectI& rect_):
+    texture { texture_ },
+    rect { rect_ } {
 }
 
-void Sprite::Draw(const Point2i& dest, SDL_Renderer* renderer) const {
-    atlas.DrawRect(rect, dest, renderer);
+void Sprite::Draw(const Point2i& dest) const {
+    texture.DrawRect(rect, dest);
 }
     
 

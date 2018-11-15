@@ -5,6 +5,7 @@ import logging
 import time
 import argparse
 import shutil
+import traceback
 import xml.etree.ElementTree as et
 
 from atlas import create_atlas
@@ -51,7 +52,7 @@ for child in root:
     try:
         create_atlas(child, RESOURCE_DIR, RESULT_DIR, RENDER_SCRIPT_PATH)
     except Exception as ex:
-        logger.error(ex.__class__.__name__ + ": " + str(ex))
+        logger.exception("Exception occured, exiting")
         exit(1)
 
 shutil.copyfile(XML_PATH, XML_COPY_PATH)

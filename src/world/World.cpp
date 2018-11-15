@@ -8,9 +8,9 @@ World::World(uint32_t seed, SDL_Renderer* renderer):
     rng { seed },
     cameraOrigin(0),
     heightNoise { static_cast<uint32_t>(rng()) },
-    blockAtlas { },
-    blockPrototypes { CreateBlockPrototypes("atlas.xml", blockAtlas, renderer) },
-    selectionBlock { blockPrototypes.GetPrototype(Material::WHITE, BlockType::SELECTION) } {
+    blockAtlas { renderer },
+    blockPrototypes { CreateBlockPrototypes("atlas.xml", blockAtlas) },
+    selectionBlock { blockPrototypes.GetPrototype(Material::WHITE, BlockType::FLOOR) } {
 
     heightNoise.SetMin(0);
     heightNoise.SetMax(4);
@@ -55,12 +55,12 @@ void World::CameraDown() {
     INFO("Curr layer: ", cameraOrigin[2]);
 }
 
-void World::Draw(const RectI& rect, SDL_Renderer* renderer) {
+void World::Draw(const RectI& rect) {
     if (cameraOrigin[2] >= 0) {
         for (int32_t h = cameraOrigin[2] - 4; h < cameraOrigin[2] + 4; h++) {
             auto find = layer.find(h);
             if (find != layer.end()) {
-                find->second.Draw(cameraOrigin, rect, renderer);
+                find->second.Draw(cameraOrigin, rect);
             } else {
                 break;
             }
@@ -68,12 +68,11 @@ void World::Draw(const RectI& rect, SDL_Renderer* renderer) {
     } else {
         auto find = layer.find(cameraOrigin[2]);
         if (find != layer.end()) {
-            find->second.Draw(cameraOrigin, rect, renderer);
+            find->second.Draw(cameraOrigin, rect);
         }
     }
-    auto pos = WorldToScreenPos(cameraOrigin + Point3i(0, 0, 0), cameraOrigin);
-    pos[1] -=ATLAS_SPRITE_HEIGHT / 3;
-    selectionBlock->Draw(pos, renderer);
+    auto pos = WorldToScreenPos(cameraOrigin, cameraOrigin);
+    selectionBlock->Draw(pos);
 }
 
 void World::DrawSpriteAtlas(const RectI& rect) {

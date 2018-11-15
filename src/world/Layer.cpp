@@ -51,14 +51,14 @@ void Layer::CreateVolume(Point2i pos,
     volume[pos[1]][pos[0]] = std::make_unique<Volume>(block, std::static_pointer_cast<const Floor>(floor));
 }
 
-void Layer::Draw(const Point3i& cameraOrigin, const RectI& rect, SDL_Renderer* renderer) {
+void Layer::Draw(const Point3i& cameraOrigin, const RectI& rect) {
     RectI worldBoundaries { 0, 0, LAYER_SIZE_X, LAYER_SIZE_Y };
     for (int32_t y = 0; y < LAYER_SIZE_Y; y++) {
         for (int32_t x = 0; x < LAYER_SIZE_X; x++) {
             if (volume[y][x] != nullptr) {
                 Point2i screenPos = WorldToScreenPos(Point3i { x, y, level }, cameraOrigin);
                 if (screenPos.InBoundaries(Point2i(-TILE_WIDTH, -ATLAS_SPRITE_HEIGHT), rect.GetSize())) {
-                    volume[y][x]->Draw(screenPos, renderer);
+                    volume[y][x]->Draw(screenPos);
                 }
             }
         }

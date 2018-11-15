@@ -11,6 +11,7 @@ def create_cube_texture(src, dest):
 
     img = cv.imread(src, cv.IMREAD_UNCHANGED)
     h, w, c = img.shape
+
     result = np.full((h * 4, w * 4, c), BLACK, np.uint8)
 
     img_dark = change_brightness(img, common.SIDE_BRIGHTNESS_FACTOR)

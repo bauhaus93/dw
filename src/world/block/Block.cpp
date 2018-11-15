@@ -10,8 +10,8 @@ Block::Block(Sprite sprite_, Material material_, BlockType type_):
     type { type_ } {
 }
 
-void Block::Draw(const Point2i dest, SDL_Renderer* renderer) const {
-    sprite.Draw(dest, renderer);
+void Block::Draw(const Point2i dest) const {
+    sprite.Draw(dest);
 }
 
 int Block::CalculateId() const {

@@ -16,7 +16,7 @@ class Volume {
 public:
                     Volume(std::shared_ptr<const Block> block_, std::shared_ptr<const Floor> floor_);
     explicit        Volume(std::shared_ptr<const Floor> floor_);
-    void            Draw(const Point2i& dest, SDL_Renderer* renderer);
+    void            Draw(const Point2i& dest);
 
 private:
     std::shared_ptr<const Block>  block;

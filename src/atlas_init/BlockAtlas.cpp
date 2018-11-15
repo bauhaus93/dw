@@ -5,11 +5,11 @@
 namespace dwarfs {
 
 static std::map<Material, uint32_t> LoadMaterialRows(const pugi::xml_node& atlasNode);
-static ProtoBlockSet LoadPrototypes(SpriteAtlas& atlas, const pugi::xml_node& atlasNode, Point2i spriteSize);
+static ProtoBlockSet LoadPrototypes(Texture& atlas, const pugi::xml_node& atlasNode, Point2i spriteSize);
 static std::vector<Material> LoadBlockMaterials(pugi::xml_node& blockNode);
 static std::map<Direction, uint32_t> LoadBlockCameraDirections(pugi::xml_node& blockNode);
 
-ProtoBlockSet CreateBlockPrototypes(const std::string& xmlFile, SpriteAtlas& atlas, SDL_Renderer* renderer) {
+ProtoBlockSet CreateBlockPrototypes(const std::string& xmlFile, Texture& atlas) {
     INFO("Creating block prototypes");
     pugi::xml_document doc;
 
@@ -39,7 +39,7 @@ ProtoBlockSet CreateBlockPrototypes(const std::string& xmlFile, SpriteAtlas& atl
     std::string atlasPath = atlasNode.attribute("output_name").value();
     int elementWidth = atlasNode.attribute("element_width").as_int();
 
-    atlas.LoadImage(atlasPath, renderer);
+    atlas.LoadImage(atlasPath);
     Point2i spriteSize { elementWidth, static_cast<int>(static_cast<float>(elementWidth) * SPRITE_RATIO) };
     INFO("Sprite sizes of atlas: ", spriteSize);
     if (spriteSize[0] != ATLAS_SPRITE_WIDTH) {
@@ -77,7 +77,7 @@ std::map<Material, uint32_t> LoadMaterialRows(const pugi::xml_node& atlasNode) {
     return materialRow;
 }
 
-ProtoBlockSet LoadPrototypes(SpriteAtlas& atlas, const pugi::xml_node& atlasNode, Point2i spriteSize) {
+ProtoBlockSet LoadPrototypes(Texture& atlas, const pugi::xml_node& atlasNode, Point2i spriteSize) {
     ProtoBlockSet prototypes;
     std::map<Material, uint32_t> materialRow = LoadMaterialRows(atlasNode);
 
@@ -99,7 +99,7 @@ ProtoBlockSet LoadPrototypes(SpriteAtlas& atlas, const pugi::xml_node& atlasNode
             for (const auto& iter: camColumn) {
                 uint32_t col = iter.second;
                 RectI spriteRect { spriteSize[0] * static_cast<int>(col), spriteSize[1] * static_cast<int>(row), spriteSize[0], spriteSize[1] };
-                Sprite sprite { spriteRect, atlas };
+                Sprite sprite { atlas, spriteRect};
                 std::shared_ptr<Block> block = nullptr;
                 switch(blockType) {
                     case BlockType::CUBE:       block = std::make_shared<Cube>(sprite, mat);                break;

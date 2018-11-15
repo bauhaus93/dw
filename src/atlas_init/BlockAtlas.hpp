@@ -9,13 +9,12 @@
 #include <cstdint>
 
 #include <pugixml.hpp>
-#include <SDL.h>
 
 #include "application/ApplicationError.hpp"
 #include "logger/GlobalLogger.hpp"
 #include "utility/Point2.hpp"
 #include "utility/Defs.hpp"
-#include "graphics/SpriteAtlas.hpp"
+#include "graphics/Texture.hpp"
 #include "world/block/Material.hpp"
 #include "world/block/BlockType.hpp"
 #include "world/Direction.hpp"
@@ -31,7 +30,7 @@
 
 namespace dwarfs {
 
-ProtoBlockSet CreateBlockPrototypes(const std::string& xmlFile, SpriteAtlas& atlas, SDL_Renderer* renderer);
+ProtoBlockSet CreateBlockPrototypes(const std::string& xmlFile, Texture& atlas);
 
 
 }   // namespace dwarfs

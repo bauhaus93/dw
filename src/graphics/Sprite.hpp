@@ -2,23 +2,21 @@
 
 #pragma once
 
-#include <SDL.h>
-
 #include "utility/Rect.hpp"
-#include "SpriteAtlas.hpp"
+#include "Texture.hpp"
 
 namespace dwarfs {
 
 class Sprite {
 public:
-                    Sprite(const RectI& rect, const SpriteAtlas& atlas);
+                    Sprite(const Texture& texture_, const RectI& rect);
                     Sprite(const Sprite& other) = default;
     Sprite&         operator=(const Sprite& rhs) = default;
 
-    void            Draw(const Point2i& dest, SDL_Renderer* renderer) const;
+    void            Draw(const Point2i& dest) const;
 private:
+    const Texture&          texture;
     RectI                   rect;
-    const SpriteAtlas&      atlas;
 };
 
 

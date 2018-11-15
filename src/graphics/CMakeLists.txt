@@ -1,5 +1,5 @@
 add_sources(
-    SpriteAtlas.hpp SpriteAtlas.cpp
+    Texture.hpp     Texture.cpp
     Sprite.hpp      Sprite.cpp
     SDLError.hpp    SDLError.cpp
     SDLImgError.hpp SDLImgError.cpp

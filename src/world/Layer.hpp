@@ -34,7 +34,7 @@ public:
                 Layer(int32_t level_, const ProtoBlockSet& protoblocks_);
                 Layer(int32_t level_, const ProtoBlockSet& protoblocks_, const HeightMap& heightMap);
 
-    void        Draw(const Point3i& cameraOrigin, const RectI& rect, SDL_Renderer* renderer);
+    void        Draw(const Point3i& cameraOrigin, const RectI& rect);
 
 private:
     void        CreateVolume(Point2i pos,

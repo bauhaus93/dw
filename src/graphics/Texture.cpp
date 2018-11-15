@@ -1,41 +1,50 @@
 /* Copyright 2018 Jakob Fischer <JakobFischer93@gmail.com> */
 
-#include "SpriteAtlas.hpp"
+#include "Texture.hpp"
 
 namespace dwarfs {
 
-SpriteAtlas::SpriteAtlas():
+/*    SDL_BlendMode blendMode = SDL_ComposeCustomBlendMode(
+        SDL_BLENDFACTOR_ZERO,
+        SDL_BLENDFACTOR_DEST_COLOR,
+        SDL_BLENDOPERATION_ADD,
+        SDL_BLENDFACTOR_ONE,
+        SDL_BLENDFACTOR_ZERO,
+        SDL_BLENDOPERATION_ADD
+    );
+    SDL_SetTextureColorMod(texture, 10, 255, 255);*/
+
+Texture::Texture(SDL_Renderer* renderer_):
+    renderer { renderer_ },
     texture { nullptr },
     size { 0, 0, 0, 0 },
     format { 0 } {
 }
 
-SpriteAtlas::SpriteAtlas(const std::string& imgPath, SDL_Renderer* renderer):
-    texture { nullptr },
-    size { 0, 0, 0, 0 },
-    format { 0 } {
-    assert(renderer != nullptr);
-    LoadImage(imgPath, renderer);
+Texture::Texture(SDL_Renderer* renderer_, const std::string& imgPath):
+    Texture(renderer_) {
+    LoadImage(imgPath);
 }
 
-SpriteAtlas::~SpriteAtlas() {
+Texture::~Texture() {
     if (texture != nullptr) {
-        INFO("Destroying sprite atlas texture");
+        INFO("Destroying texture");
         SDL_DestroyTexture(texture);
         texture = nullptr;
     }
 }
 
-SpriteAtlas::SpriteAtlas(SpriteAtlas&& other):
+Texture::Texture(Texture&& other):
+    renderer { other.renderer },
     texture { other.texture },
     size { other.size },
     format { other.format } {
     other.texture = nullptr;
 }
 
-SpriteAtlas& SpriteAtlas::operator=(SpriteAtlas&& other) {
+Texture& Texture::operator=(Texture&& other) {
     if (this != &other ) {
-        assert(texture == nullptr);
+        renderer = other.renderer;
         texture = other.texture;
         size = other.size;
         format = other.format;
@@ -44,9 +53,10 @@ SpriteAtlas& SpriteAtlas::operator=(SpriteAtlas&& other) {
     return *this;
 }
 
-void SpriteAtlas::LoadImage(const std::string& imgPath, SDL_Renderer* renderer) {
+void Texture::LoadImage(const std::string& imgPath) {
     assert(renderer != nullptr);
-    INFO("Loading sprite atlas img: '", imgPath, "'");
+    assert(texture == nullptr);
+    INFO("Loading texture from img: '", imgPath, "'");
 
     SDL_Surface* surf = IMG_Load(imgPath.c_str());
     if (surf == nullptr) {
@@ -80,12 +90,16 @@ void SpriteAtlas::LoadImage(const std::string& imgPath, SDL_Renderer* renderer) 
     }
 }
 
-void SpriteAtlas::DrawRect(const RectI& srcRect, const Point2i& dest, SDL_Renderer* renderer) const {
+void Texture::DrawRect(const RectI& srcRect, const Point2i& dest) const {
     assert(texture != nullptr);
     assert(renderer != nullptr);
     SDL_Rect src { srcRect[0], srcRect[1], srcRect[2], srcRect[3] };
     SDL_Rect target { dest[0], dest[1], srcRect[2], srcRect[3] };
     SDL_RenderCopy(renderer, texture, &src, &target);
+}
+
+void Texture::Draw(const Point2i& dest) const {
+    DrawRect(size, dest);
 }
 
 

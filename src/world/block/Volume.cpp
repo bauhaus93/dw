@@ -14,12 +14,12 @@ Volume::Volume(std::shared_ptr<const Floor> floor_):
     floor { floor_ } {
 }
 
-void Volume::Draw(const Point2i& dest, SDL_Renderer* renderer) {
+void Volume::Draw(const Point2i& dest) {
     if (floor != nullptr) {
-        floor->Draw(dest, renderer);
+        floor->Draw(dest);
     }
     if (block != nullptr) {
-        block->Draw(dest + Point2i(0, -5), renderer);
+        block->Draw(dest + Point2i(0, -5));
     }   
 }
 

@@ -12,7 +12,7 @@ logger = logging.getLogger()
 def setup_logger():
     FORMAT = r"[%(asctime)-15s] %(levelname)s - %(message)s"
     DATE_FORMAT = r"%Y-%m-%d %H:%M:%S"
-    logging.basicConfig(level = logging.INFO, format = FORMAT, datefmt = DATE_FORMAT)
+    logging.basicConfig(level = logging.DEBUG, format = FORMAT, datefmt = DATE_FORMAT)
 
 def generate_textures(material_paths, create_texture_function, output_dir, output_affix):
     logger.info("Creating textures")

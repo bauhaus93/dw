@@ -19,7 +19,7 @@ class Block {
 public:
                         Block(Sprite sprite_, Material material_, BlockType type_);
     virtual             ~Block() = default;
-    void                Draw(const Point2i dest, SDL_Renderer* renderer) const;
+    void                Draw(const Point2i dest) const;
     Material            GetMaterial() const { return material; }
     BlockType           GetType() const { return type; }
     virtual int         CalculateId() const;
