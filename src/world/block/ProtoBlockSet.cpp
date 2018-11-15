@@ -13,21 +13,25 @@ void ProtoBlockSet::AddBlock(std::shared_ptr<Block> prototype) {
 }
 
 std::shared_ptr<const Block> ProtoBlockSet::GetPrototype(Material material, BlockType type) const {
-    static const SpriteAtlas dummyAtlas;
-    static const Sprite dummySprite(RectI(0, 0, 0, 0), dummyAtlas);
-
-    auto b = std::make_shared<Block>(dummySprite, material, type);
-    auto find = prototypes.find(b);
+    int id = Block::CalculateId(material, type);
+    auto find = std::find_if(
+        prototypes.begin(),
+        prototypes.end(),
+        [id](const std::shared_ptr<Block>& block) {
+            return block->CalculateId() == id;
+        });
     assert(find != prototypes.end());
     return *find;
 }
 
 std::shared_ptr<const DirectionalBlock> ProtoBlockSet::GetPrototype(Material material, BlockType type, Direction dir) const {
-    static const SpriteAtlas dummyAtlas;
-    static const Sprite dummySprite(RectI(0, 0, 0, 0), dummyAtlas);
-
-    auto b = std::make_shared<DirectionalBlock>(dummySprite, material, type, dir);
-    auto find = prototypes.find(b);
+    int id = DirectionalBlock::CalculateId(material, type, dir);
+    auto find = std::find_if(
+        prototypes.begin(),
+        prototypes.end(),
+        [id](const std::shared_ptr<Block>& block) {
+            return block->CalculateId() == id;
+        });
     assert(find != prototypes.end());
     return std::static_pointer_cast<const DirectionalBlock>(*find);
 }

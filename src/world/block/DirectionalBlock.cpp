@@ -10,8 +10,13 @@ DirectionalBlock::DirectionalBlock(Sprite sprite_, Material material_, BlockType
 }
 
 int DirectionalBlock::CalculateId() const {
-    return ToUnderlying(GetMaterial()) + MATERIAL_COUNT * ToUnderlying(GetType()) + MATERIAL_COUNT * BLOCKTYPE_COUNT * ToUnderlying(GetDirection());
+    return CalculateId(GetMaterial(), GetType(), GetDirection());
 }
+
+int DirectionalBlock::CalculateId(Material mat, BlockType type, Direction dir) {
+    return ToUnderlying(mat) + MATERIAL_COUNT * ToUnderlying(type) + MATERIAL_COUNT * BLOCKTYPE_COUNT * ToUnderlying(dir);
+}
+
 std::string DirectionalBlock::GetString() const {
     std::stringstream ss;
     ss << "Id = " << CalculateId()

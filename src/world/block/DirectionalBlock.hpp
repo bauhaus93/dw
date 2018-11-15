@@ -19,6 +19,7 @@ public:
     virtual            ~DirectionalBlock() = default;
     Direction           GetDirection() const { return direction; }
     int                 CalculateId() const;
+    static int          CalculateId(Material mat, BlockType type, Direction dir);
     std::string         GetString() const override;
 
 private:

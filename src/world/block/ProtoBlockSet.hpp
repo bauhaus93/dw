@@ -4,6 +4,7 @@
 
 #include <memory>
 #include <set>
+#include <algorithm>
 
 #include <SDL.h>
 
@@ -20,6 +21,12 @@ namespace dwarfs {
 struct SharedBlockCmp {
     bool operator() (const std::shared_ptr<Block>& lhs, const std::shared_ptr<Block>& rhs) const {
         return lhs->CalculateId() < rhs->CalculateId();
+    }
+    bool operator() (const std::shared_ptr<Block>& lhs, int id) const {
+        return lhs->CalculateId() < id;
+    }
+    bool operator() (int id, const std::shared_ptr<Block>& rhs) const {
+        return id < rhs->CalculateId();
     }
 };
 

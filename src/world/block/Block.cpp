@@ -15,8 +15,13 @@ void Block::Draw(const Point2i dest, SDL_Renderer* renderer) const {
 }
 
 int Block::CalculateId() const {
-    return ToUnderlying(GetMaterial()) + MATERIAL_COUNT * ToUnderlying(GetType());
+    return CalculateId(GetMaterial(), GetType());
 }
+
+int Block::CalculateId(Material mat, BlockType type) {
+    return ToUnderlying(mat) + MATERIAL_COUNT * ToUnderlying(type);
+}
+
 std::string Block::GetString() const {
     std::stringstream ss;
     ss << "Id = " << CalculateId()

@@ -23,6 +23,7 @@ public:
     Material            GetMaterial() const { return material; }
     BlockType           GetType() const { return type; }
     virtual int         CalculateId() const;
+    static int          CalculateId(Material mat, BlockType type);
     virtual std::string GetString() const;
 private:
     Sprite          sprite;
