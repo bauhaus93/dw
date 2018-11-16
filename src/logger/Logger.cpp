@@ -35,8 +35,9 @@ Logger::Logger(std::ostream& out_, LogLevel logLevel_) :
 void Logger::WriteMessagePrefix(LogLevel msgLevel) {
   std::time_t t = std::time(nullptr);
   #ifdef _MSC_VER
-  std::tm tm;
-  if (localtime_s(&tm, &t) == 0) {
+  std::tm tmV;
+  std::tm* tm = &tmV;
+  if (localtime_s(tm, &t) == 0) {
   #else
   std::tm* tm = localtime(&t);
   if (tm != nullptr) {
