@@ -14,43 +14,43 @@
 #define LOG_LEVEL DEBUG
 #endif
 
-namespace dwarfs {
+#if LOG_LEVEL == TRACE
+#define TRACE(...) logging::GetGlobalLogger().Trace(__VA_ARGS__)
+#define DEBUG(...) logging::GetGlobalLogger().Debug(__VA_ARGS__)
+#define INFO(...) logging::GetGlobalLogger().Info(__VA_ARGS__)
+#define WARN(...) logging::GetGlobalLogger().Warn(__VA_ARGS__)
+#define ERROR(...) logging::GetGlobalLogger().Error(__VA_ARGS__)
+#elif LOG_LEVEL == DEBUG
+#define TRACE(...) ((void)0)
+#define DEBUG(...) logging::GetGlobalLogger().Debug(__VA_ARGS__)
+#define INFO(...) logging::GetGlobalLogger().Info(__VA_ARGS__)
+#define WARN(...) logging::GetGlobalLogger().Warn(__VA_ARGS__)
+#define ERROR(...) logging::GetGlobalLogger().Error(__VA_ARGS__)
+#elif LOG_LEVEL == INFO
+#define TRACE(...) ((void)0)
+#define DEBUG(...) ((void)0)
+#define INFO(...) logging::GetGlobalLogger().Info(__VA_ARGS__)
+#define WARN(...) logging::GetGlobalLogger().Warn(__VA_ARGS__)
+#define ERROR(...) logging::GetGlobalLogger().Error(__VA_ARGS__)
+#elif LOG_LEVEL == WARN
+#define TRACE(...) ((void)0)
+#define DEBUG(...) ((void)0)
+#define INFO(...) ((void)0)
+#define WARN(...) logging::GetGlobalLogger().Warn(__VA_ARGS__)
+#define ERROR(...) logging::GetGlobalLogger().Error(__VA_ARGS__)
+#elif LOG_LEVEL == ERROR
+#define TRACE(...) ((void)0)
+#define DEBUG(...) ((void)0)
+#define INFO(...) ((void)0)
+#define WARN(...) ((void)0)
+#define ERROR(...) logging::GetGlobalLogger().Error(__VA_ARGS__)
+#endif
+
+namespace logging {
 
 void CreateGlobalLogger(std::ostream& output);
 Logger& GetGlobalLogger();
 bool GlobalLoggerActive();
 void DestroyGlobalLogger();
 
-#if LOG_LEVEL == TRACE
-#define TRACE(...) dwarfs::GetGlobalLogger().Trace(__VA_ARGS__)
-#define DEBUG(...) dwarfs::GetGlobalLogger().Debug(__VA_ARGS__)
-#define INFO(...) dwarfs::GetGlobalLogger().Info(__VA_ARGS__)
-#define WARN(...) dwarfs::GetGlobalLogger().Warn(__VA_ARGS__)
-#define ERROR(...) dwarfs::GetGlobalLogger().Error(__VA_ARGS__)
-#elif LOG_LEVEL == DEBUG
-#define TRACE(...) ((void)0)
-#define DEBUG(...) dwarfs::GetGlobalLogger().Debug(__VA_ARGS__)
-#define INFO(...) dwarfs::GetGlobalLogger().Info(__VA_ARGS__)
-#define WARN(...) dwarfs::GetGlobalLogger().Warn(__VA_ARGS__)
-#define ERROR(...) dwarfs::GetGlobalLogger().Error(__VA_ARGS__)
-#elif LOG_LEVEL == INFO
-#define TRACE(...) ((void)0)
-#define DEBUG(...) ((void)0)
-#define INFO(...) dwarfs::GetGlobalLogger().Info(__VA_ARGS__)
-#define WARN(...) dwarfs::GetGlobalLogger().Warn(__VA_ARGS__)
-#define ERROR(...) dwarfs::GetGlobalLogger().Error(__VA_ARGS__)
-#elif LOG_LEVEL == WARN
-#define TRACE(...) ((void)0)
-#define DEBUG(...) ((void)0)
-#define INFO(...) ((void)0)
-#define WARN(...) dwarfs::GetGlobalLogger().Warn(__VA_ARGS__)
-#define ERROR(...) dwarfs::GetGlobalLogger().Error(__VA_ARGS__)
-#elif LOG_LEVEL == ERROR
-#define TRACE(...) ((void)0)
-#define DEBUG(...) ((void)0)
-#define INFO(...) ((void)0)
-#define WARN(...) ((void)0)
-#define ERROR(...) dwarfs::GetGlobalLogger().Error(__VA_ARGS__)
-#endif
-
-}   // namespace dwarfs
+}   // namespace logging

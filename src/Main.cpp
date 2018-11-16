@@ -9,7 +9,7 @@
 #include "application/ApplicationError.hpp"
 
 int main(int argc, char** argv) {
-    dwarfs::CreateGlobalLogger(std::cout);
+    logging::CreateGlobalLogger(std::cout);
 
     try {
         dwarfs::Application app { 1024, 768 };
@@ -20,7 +20,7 @@ int main(int argc, char** argv) {
         ERROR("Unhandled exception: ", e.what());
     }*/
 
-    dwarfs::DestroyGlobalLogger();
+    logging::DestroyGlobalLogger();
 
     return 0;
 }

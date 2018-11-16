@@ -13,7 +13,7 @@
 
 #include "LogLevel.hpp"
 
-namespace dwarfs {
+namespace logging {
 
 class Logger {
  public:
@@ -120,4 +120,4 @@ void Logger::WriteAppend(const T& value) {
     out << value << std::endl;
 }
 
-}   // namespace dwarfs
+}   // namespace logging

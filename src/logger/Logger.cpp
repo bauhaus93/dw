@@ -2,7 +2,7 @@
 
 #include "Logger.hpp"
 
-namespace dwarfs {
+namespace logging {
 
 const char* GetLogLevelString(LogLevel logLevel) {
     switch (logLevel) {
@@ -58,4 +58,4 @@ void Logger::WriteMessagePrefix(LogLevel msgLevel) {
   out << GetLogLevelString(msgLevel) << "\033[0m - ";
 }
 
-}   // namespace dwarfs
+}   // namespace logging

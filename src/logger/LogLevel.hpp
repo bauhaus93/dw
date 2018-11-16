@@ -2,7 +2,7 @@
 
 #pragma once
 
-namespace dwarfs{
+namespace logging {
 
 enum class LogLevel {
     TRACE = 0,
@@ -12,4 +12,4 @@ enum class LogLevel {
     ERROR = 4
 };
 
-}   // namespace dwarfs
+}   // namespace logging
